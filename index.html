@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#211e1a">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="description" content="公考行测翻译推理：202 道题库 + 全关联词速查表 + 限时刷题、判分、错题回顾">
+<title>翻译推理 · 学习台</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23211e1a'/%3E%3Crect x='11' y='11' width='42' height='42' rx='4' fill='none' stroke='%23b23a2c' stroke-width='4'/%3E%3Ctext x='32' y='46' font-size='36' text-anchor='middle' fill='%23e0867a' font-family='serif'%3E%E6%8E%A8%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   翻译推理学习台 · 单文件版
+   配色：素纸 + 墨 + 朱红   适配：移动端优先
+   ============================================================ */
+:root{
+  --paper:#eee4cf;
+  --card:#fbf6ea;
+  --card2:#f6efdd;
+  --ink:#211e1a;
+  --ink2:#6b6153;
+  --red:#b23a2c;
+  --red-d:#8c2a1f;
+  --blue:#2f5068;
+  --line:#d5c7aa;
+  --ok:#2e6b4c;
+  --bad:#a83226;
+  --gold:#b98a2f;
+  --topbar:56px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15px;line-height:1.7;color:var(--ink);
+  background-color:var(--paper);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(120,100,70,.05) 0 1px, transparent 1px 26px),
+    radial-gradient(circle at 15% 8%, rgba(180,150,100,.15), transparent 45%),
+    radial-gradient(circle at 88% 82%, rgba(150,130,90,.13), transparent 52%);
+  min-height:100%;
+}
+button{font-family:inherit;font-size:inherit;color:inherit;touch-action:manipulation;-webkit-appearance:none;appearance:none}
+[hidden]{display:none !important}
+.kai{font-family:"Kaiti SC","STKaiti","KaiTi","Songti SC",serif}
+.screen{display:none}
+.screen.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ---------- 顶栏 ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:#211e1a;color:#f4ecdc;border-bottom:2px solid var(--red)}
+.bar-in{max-width:960px;margin:0 auto;padding:7px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.brand{display:flex;align-items:center;gap:7px;min-width:0}
+.brand .seal{flex:0 0 24px;width:24px;height:24px;line-height:1;display:flex;align-items:center;justify-content:center;
+  border:2px solid #e0867a;border-radius:3px;color:#e0867a;font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-size:14px;font-weight:700}
+.brand .bt{font-size:14.5px;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tabs{display:flex;flex:0 0 auto;border:1px solid #6c6455;border-radius:3px;overflow:hidden}
+.tab{background:transparent;border:0;color:#cfc3aa;padding:6px 12px;font-size:13px;letter-spacing:1px;cursor:pointer;white-space:nowrap}
+.tab.on{background:var(--red);color:#fdf6e8}
+
+/* ---------- 布局 ---------- */
+#app{max-width:880px;margin:0 auto;padding:12px 10px calc(30px + env(safe-area-inset-bottom))}
+#scr-sheet.active #sheet-in{max-width:1000px;margin:0 auto;padding:12px 10px calc(30px + env(safe-area-inset-bottom))}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:2px;
+  padding:18px 15px 18px 30px;margin-bottom:14px;box-shadow:4px 4px 0 rgba(33,30,26,.07)}
+.card.hairline::before{content:"";position:absolute;left:19px;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(178,58,44,.45) 8%,rgba(178,58,44,.45) 92%,transparent)}
+.card > h2{font-size:14.5px;margin:0 0 10px;letter-spacing:1.5px;color:var(--blue);font-weight:700}
+.card > h2 .no{display:inline-block;width:17px;height:17px;line-height:16px;text-align:center;
+  border:1px solid var(--blue);border-radius:50%;font-size:11px;margin-right:6px;vertical-align:2px}
+.foot{text-align:center;margin:26px 0 0;font-size:12px;color:#8d8069;letter-spacing:3px;
+  font-family:"Kaiti SC","STKaiti","KaiTi",serif}
+.foot::before{content:"—— ";letter-spacing:0}
+.foot::after{content:" ——";letter-spacing:0}
+
+/* ---------- 封面 ---------- */
+.cover{position:relative;background:var(--ink);color:#f4ecdc;border-radius:3px;
+  padding:22px 18px 20px;margin-bottom:14px;box-shadow:5px 5px 0 rgba(33,30,26,.18);overflow:hidden}
+.cover::after{content:"";position:absolute;right:-46px;top:-46px;width:150px;height:150px;border:1px solid rgba(244,236,220,.2);border-radius:50%}
+.cover h1{margin:0;font-size:23px;letter-spacing:4px;font-weight:700;font-family:"Kaiti SC","STKaiti","KaiTi",serif}
+.cover .sub{margin:8px 0 0;font-size:12.5px;letter-spacing:.5px;color:#cbbfa6;line-height:1.9}
+.cover .stamp{position:absolute;right:16px;bottom:16px;width:46px;height:46px;border:2.5px double var(--red);
+  border-radius:4px;color:#e0867a;display:flex;align-items:center;justify-content:center;
+  font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-size:21px;font-weight:700;transform:rotate(-8deg);opacity:.92}
+
+/* ---------- 选择按钮（chip） ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:40px;display:inline-flex;align-items:center;border:1px solid var(--ink2);background:var(--card);
+  padding:6px 13px;font-size:13.5px;cursor:pointer;border-radius:2px;user-select:none;-webkit-user-select:none;transition:background .12s,border-color .12s}
+.chip small{color:var(--ink2);font-size:11.5px;margin-left:4px}
+.chip:hover{border-color:var(--ink)}
+.chip.on{background:var(--ink);color:#f4ecdc;border-color:var(--ink)}
+.chip.on small{color:#b8a98d}
+.set-group + .set-group{margin-top:20px}
+.kv{font-size:12px;color:var(--ink2);letter-spacing:0}
+
+/* ---------- 按钮 ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;
+  border:1px solid var(--red);cursor:pointer;border-radius:2px;background:var(--red);color:#fdf6e8;
+  font-size:15px;letter-spacing:1.5px;padding:10px 22px;box-shadow:3px 3px 0 rgba(33,30,26,.28);
+  transition:transform .1s,box-shadow .1s,background .1s;user-select:none;-webkit-user-select:none}
+.btn:active{transform:translate(2px,2px);box-shadow:0 0 0 rgba(0,0,0,0)}
+.btn[disabled]{background:#b9ad96;border-color:#b9ad96;box-shadow:none;cursor:not-allowed;transform:none;color:#f6f1e6}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink);box-shadow:3px 3px 0 rgba(33,30,26,.13)}
+.btn.ghost:active{background:rgba(33,30,26,.06)}
+.btn.small{min-height:38px;font-size:13.5px;padding:6px 14px;letter-spacing:1px}
+.btn.block{width:100%}
+.btn-row{display:flex;flex-wrap:wrap;gap:9px}
+.btn-row .btn{flex:1 1 auto}
+.hint{font-size:12.5px;color:var(--ink2);margin-top:12px;letter-spacing:.3px}
+kbd{font-family:inherit;border:1px solid var(--line);background:var(--card2);border-bottom-width:2px;border-radius:3px;padding:0 5px;font-size:12px}
+@media (hover:none){ .kbd-only{display:none} }
+
+/* ---------- 作答 HUD ---------- */
+.hud{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 10px;margin:2px 0 10px}
+.hud-l{font-size:13.5px;letter-spacing:.5px;display:flex;align-items:center;gap:8px;min-width:0}
+.hud-l b{color:var(--red);font-size:18px;font-family:"Kaiti SC","KaiTi",serif}
+.pill{font-size:11px;color:var(--blue);border:1px solid var(--blue);border-radius:2px;padding:1px 6px;letter-spacing:1px;white-space:nowrap}
+.pill.rev{color:#fdf6e8;background:var(--blue);border-color:var(--blue)}
+.pill.range{color:var(--ink2);border-color:var(--line)}
+.hud-r{display:flex;align-items:center;gap:10px;margin-left:auto}
+.timer-all{font-size:12.5px;color:var(--ink2);letter-spacing:.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ring{position:relative;flex:0 0 42px;width:42px;height:42px}
+.ring svg{display:block;transform:rotate(-90deg)}
+.ring .bg{fill:none;stroke:#e2d8bf;stroke-width:3.5}
+.ring .fg{fill:none;stroke:var(--red);stroke-width:3.5;stroke-linecap:round;transition:stroke-dashoffset .25s linear}
+.ring .num{position:absolute;left:0;top:0;width:42px;height:42px;display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;color:var(--red);font-variant-numeric:tabular-nums}
+.ring.warn .num{color:var(--red-d);font-weight:700}
+.ring.warn .fg{stroke:var(--red-d)}
+.ring.hide{display:none}
+
+/* ---------- 进度格 ---------- */
+.dots{display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.dot{flex:0 0 auto;width:14px;height:14px;border:1px solid var(--line);background:var(--card);border-radius:2px;padding:0;cursor:default}
+.dot.cur{outline:2px solid var(--ink);outline-offset:1px}
+.dot.ok{background:var(--ok);border-color:var(--ok)}
+.dot.bad{background:var(--bad);border-color:var(--bad)}
+.dot.skip{background:#7d7263;border-color:#7d7263}
+.dot.can{cursor:pointer}
+
+/* ---------- 题目卡 ---------- */
+.q-cat{display:inline-block;font-size:11px;letter-spacing:1.5px;color:#fdf6e8;background:var(--blue);
+  padding:2px 9px;border-radius:2px;margin-bottom:12px}
+.q-stem{font-size:16.5px;line-height:1.85;letter-spacing:.2px;margin-bottom:5px;word-break:break-word}
+.q-stem em{font-style:normal;font-weight:700;color:var(--red-d);background:linear-gradient(transparent 62%,#f3d99b 62%);padding:0 1px}
+.q-ask{font-size:12.5px;color:var(--ink2);margin-bottom:14px}
+.opts{list-style:none;margin:0;padding:0}
+.opt{display:flex;gap:11px;align-items:flex-start;cursor:pointer;border:1px solid var(--line);background:var(--card2);
+  padding:11px 13px;margin-bottom:8px;border-radius:2px;font-size:15px;min-height:46px;transition:background .12s,border-color .12s;word-break:break-word}
+.opt:hover{border-color:var(--ink2)}
+.opt .mark{flex:0 0 24px;width:24px;height:24px;line-height:23px;text-align:center;border:1px solid var(--ink2);
+  border-radius:50%;font-size:12.5px;color:var(--ink2);font-weight:700;margin-top:1px}
+.opt .txt{flex:1;padding-top:1px}
+.opt.locked{cursor:default}
+.opt.pick-right{border-color:var(--ok);background:#e8f2ea}
+.opt.pick-right .mark{border-color:var(--ok);color:#fff;background:var(--ok)}
+.opt.pick-wrong{border-color:var(--bad);background:#f7e7e4}
+.opt.pick-wrong .mark{border-color:var(--bad);color:#fff;background:var(--bad)}
+.opt.answer{border-color:var(--ok);background:#eef4ef}
+.opt.answer .mark{border-color:var(--ok);color:var(--ok)}
+.opt.dim{opacity:.55}
+.opt .your,.opt .right-mark{font-size:11px;border-radius:2px;padding:0 5px;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.opt .your{color:var(--bad);border:1px solid var(--bad)}
+.opt .right-mark{color:var(--ok);border:1px solid var(--ok)}
+
+.feedback{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+.fb-head{font-size:14.5px;font-weight:700;letter-spacing:1px;margin-bottom:8px}
+.fb-head.ok{color:var(--ok)} .fb-head.bad{color:var(--bad)} .fb-head.skip{color:#7d7263}
+.fb-body{font-size:14px;color:#3d382f;background:var(--card2);border-left:3px solid var(--gold);
+  padding:10px 12px;border-radius:2px;word-break:break-word}
+.fb-body .ans{display:block}
+.fb-body .ans + .ans{margin-top:6px}
+.stamp-mark{position:absolute;top:12px;right:12px;width:50px;height:50px;border:2.5px double currentColor;border-radius:5px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;
+  font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-size:15px;font-weight:700;letter-spacing:.5px;transform:rotate(-9deg);opacity:.92}
+.stamp-mark small{font-size:9px;letter-spacing:1px;font-weight:400}
+.stamp-mark.ok{color:var(--ok)} .stamp-mark.bad{color:var(--bad)}
+.stamp-mark.skip{color:#7d7263} .stamp-mark.mid{color:var(--gold)}
+.stamp-mark.hide{display:none}
+
+/* ---------- 底部操作条 ---------- */
+.qbar{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.qbar-hint{font-size:12.5px;color:var(--ink2)}
+.qbar .btn{flex:1 1 auto}
+.qbar .btn.wide{flex:1 1 100%}
+@media (min-width:600px){ .qbar .btn{flex:0 0 auto} .qbar .btn.wide{flex:0 0 auto} }
+
+/* ---------- 成绩页 ---------- */
+.score-wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.score-big{font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-size:54px;line-height:1;color:var(--red);font-weight:700}
+.score-big small{font-size:18px;color:var(--ink2)}
+.score-meta{flex:1 1 180px;min-width:0}
+.score-meta .line1{font-size:14.5px;letter-spacing:.3px}
+.score-meta .line2{font-size:12.5px;color:var(--ink2);margin-top:4px}
+.score-wrap{padding-right:62px}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:16px}
+.stat{border:1px solid var(--line);background:var(--card2);padding:8px 10px;border-radius:2px}
+.stat b{display:block;font-size:19px;font-family:"Kaiti SC","KaiTi",serif}
+.stat span{font-size:11.5px;color:var(--ink2);letter-spacing:.5px}
+.stat.ok b{color:var(--ok)} .stat.bad b{color:var(--bad)} .stat.skip b{color:#7d7263}
+.cat-title{font-size:13.5px;letter-spacing:1.5px;color:var(--blue);margin:20px 0 8px;font-weight:700}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12.5px}
+.bar-row .name{flex:0 0 92px;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-row .bar{flex:1;height:9px;background:#e4dac2;border-radius:1px;overflow:hidden;min-width:40px}
+.bar-row .bar i{display:block;height:100%;background:var(--ok)}
+.bar-row .bar i.mid{background:var(--gold)}
+.bar-row .bar i.low{background:var(--bad)}
+.bar-row .val{flex:0 0 78px;text-align:right;color:var(--ink2);font-variant-numeric:tabular-nums}
+
+.qrow{width:100%;display:grid;grid-template-columns:auto auto 1fr;gap:2px 8px;align-items:center;text-align:left;
+  background:var(--card);border:1px solid var(--line);border-radius:2px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
+.qrow:hover{border-color:var(--ink2)}
+.qrow .qno{font-size:13px;color:var(--ink2);font-family:"Kaiti SC","KaiTi",serif}
+.qrow .ttype{font-size:11px;color:var(--blue);border:1px solid var(--blue);border-radius:2px;padding:0 5px;white-space:nowrap}
+.qrow .res{font-size:11px;border-radius:2px;padding:0 5px;border:1px solid;white-space:nowrap;justify-self:start}
+.qrow .res.ok{color:var(--ok);border-color:var(--ok)}
+.qrow .res.bad{color:var(--bad);border-color:var(--bad)}
+.qrow .res.skip{color:#7d7263;border-color:#7d7263}
+.qrow .qs{grid-column:1 / -1;font-size:13px;color:#4a443a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qrow .qgo{grid-column:3;grid-row:2;justify-self:end;font-size:12px;color:var(--red)}
+.rev-tabs{display:flex;gap:8px;margin:18px 0 10px}
+
+/* ---------- 弹窗 ---------- */
+.modal-mask{position:fixed;left:0;top:0;right:0;bottom:0;z-index:80;background:rgba(33,30,26,.55);
+  display:flex;align-items:center;justify-content:center;padding:18px}
+.modal-mask[hidden]{display:none}
+.modal{width:100%;max-width:340px;background:var(--card);border:1px solid var(--ink);border-radius:3px;
+  box-shadow:6px 6px 0 rgba(0,0,0,.25);padding:18px 16px 16px;animation:pop .18s ease}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.modal h3{margin:0 0 8px;font-size:16px;letter-spacing:1px;color:var(--ink)}
+.modal h3::before{content:"朱批";display:inline-block;font-size:10px;color:#fdf6e8;background:var(--red);
+  border-radius:2px;padding:1px 5px;margin-right:7px;vertical-align:2px;letter-spacing:1px;font-weight:400}
+.modal p{margin:0 0 14px;font-size:13.5px;color:#3d382f;line-height:1.8}
+.modal .modal-btns{display:flex;gap:9px}
+.modal .modal-btns .btn{flex:1}
+
+/* ---------- 速查表 ---------- */
+.sheet-head{margin-bottom:14px}
+.toc{display:grid;grid-template-columns:1fr;gap:6px;margin-top:10px}
+.toc a{display:flex;gap:8px;align-items:baseline;text-decoration:none;color:var(--ink);
+  background:var(--card2);border:1px solid var(--line);border-radius:2px;padding:8px 10px;font-size:13px}
+.toc a:active{background:#f0e6cf}
+.toc a i{flex:0 0 auto;font-style:normal;font-family:"Kaiti SC","KaiTi",serif;color:var(--red);font-size:13px}
+.sheet section{background:var(--card);border:1px solid var(--line);border-radius:2px;padding:16px 13px 16px 26px;
+  margin-bottom:14px;box-shadow:4px 4px 0 rgba(33,30,26,.06);scroll-margin-top:66px;position:relative}
+.sheet section::before{content:"";position:absolute;left:16px;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(178,58,44,.4) 8%,rgba(178,58,44,.4) 92%,transparent)}
+.sheet h2{font-size:17px;margin:0 0 12px;padding-bottom:9px;border-bottom:2px solid #e5eaf1;color:#12395c}
+.sheet h2 .num{display:inline-block;background:#1e3a5f;color:#fff;font-size:12.5px;width:23px;height:23px;
+  line-height:23px;text-align:center;border-radius:6px;margin-right:8px;vertical-align:2px}
+.sheet h3{font-size:15px;margin:18px 0 8px;color:#1f4e79}
+.sheet p{margin:8px 0}
+.sheet .k{font-weight:700;color:#0b5cad}
+.sheet .arrow{font-weight:700;color:#b3261e;white-space:nowrap}
+.sheet .neg{font-weight:700;color:#7a3ea1}
+.sheet code{background:#f0f4f9;padding:1px 5px;border-radius:4px;font-size:13px;color:#0d4f7c;
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;word-break:break-word}
+.sheet .box{border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px}
+.sheet .box p{margin:5px 0}
+.sheet .box .t{font-weight:700;display:block;margin-bottom:4px}
+.sheet .box-b{background:#eef6ff;border-left:5px solid #2d6ca2}
+.sheet .box-o{background:#fff7ec;border-left:5px solid #d9822b}
+.sheet .box-r{background:#fdf0ef;border-left:5px solid #c0392b}
+.sheet .box-g{background:#eefaf3;border-left:5px solid #1f9d63}
+.sheet .tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:20px;margin-left:5px;vertical-align:1px;font-weight:600;white-space:nowrap}
+.sheet .tag-s{background:#dcecff;color:#0b5cad}
+.sheet .tag-n{background:#ffe8cf;color:#a85a10}
+.sheet .tag-w{background:#ffdedb;color:#b3261e}
+.sheet .ok::before{content:"✔ ";color:#1f9d63;font-weight:700}
+.sheet .no::before{content:"✘ ";color:#c0392b;font-weight:700}
+.sheet .hl{background:#fff3a3;padding:0 3px;border-radius:3px;font-weight:600}
+.sheet .ex{border-left:4px solid #b9cde3;padding:2px 0 2px 13px;margin:12px 0}
+.sheet .ex .q{font-weight:600;color:#12395c}
+.sheet .ex .a{color:#334155;font-size:13.5px;margin-top:3px}
+.sheet hr{border:none;border-top:1px dashed #d5dfea;margin:18px 0}
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0 14px}
+.tscroll table{min-width:600px}
+
+/* 手机端：表格转为卡片式（构建时写入 data-label） */
+@media (max-width:599px){
+  .tscroll{overflow:visible}
+  .tscroll table{min-width:0}
+  .sheet table,.sheet tbody,.sheet tr,.sheet td{display:block;width:auto}
+  .sheet thead,.sheet tr.hrow{display:none}
+  .sheet tr{border:1px solid #e3e9f0;border-radius:3px;background:#fff;margin-bottom:8px;padding:4px 10px;overflow:hidden}
+  .sheet tr:nth-child(even) td{background:transparent}
+  .sheet td{border:none;border-top:1px dashed #e8edf3;padding:7px 0;min-width:0 !important}
+  .sheet td:first-child{border-top:none;font-size:14.5px}
+  .sheet td[data-label]::before{content:attr(data-label);display:block;font-size:11px;color:#8a99ab;letter-spacing:1px;margin-bottom:2px}
+  .sheet td[data-label=""]::before{display:none}
+}
+.sheet table{border-collapse:collapse;width:100%;margin:0;font-size:13.5px}
+.sheet td:first-child,.sheet th:first-child{min-width:104px}
+.sheet td:nth-child(2),.sheet th:nth-child(2){min-width:118px}
+.sheet td,.sheet th{word-break:break-word}
+.sheet th{background:#eef3f9;color:#12395c;text-align:left;padding:8px 9px;border:1px solid #d8e2ee;font-weight:600;white-space:nowrap}
+.sheet td{padding:8px 9px;border:1px solid #e3e9f0;vertical-align:top}
+.sheet tr:nth-child(even) td{background:#fafbfd}
+
+/* ---------- 宽屏适配 ---------- */
+@media (min-width:600px){
+  body{font-size:15.5px}
+  .score-wrap{padding-right:78px}
+  #app{padding:18px 16px 40px}
+  #scr-sheet.active #sheet-in{padding:18px 16px 40px}
+  .card{padding:22px 22px 22px 38px}
+  .card.hairline::before{left:24px}
+  .q-stem{font-size:17.5px}
+  .stat-grid{grid-template-columns:repeat(5,1fr)}
+  .toc{grid-template-columns:repeat(2,1fr)}
+  .cover h1{font-size:28px;letter-spacing:6px}
+  .stamp-mark{width:56px;height:56px;font-size:17px;top:14px;right:16px}
+  .bar-row .name{flex-basis:132px}
+  .qrow{grid-template-columns:auto auto auto 1fr auto}
+  .qrow .qs{grid-column:4;grid-row:1}
+  .qrow .qgo{grid-column:5;grid-row:1}
+}
+@media (min-width:960px){
+  .score-big{font-size:64px}
+  .sheet td,.sheet th{font-size:14px}
+}
+/* 小屏极致压缩 */
+@media (max-width:359px){
+  body{font-size:14.5px}
+  .brand .bt{font-size:13px}
+  .tab{padding:6px 9px;font-size:12.5px}
+  .q-stem{font-size:15.5px}
+  .opt{padding:10px 11px;font-size:14.5px}
+  .score-big{font-size:46px}
+  .hud-l b{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+}
+@media print{
+  .topbar,.foot,.qbar,.modal-mask,.dots,.hud{display:none !important}
+  body{background:#fff}
+  .screen{display:none}
+  .screen.active{display:block;animation:none}
+  .sheet section,.sheet .box{box-shadow:none;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="bar-in">
+    <div class="brand"><span class="seal">推</span><span class="bt">翻译推理 · 学习台</span></div>
+    <nav class="tabs" id="tabs">
+      <button class="tab on" data-view="quiz" type="button">刷题</button>
+      <button class="tab" data-view="sheet" type="button">速查表</button>
+    </nav>
+  </div>
+</header>
+
+<main id="app">
+
+<!-- ==================== 速查表 ==================== -->
+<section id="scr-sheet" class="screen">
+  <div id="sheet-in">
+    <div class="card sheet-head">
+      <h2><span class="no">目</span>速查表 · 目录</h2>
+      <div class="toc"><a href="#sheet-0"><i>0</i><span>先记一句话原理（所有翻译的根）</span></a>
+      <a href="#sheet-1"><i>1</i><span>前推后清单（充分条件 · A→B）看到就写 A→B</span></a>
+      <a href="#sheet-2"><i>2</i><span>后推前清单（必要条件 · B→A）看到就写 B→A</span></a>
+      <a href="#sheet-3"><i>3</i><span>专题：除非…否则…（否定一推一，两个都别背反）</span></a>
+      <a href="#sheet-4"><i>4</i><span>专题：且 / 或 / 要么 —— "否一推一"就在这里 高频</span></a>
+      <a href="#sheet-5"><i>5</i><span>六大推理规则（翻译完怎么推）</span></a>
+      <a href="#sheet-6"><i>6</i><span>矛盾命题表（"为假/不能推出"类题型的命门）</span></a>
+      <a href="#sheet-7"><i>7</i><span>12 个高频易错点（公考最爱反着考你）</span></a>
+      <a href="#sheet-8"><i>8</i><span>例题实战（每题都是考过的经典坑）</span></a>
+      <a href="#sheet-9"><i>9</i><span>口诀背诵版（考前 30 秒扫一眼）</span></a>
+      <a href="#sheet-10"><i>10</i><span>专题：所有 / 有的（集合命题四句话）</span></a></div>
+      <p class="hint">速查表与题库同源：题解里出现的关联词，都能在这里查到方向和例句。</p>
+    </div>
+    <div class="sheet"><section id="sheet-0">
+  <h2><span class="num">0</span>先记一句话原理（所有翻译的根）</h2>
+  <div class="box box-b">
+    <p><span class="t">一个箭头 A → B，同时表示两件事：</span></p>
+    <p>① A 是 B 的<strong>充分条件</strong> —— 有 A 就一定有 B（<span class="hl">有之必然</span>）</p>
+    <p>② B 是 A 的<strong>必要条件</strong> —— 没 B 就一定没 A（<span class="hl">无之必不然</span>）</p>
+  </div>
+  <table>
+    <tr class="hrow"><th style="width:130px">命题类型</th><th style="width:170px">含义白话</th><th>标志词代表</th><th style="width:150px">翻译方向</th></tr>
+    <tr>
+      <td data-label="命题类型"><strong>充分条件</strong></td>
+      <td data-label="含义白话">有它就够了</td>
+      <td data-label="标志词代表">如果…就…、只要…就…、凡是…都…</td>
+      <td data-label="翻译方向" class="arrow">前 → 后（A→B）</td>
+    </tr>
+    <tr>
+      <td data-label="命题类型"><strong>必要条件</strong></td>
+      <td data-label="含义白话">没有它不行</td>
+      <td data-label="标志词代表">只有…才…、除非…否则不…、不…不…、…是…的前提/基础/关键</td>
+      <td data-label="翻译方向" class="arrow">后 → 前（B→A）</td>
+    </tr>
+  </table>
+
+  <h3>判断方向的万能检测法（看到陌生关联词就这么干）</h3>
+  <div class="box box-g">
+    <p><strong>测法一：</strong>能不能改写成"<span class="k">如果 A，那么 B</span>"且不改变原意？能 → <span class="arrow">前推后 A→B</span>。</p>
+    <p><strong>测法二：</strong>能不能改写成"<span class="k">只有 A，才 B</span>"且不改变原意？能 → <span class="arrow">后推前 B→A</span>。</p>
+    <p><strong>测法三（必要条件类词的铁律）：</strong><span class="hl">谁必不可少，谁在箭头后</span>。前提、基础、关键、保障、必须、需要、离不开、必不可少、不可或缺——这些词指向的那一项，永远放在箭头<strong>后面</strong>。</p>
+  </div>
+</section>
+<section id="sheet-1">
+  <h2><span class="num">1</span>前推后清单（充分条件 · A→B）<span class="tag tag-s">看到就写 A→B</span></h2>
+  <table>
+    <tr class="hrow"><th style="width:230px">关联词形式</th><th>例句</th><th style="width:230px">翻译</th></tr>
+    <tr><td data-label="关联词形式" class="k">如果 A，就 / 那么 / 则 B</td><td data-label="例句">如果下雨，地面就湿</td><td data-label="翻译" class="arrow">下雨 → 地湿</td></tr>
+    <tr><td data-label="关联词形式" class="k">若 / 倘若 / 假如 / 假使 / 一旦 A，则 / 便 B</td><td data-label="例句">一旦迟到，就扣钱</td><td data-label="翻译" class="arrow">迟到 → 扣钱</td></tr>
+    <tr><td data-label="关联词形式" class="k">只要 A，就 B <span class="tag tag-w">易混</span></td><td data-label="例句">只要努力，就能上岸</td><td data-label="翻译" class="arrow">努力 → 上岸</td></tr>
+    <tr><td data-label="关联词形式" class="k">一 A，就 B（一…便…）</td><td data-label="例句">一喝酒就脸红</td><td data-label="翻译" class="arrow">喝酒 → 脸红</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 就 / 则 / 都 / 均 / 会 / 一定 / 必然 B（关联词可省略）</td><td data-label="例句">上岸了就听过课</td><td data-label="翻译" class="arrow">上岸 → 听课</td></tr>
+    <tr><td data-label="关联词形式" class="k">所有 A 都 B ／ 凡是 A 都 B ／ 全部 A 都 B ／ 每一个 A 都 B</td><td data-label="例句">凡是中国人都会写汉字</td><td data-label="翻译" class="arrow">中国人 → 会写汉字</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 是 B 的充分条件</td><td data-label="例句">下雨是地湿的充分条件</td><td data-label="翻译" class="arrow">下雨 → 地湿</td></tr>
+    <tr><td data-label="关联词形式" class="k">要想 A，先得 B ／ 要 A，就得 B</td><td data-label="例句">要想上岸，先得把基础打牢</td><td data-label="翻译" class="arrow">上岸 → 打牢基础</td></tr>
+    <tr><td data-label="关联词形式" class="k">凡是 A 一律 / 均 B</td><td data-label="例句">凡是不符合标准的一律退回</td><td data-label="翻译" class="arrow">不符合标准 → 退回</td></tr>
+    <tr><td data-label="关联词形式" class="k">一旦 A，便 B</td><td data-label="例句">一旦签约，便不得反悔</td><td data-label="翻译" class="arrow">签约 → 不得反悔</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 就是 / 即 B（等同关系）</td><td data-label="例句">重复劳动就是浪费资源</td><td data-label="翻译" class="arrow">重复劳动 → 浪费资源</td></tr>
+    <tr><td data-label="关联词形式" class="k">为了 / 要想 A，必须 / 一定要 B</td><td data-label="例句">要想上岸，就必须听课</td><td data-label="翻译" class="arrow">上岸 → 听课</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 必须 / 需要 / 离不开 / 依赖于 / 少不了 B</td><td data-label="例句">上岸离不开听课</td><td data-label="翻译" class="arrow">上岸 → 听课</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 意味着 / 说明 / 表明 / 即 B</td><td data-label="例句">付出意味着成长</td><td data-label="翻译" class="arrow">付出 → 成长</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 当且仅当 B（充要条件）</td><td data-label="例句">A 当且仅当 B</td><td data-label="翻译" class="arrow">A→B 且 B→A</td></tr>
+  </table>
+  <div class="box box-o">
+    <p><span class="t">⚠ 关于"必须、离不开、需要"的定位</span></p>
+    <p>它们本身是<strong>必要条件的提示词</strong>，所以规律只有一条：<span class="hl">它管着谁，谁就被推出（放箭头后）</span>。</p>
+    <p>「<code>上岸离不开听课</code>」→ 听课是必要的，被推出 → <span class="arrow">上岸→听课</span>（这句是前推后）</p>
+    <p>「<code>必须听课才能上岸</code>」→ 听课是必要的，被推出 → <span class="arrow">上岸→听课</span>（这句是后推前）</p>
+    <p>两句话写法不同，箭头<strong>完全一样</strong>——方向不由句式决定，由"谁是必要条件"决定。</p>
+  </div>
+</section>
+<section id="sheet-2">
+  <h2><span class="num">2</span>后推前清单（必要条件 · B→A）<span class="tag tag-n">看到就写 B→A</span></h2>
+  <p style="margin-top:0;font-size:13.5px;color:#64748b">下表统一用最标准的模样写：<strong>「只有 A，才 B」≡ B→A</strong>。以下所有词，全部等价于「只有 A 才 B」。</p>
+  <table>
+    <tr class="hrow"><th style="width:250px">关联词形式</th><th>例句</th><th style="width:200px">翻译</th></tr>
+    <tr><td data-label="关联词形式" class="k">只有 A，才 B</td><td data-label="例句">只有满 18 岁，才能考驾照</td><td data-label="翻译" class="arrow">考驾照 → 满 18 岁</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 才 B（省略"只有"）</td><td data-label="例句">努力才能成功</td><td data-label="翻译" class="arrow">成功 → 努力</td></tr>
+    <tr><td data-label="关联词形式" class="k">除非 A，否则不 B <span class="tag tag-w">易混</span></td><td data-label="例句">除非努力，否则不能成功</td><td data-label="翻译" class="arrow">成功 → 努力</td></tr>
+    <tr><td data-label="关联词形式" class="k">除非 A，才 B</td><td data-label="例句">除非努力才能成功</td><td data-label="翻译" class="arrow">成功 → 努力</td></tr>
+    <tr><td data-label="关联词形式" class="k">不 A，不 B ／ 非 A 不 B</td><td data-label="例句">不入虎穴，焉得虎子</td><td data-label="翻译" class="arrow">得虎子 → 入虎穴</td></tr>
+    <tr><td data-label="关联词形式" class="k">没有 A，就没有 B ／ 无 A 则无 B</td><td data-label="例句">没有付出就没有收获</td><td data-label="翻译" class="arrow">收获 → 付出</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 是 B 的必要条件 / 必要前提 / 前提 / 基础 / 关键 / 保障 / 先决条件 / 必由之路 / 必备条件</td><td data-label="例句">努力是成功的前提</td><td data-label="翻译" class="arrow">成功 → 努力</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 是 B 必不可少的 / 不可或缺的 / 离不开的</td><td data-label="例句">诚信是经营不可或缺的</td><td data-label="翻译" class="arrow">经营 → 诚信</td></tr>
+    <tr><td data-label="关联词形式" class="k">B 以 A 为…／B 有赖于 A ／B 取决于 A</td><td data-label="例句">发展有赖于稳定</td><td data-label="翻译" class="arrow">发展 → 稳定</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 是 B 的唯一途径 / 唯一办法 <span class="tag tag-w">谨慎</span></td><td data-label="例句">读书是改变命运的唯一途径</td><td data-label="翻译" class="arrow">改变命运 → 读书</td></tr>
+    <tr><td data-label="关联词形式" class="k">未经 A，不得 / 不能 B</td><td data-label="例句">未经许可，不得入内</td><td data-label="翻译" class="arrow">入内 → 经许可</td></tr>
+    <tr><td data-label="关联词形式" class="k">A 是 B 的保障 / 依托 / 支柱</td><td data-label="例句">能源安全是发展的保障</td><td data-label="翻译" class="arrow">发展 → 能源安全</td></tr>
+    <tr><td data-label="关联词形式" class="k">没有 A，谈何 / 何来 B</td><td data-label="例句">没有积累，谈何创新</td><td data-label="翻译" class="arrow">创新 → 积累</td></tr>
+    <tr><td data-label="关联词形式" class="k">B 以 A 为条件 / 前提</td><td data-label="例句">合作以诚信为前提</td><td data-label="翻译" class="arrow">合作 → 诚信</td></tr>
+  </table>
+  <div class="box box-r">
+    <p><span class="t">⚠ 头号考点：必要条件的位置陷阱（"是"字前后谁是大爷）</span></p>
+    <p><span class="ok">A 是 B 的前提／必要条件</span> → 前提是 A，A 被推出 → <span class="arrow">B → A</span></p>
+    <p><span class="no">A 的前提／必要条件是 B</span> → 前提是 B，B 被推出 → <span class="arrow">A → B</span></p>
+    <p>两句只差一个"的"字，箭头<strong>正好相反</strong>，这是历年真题最爱设的坑。</p>
+  </div>
+</section>
+<section id="sheet-3">
+  <h2><span class="num">3</span>专题：除非…否则…（否定一推一，两个都别背反）</h2>
+  <p style="margin-top:0">处理方法只有一句：<span class="hl">除非、否则 都是"否定词"，把其中一项打上"非"，推出另一项。</span></p>
+  <table>
+    <tr class="hrow"><th style="width:280px">题干形式</th><th style="width:330px">翻译（两种等价写法）</th><th>说明</th></tr>
+    <tr>
+      <td data-label="题干形式" class="k">除非 A，否则不 B</td>
+      <td data-label="翻译（两种等价写法）" class="arrow">¬A → ¬B<br>B → A</td>
+      <td data-label="说明">最常考，等价于「只有 A 才 B」</td>
+    </tr>
+    <tr>
+      <td data-label="题干形式" class="k">除非 A，否则 B</td>
+      <td data-label="翻译（两种等价写法）" class="arrow">¬A → B<br>¬B → A</td>
+      <td data-label="说明">后面没有"不"，别自己加否定</td>
+    </tr>
+    <tr>
+      <td data-label="题干形式" class="k">A，否则 B（省略"除非"）</td>
+      <td data-label="翻译（两种等价写法）" class="arrow">¬A → B<br>¬B → A</td>
+      <td data-label="说明">同上一行</td>
+    </tr>
+    <tr>
+      <td data-label="题干形式" class="k">必须 A，否则 B</td>
+      <td data-label="翻译（两种等价写法）" class="arrow">¬A → B<br>¬B → A</td>
+      <td data-label="说明">"必须 A"＝"除非 A"</td>
+    </tr>
+    <tr>
+      <td data-label="题干形式" class="k">…，除非 A（后置式）</td>
+      <td data-label="翻译（两种等价写法）" class="arrow">¬后件 → A</td>
+      <td data-label="说明">把"除非"从句尾搬到句首即可</td>
+    </tr>
+  </table>
+  <div class="box box-o">
+    <p><span class="t">背诵技巧</span></p>
+    <p>「除非 A 否则不 B」就是穿了马甲的「只有 A 才 B」！看到它就翻译成 <span class="arrow">B→A</span>，与"只有才"共用同一套推理规则。</p>
+    <p>一旦原句里出现双重否定（如"除非 A，否则不<span class="neg">不</span>B"＝"除非 A 否则 B"），先<strong>消掉双否</strong>再翻译，别硬算。</p>
+  </div>
+</section>
+<section id="sheet-4">
+  <h2><span class="num">4</span>专题：且 / 或 / 要么 —— "否一推一"就在这里 <span class="tag tag-s">高频</span></h2>
+
+  <h3>① 联言命题「A 且 B」</h3>
+  <p style="margin-top:0;font-size:14px">标志词：A 和 B ／ 既 A 又 B ／ 不但 A 而且 B ／ 虽然 A 但是 B ／ 不仅 A 还 B ／ A 也 B ／ 同时 ／ 并且 ／ 而且</p>
+  <table>
+    <tr class="hrow"><th style="width:180px">规则</th><th>内容</th></tr>
+    <tr><td data-label="规则"><strong>真假</strong></td><td data-label="内容">全真才真，<strong>一假即假</strong></td></tr>
+    <tr><td data-label="规则"><strong>推理</strong></td><td data-label="内容">整体为真 → 可推出其中<strong>任意一项</strong>为真（<code>A且B → A</code>，<code>A且B → B</code>）</td></tr>
+    <tr><td data-label="规则"><strong>反向</strong></td><td data-label="内容">知道其中一项为<strong>假</strong> → 整体为假；但知道一项为真 ≠ 整体为真</td></tr>
+  </table>
+
+  <h3>② 相容选言命题「A 或 B」← 你要的"否一推一"</h3>
+  <p style="margin-top:0;font-size:14px">标志词：A 或 B ／ 或者 A 或者 B ／ A 和 B <strong>至少有一个</strong> ／ 可能 A 也可能 B</p>
+  <table>
+    <tr class="hrow"><th style="width:180px">规则</th><th>内容</th></tr>
+    <tr><td data-label="规则"><strong>含义</strong></td><td data-label="内容">两者<strong>至少一个</strong>为真（可以两个都真）</td></tr>
+    <tr><td data-label="规则"><strong>真假</strong></td><td data-label="内容">一真即真，<strong>全假才假</strong></td></tr>
+    <tr><td data-label="规则"><strong>否一推一</strong></td><td data-label="内容"><span class="arrow">¬A → B</span>　<span class="arrow">¬B → A</span>　（否定掉一项，另一项必然成立）</td></tr>
+    <tr><td data-label="规则"><strong>★不能肯一推一</strong></td><td data-label="内容">已知 A 为真，<strong>推不出</strong> B 是真是假（这是选项里最常见的陷阱）</td></tr>
+  </table>
+  <div class="box box-g">
+    <p><span class="t">典型用法</span></p>
+    <p>「甲或乙进入决赛」为真 ＋ 已知「甲<strong>没有</strong>进入决赛」→ <span class="ok">乙进入决赛</span>（否一推一）</p>
+    <p>「甲或乙进入决赛」为真 ＋ 已知「甲进入决赛」→ <span class="no">乙的情况无法确定</span>（肯一推不出）</p>
+  </div>
+
+  <div class="box box-o">
+    <p><span class="t">⚠ 一对极易颠倒的选言：「至少有一个」vs「至多有一个」</span></p>
+    <p>「A、B <strong>至少</strong>有一个」＝ <span class="arrow">A 或 B</span>：允许都成立，<strong>不允许</strong>都不成立。</p>
+    <p>「A、B <strong>至多</strong>有一个」＝ <span class="arrow">¬A 或 ¬B</span>（即"至少有一个不成立"）：允许都不成立，<strong>不允许</strong>都成立。</p>
+    <p>「恰好有一个」＝ <span class="arrow">要么 A 要么 B</span>：既不许都不成立，也不许都成立。</p>
+    <p>记法：<span class="hl">「至少」管下限，「至多」管上限；把「至多有一个」翻成「至少有一个不」，就永远不会错。</span></p>
+  </div>
+
+  <h3>③ 不相容选言命题「要么 A，要么 B」</h3>
+  <p style="margin-top:0;font-size:14px">标志词：要么…要么… ／ 不是 A 就是 B ／ 二者<strong>只能有一个</strong>成立 ／ 二者必居其一</p>
+  <table>
+    <tr class="hrow"><th style="width:180px">规则</th><th>内容</th></tr>
+    <tr><td data-label="规则"><strong>真假</strong></td><td data-label="内容"><strong>一真一假</strong>时才为真；<strong>同真或同假</strong>都为假</td></tr>
+    <tr><td data-label="规则"><strong>推理（四条全对）</strong></td><td data-label="内容"><span class="arrow">A → ¬B</span>　<span class="arrow">B → ¬A</span>　<span class="arrow">¬A → B</span>　<span class="arrow">¬B → A</span></td></tr>
+    <tr><td data-label="规则"><strong>常见句式</strong></td><td data-label="内容">不是 A 就是 B ／ A 和 B 只能去一个 ／ 二者必居其一 ／ 二者只能有一个</td></tr>
+  </table>
+  <div class="box box-r">
+    <p><span class="t">⚠ 一定要分清</span></p>
+    <p>「要么 A 要么 B」能<strong>肯一推否一</strong>；「A 或 B」<strong>不能</strong>肯一推否一。选项中把两者混用，是官方设置的送命题。</p>
+  </div>
+</section>
+<section id="sheet-5">
+  <h2><span class="num">5</span>六大推理规则（翻译完怎么推）</h2>
+  <table>
+    <tr class="hrow"><th style="width:170px">规则</th><th>公式</th><th>口诀 / 用法</th></tr>
+    <tr>
+      <td data-label="规则"><strong>① 逆否等价</strong></td>
+      <td data-label="公式"><code>A→B ≡ ¬B→¬A</code></td>
+      <td data-label="口诀 / 用法"><span class="hl">肯前必肯后，否后必否前；否前、肯后无必然结论</span>（做题时可直接把"否前"和"肯后"的选项划掉）</td>
+    </tr>
+    <tr>
+      <td data-label="规则"><strong>② 递推（串珠）</strong></td>
+      <td data-label="公式"><code>A→B，B→C ⟹ A→C</code></td>
+      <td data-label="口诀 / 用法">多个条件串成一条链；中间项不一致时，先用逆否把某句<strong>翻个面</strong>再对齐</td>
+    </tr>
+    <tr>
+      <td data-label="规则"><strong>③ 假言变选言</strong></td>
+      <td data-label="公式"><code>A→B ≡ ¬A 或 B</code></td>
+      <td data-label="口诀 / 用法">口诀"<strong>箭头变或者，前加非</strong>"；两个方向互转，等价题常用</td>
+    </tr>
+    <tr>
+      <td data-label="规则"><strong>④ 德摩根定律</strong></td>
+      <td data-label="公式"><code>¬(A且B) ≡ ¬A 或 ¬B</code><br><code>¬(A或B) ≡ ¬A 且 ¬B</code></td>
+      <td data-label="口诀 / 用法">口诀"<strong>且或互换，逐项加非</strong>"（"并非…都…"也要变"有的…不…"）</td>
+    </tr>
+    <tr>
+      <td data-label="规则"><strong>⑤ 或关系否一推一</strong></td>
+      <td data-label="公式"><code>A 或 B，¬A ⟹ B</code></td>
+      <td data-label="口诀 / 用法">逐个"划掉"：已知一个不成立，另一个必成立</td>
+    </tr>
+    <tr>
+      <td data-label="规则"><strong>⑥ 二难推理（归谬）</strong></td>
+      <td data-label="公式"><code>A→C 且 ¬A→C ⟹ C 必真</code><br><code>A→B 且 A→¬B ⟹ ¬A</code></td>
+      <td data-label="口诀 / 用法">两条路都通向同一结论 → 结论必然成立；一个假设推出自相矛盾 → 假设为假</td>
+    </tr>
+  </table>
+</section>
+<section id="sheet-6">
+  <h2><span class="num">6</span>矛盾命题表（"为假/不能推出"类题型的命门）</h2>
+  <table>
+    <tr class="hrow"><th style="width:250px">原命题</th><th style="width:280px">矛盾命题（非它）</th><th>备注</th></tr>
+    <tr><td data-label="原命题"><code>A → B</code>（如果 A 那么 B）</td><td data-label="矛盾命题（非它）" class="arrow">A 且 ¬B</td><td data-label="备注"><strong>最高频</strong>！"如果就"为假 ≠ "如果就"反过来</td></tr>
+    <tr><td data-label="原命题"><code>A 且 B</code></td><td data-label="矛盾命题（非它）" class="arrow">¬A 或 ¬B</td><td data-label="备注">德摩根</td></tr>
+    <tr><td data-label="原命题"><code>A 或 B</code></td><td data-label="矛盾命题（非它）" class="arrow">¬A 且 ¬B</td><td data-label="备注">"或"的矛盾是"都假"</td></tr>
+    <tr><td data-label="原命题">要么 A 要么 B</td><td data-label="矛盾命题（非它）" class="arrow">(A 且 B) 或 (¬A 且 ¬B)</td><td data-label="备注">同真、同假都算假</td></tr>
+    <tr><td data-label="原命题">只有 A 才 B（<code>B→A</code>）</td><td data-label="矛盾命题（非它）" class="arrow">B 且 ¬A</td><td data-label="备注">即"没 A 也 B 了"</td></tr>
+    <tr><td data-label="原命题">所有 A 都是 B</td><td data-label="矛盾命题（非它）" class="arrow">有的 A 不是 B</td><td data-label="备注">全称 ↔ 特称，"是/不是"对调</td></tr>
+    <tr><td data-label="原命题">必然 A</td><td data-label="矛盾命题（非它）" class="arrow">可能 ¬A</td><td data-label="备注">模态词互换</td></tr>
+  </table>
+</section>
+<section id="sheet-7">
+  <h2><span class="num">7</span>12 个高频易错点（公考最爱反着考你）</h2>
+  <table>
+    <tr class="hrow"><th style="width:36px">#</th><th style="width:230px">坑点</th><th>正解与提醒</th></tr>
+    <tr><td data-label="#">1</td><td data-label="坑点" class="k">只要…就… ⇄ 只有…才…</td><td data-label="正解与提醒">只要就＝充分，<span class="arrow">前推后</span>；只有才＝必要，<span class="arrow">后推前</span>。一句话记：<span class="hl">"只要"很便宜（有它就行），"只有"很金贵（没它不行）</span>。</td></tr>
+    <tr><td data-label="#">2</td><td data-label="坑点" class="k">"A 是 B 的必要条件" ⇄ "A 的必要条件是 B"</td><td data-label="正解与提醒">方向相反。用"谁必不可少，谁在箭头后"秒判。</td></tr>
+    <tr><td data-label="#">3</td><td data-label="坑点" class="k">除非…否则不 / 除非…否则</td><td data-label="正解与提醒">有无那个"不"字，箭头方向不同：有"不"→<span class="arrow">B→A</span>；无"不"→<span class="arrow">¬B→A</span>。写之前先把"不"字圈出来。</td></tr>
+    <tr><td data-label="#">4</td><td data-label="坑点" class="k">必要条件句套用充分条件的推理规则</td><td data-label="正解与提醒">翻译成 B→A 之后，仍然用"肯前必肯后、否后必否前"，即原句是<strong>肯后必肯前、否前必否后</strong>；原句<strong>肯前、否后</strong>都无必然结论。别凭语感。</td></tr>
+    <tr><td data-label="#">5</td><td data-label="坑点" class="k">把"否前"或"肯后"当成能推出</td><td data-label="正解与提醒">例：如果下雨就地湿；现在没下雨 → 地湿不湿<strong>不知道</strong>（可能洒水）。这是选项第一大陷阱。</td></tr>
+    <tr><td data-label="#">6</td><td data-label="坑点" class="k">否定假言命题写错</td><td data-label="正解与提醒">¬(A→B) ＝ <span class="arrow">A 且 ¬B</span>，<strong>不是</strong> A→¬B。少数"如果…那么…不成立"的题必考此点。</td></tr>
+    <tr><td data-label="#">7</td><td data-label="坑点" class="k">德摩根"且/或"写反</td><td data-label="正解与提醒">"并非既要 A 又要 B"＝<span class="arrow">¬A 或 ¬B</span>；"并非 A 或 B"＝<span class="arrow">¬A 且 ¬B</span>。</td></tr>
+    <tr><td data-label="#">8</td><td data-label="坑点" class="k">"或"的肯一推一</td><td data-label="正解与提醒">已知 A 或 B 为真、A 也为真 → <strong>B 无法确定</strong>，不能反推 ¬B（除非题面是"要么"）。</td></tr>
+    <tr><td data-label="#">9</td><td data-label="坑点" class="k">因果当条件用</td><td data-label="正解与提醒">"因为 A 所以 B"只是因果关系，<strong>不能逆否</strong>（¬B 推不出 ¬A，B 可能另有原因）；"越…越…"是共变关系，也不是推出关系；"即使 A 也 B"是让步句，只说明 B 不受 A 影响，不是条件句。判断不了的句子，先试着套"如果…那么…/只有…才…"，套不上就别翻。</td></tr>
+    <tr><td data-label="#">10</td><td data-label="坑点" class="k">"有的"与"所有"互推</td><td data-label="正解与提醒">"有的 A 是 B"推不出"所有 A 是 B"，也推不出"有的 A 不是 B"；只有"所有 A 是 B"才可反向对应"有的 B 是 A"。</td></tr>
+    <tr><td data-label="#">11</td><td data-label="坑点" class="k">递推时中间项对不上</td><td data-label="正解与提醒">如 ①A→B ②¬B→C ③C→D：先把①逆否成 ¬B→¬A，才能和②串成 ¬C→B→A 或用 ¬B 作桥。中间项必须<strong>字面完全一致</strong>（含否定符号）。</td></tr>
+    <tr><td data-label="#">12</td><td data-label="坑点" class="k">"必须 / 需要 / 离不开"的位置误判</td><td data-label="正解与提醒">看见这些词就找<strong>被它修饰的结果</strong>：结果在前，条件在后 → 结果 → 条件。永远不要按词序硬翻。</td></tr>
+  </table>
+</section>
+<section id="sheet-8">
+  <h2><span class="num">8</span>例题实战（每题都是考过的经典坑）</h2>
+
+  <div class="ex">
+    <p class="q">例1（只要 / 只有 辨析）</p>
+    <p>句①：只要努力，就能上岸。　句②：只有努力，才能上岸。</p>
+    <p>已知小明<strong>没有努力</strong>，分别能推出什么？</p>
+    <p class="a">①翻译：努力→上岸。"没努力"是否前 → <span class="no">无必然结论</span>。</p>
+    <p class="a">②翻译：上岸→努力。"没努力"是否后 → <span class="ok">必然推出"没上岸"</span>。</p>
+  </div>
+
+  <div class="ex">
+    <p class="q">例2（必要条件位置陷阱）</p>
+    <p>甲：大力宣传法制是推进依法治国的前提。　乙：推进依法治国的必要条件是大力宣传法制。　丙：大力宣传法制的前提是推进依法治国。</p>
+    <p class="a">甲：前提是宣传 → <span class="arrow">依法治国 → 宣传法制</span></p>
+    <p class="a">乙：必要条件是宣传 → <span class="arrow">依法治国 → 宣传法制</span></p>
+    <p class="a">丙：前提是依法治国 → <span class="arrow">宣传法制 → 依法治国</span>（因为"的"的位置变了，方向反转）</p>
+  </div>
+
+  <div class="ex">
+    <p class="q">例3（除非…否则）</p>
+    <p>老王："除非你在今天之内按合同要求支付货款，否则我们法庭上见。"<br>下列哪项含义与之<strong>不同</strong>？</p>
+    <p class="a">A. 只有你今天支付货款，老王才不会告你。</p>
+    <p class="a">B. 如果你今天支付货款，那么老王不会告你。</p>
+    <p class="a">C. 如果你今天不支付货款，那么老王就会告你。</p>
+    <p class="a">题干＝"除非 A 否则 B" → <span class="arrow">¬支付 → 法庭见</span>（亦 <span class="arrow">¬法庭见 → 支付</span>）。</p>
+    <p class="a">A：只有才 → ¬法庭见→支付 ✔ 一致。　C：¬支付→法庭见 ✔ 一致。</p>
+    <p class="a">B：支付→¬法庭见，是<strong>否前推否后</strong> → <span class="no">推不出</span>，答案选 B。</p>
+  </div>
+
+  <div class="ex">
+    <p class="q">例4（否定假言命题）</p>
+    <p>"如果下雨，那么地湿"这句话<strong>为假</strong>，说明了什么？</p>
+    <p class="a">¬(A→B) ＝ A 且 ¬B → <span class="ok">下雨 且 地没湿</span>。</p>
+    <p class="a">选项若写"如果下雨则地不湿""地湿说明没下雨"，<span class="no">都是错的</span>。</p>
+  </div>
+
+  <div class="ex">
+    <p class="q">例5（否一推一 / 肯一推不出）</p>
+    <p>已知"甲或乙进入决赛"为真。</p>
+    <p class="a">（1）若又知甲<strong>没</strong>进 → 否一推一 → <span class="ok">乙进</span>。</p>
+    <p class="a">（2）若又知甲进 → <span class="no">乙不确定</span>（可能都进了）。</p>
+    <p class="a">（3）若题干换成"要么甲进，要么乙进" → 甲进 <span class="ok">必然推出乙不进</span>。</p>
+  </div>
+
+  <div class="ex">
+    <p class="q">例6（德摩根 + 递推）</p>
+    <p>①只有通过笔试，才能进入面试。②如果通过笔试，就必须参加体检。</p>
+    <p class="a">①：进面试 → 通过笔试　②：通过笔试 → 体检</p>
+    <p class="a">串联：<span class="arrow">进面试 → 通过笔试 → 体检</span>；逆否：<span class="arrow">¬体检 → ¬通过笔试 → ¬进面试</span></p>
+    <p class="a">若某选项说"通过笔试就一定进面试" → <span class="no">肯前推肯后，排除</span>。</p>
+  </div>
+
+  <div class="ex">
+    <p class="q">例7（二难推理 / 归谬）</p>
+    <p>①如果小张去，那么小李去。②如果小张不去，那么小李也去。</p>
+    <p class="a">A→C 且 ¬A→C ⟹ <span class="ok">C 必然成立：无论小张去不去，小李都去</span>。</p>
+  </div>
+
+  <div class="ex">
+    <p class="q">例8（所有 / 有的）</p>
+    <p>"并非所有公务员都通过了考试。"</p>
+    <p class="a">＝ <span class="ok">有的公务员没有通过考试</span>（不是"所有公务员都没通过"）。</p>
+  </div>
+
+  <div class="ex">
+    <p class="q">例9（假言变选言）</p>
+    <p>"如果下雨，比赛就取消"还可以等价地写成什么？</p>
+    <p class="a">A→B ≡ ¬A或B → <span class="ok">不下雨，或者比赛取消</span>（两者至少成立一个）。</p>
+    <p class="a"><span class="no">错法</span>：写成"下雨或者比赛取消"——把前件的"非"忘了加。</p>
+  </div>
+
+  <div class="ex">
+    <p class="q">例10（至少 / 至多）</p>
+    <p>"甲、乙至多有一人获得名额"意味着什么？</p>
+    <p class="a">＝"甲、乙至少有一人没拿到"＝ <span class="arrow">¬甲 或 ¬乙</span>：允许两人都没有，<span class="no">不允许两人都有</span>。</p>
+    <p class="a">对比："至少有一人获得"＝甲或乙：允许两人都有，不允许都没有。<span class="hl">两个字之差，方向完全相反。</span></p>
+  </div>
+</section>
+<section id="sheet-9">
+  <h2><span class="num">9</span>口诀背诵版（考前 30 秒扫一眼）</h2>
+  <div class="box box-b">
+    <p>❶ 如果就，前推后；只要就，也是前推后。</p>
+    <p>❷ 只有才，后推前；不…不…、除非…否则不、没有…就没有，统统后推前。</p>
+    <p>❸ 谁必不可少，谁在箭头后（前提、基础、关键、必须、离不开）。</p>
+    <p>❹ 除非否则，否一推一；有"不"翻成只有才。</p>
+    <p>❺ 或关系，否一推一；且关系，一假即假。</p>
+    <p>❻ 肯前必肯后，否后必否前；否前肯后，一律没结论。</p>
+    <p>❼ 箭头变或者，前面加个非（A→B ＝ ¬A或B）。</p>
+    <p>❽ 且或互换，逐项加非（德摩根）。</p>
+    <p>❾ 如果就为假 ＝ 前真后假。</p>
+    <p>❿ 因果、越…越，不是条件，别乱翻。</p>
+  </div>
+  <div class="box box-g">
+    <p><span class="t">解题四步走</span></p>
+    <p>①看提问：出现"可以推出 / 不能推出 / 由此能推出"＋题干有逻辑关联词 → 判定为翻译推理。</p>
+    <p>②逐句翻译：充分写 A→B，必要写 B→A，"且/或/要么"单独标出。</p>
+    <p>③串珠：把有共同项的句子连成链，中间项对不上先用逆否翻面。</p>
+    <p>④验选项：肯前 ✔ 否后 ✔；否前 ✘ 肯后 ✘；再看"且或"和"所有有的"有没有被偷换。</p>
+  </div>
+</section>
+<section id="sheet-10">
+  <h2><span class="num">10</span>专题：所有 / 有的（集合命题四句话）<span class="tag tag-s">高频</span></h2>
+  <p style="margin-top:0">题干里出现「所有、凡是、任何、每一个、有的、有些」时，先把它们翻成箭头的模样，再照常推理。</p>
+  <table>
+    <tr class="hrow"><th style="width:200px">句式</th><th>含义与翻译</th><th style="width:190px">矛盾命题（非它）</th></tr>
+    <tr><td data-label="句式" class="k">所有 A 都是 B</td><td data-label="含义与翻译">全部 A 都在 B 里 → <span class="arrow">A→B</span></td><td data-label="矛盾命题（非它）" class="arrow">有的 A 不是 B</td></tr>
+    <tr><td data-label="句式" class="k">所有 A 都不是 B</td><td data-label="含义与翻译">A 与 B 全无交集 → <span class="arrow">A→¬B</span></td><td data-label="矛盾命题（非它）" class="arrow">有的 A 是 B</td></tr>
+    <tr><td data-label="句式" class="k">有的 A 是 B</td><td data-label="含义与翻译">至少一个 A 同时是 B（不排除全部）</td><td data-label="矛盾命题（非它）" class="arrow">所有 A 都不是 B</td></tr>
+    <tr><td data-label="句式" class="k">有的 A 不是 B</td><td data-label="含义与翻译">至少一个 A 不在 B 里</td><td data-label="矛盾命题（非它）" class="arrow">所有 A 都是 B</td></tr>
+  </table>
+
+  <h3>换位规则（该换的才能换，选项最爱在这里挖坑）</h3>
+  <table>
+    <tr class="hrow"><th style="width:220px">原命题</th><th>可以换位成</th><th style="width:170px">说明</th></tr>
+    <tr><td data-label="原命题" class="k">所有 A 都是 B</td><td data-label="可以换位成" class="arrow">有的 B 是 A</td><td data-label="说明">只能换成「有的」</td></tr>
+    <tr><td data-label="原命题" class="k">所有 A 都不是 B</td><td data-label="可以换位成" class="arrow">所有 B 都不是 A</td><td data-label="说明">全称否定可自由换位</td></tr>
+    <tr><td data-label="原命题" class="k">有的 A 是 B</td><td data-label="可以换位成" class="arrow">有的 B 是 A</td><td data-label="说明">特称肯定可自由换位</td></tr>
+    <tr><td data-label="原命题" class="k">有的 A 不是 B</td><td data-label="可以换位成" class="arrow">不能换位</td><td data-label="说明">推不出「有的 B 不是 A」</td></tr>
+  </table>
+
+  <div class="box box-r">
+    <p><span class="t">⚠ 三条红线</span></p>
+    <p>① 「有的 A 是 B」<strong>推不出</strong>「有的 A 不是 B」，也推不出「所有 A 是 B」；反向同样不行。</p>
+    <p>② 「所有 A 都 B」<strong>不能</strong>倒写成「所有 B 都 A」，只成立「有的 B 是 A」。</p>
+    <p>③ 否定要"点到为止"：否定「所有」得到「有的…不…」；否定「有的」得到「所有…都不…」。</p>
+  </div>
+  <div class="box box-g">
+    <p><span class="t">与条件句联动</span></p>
+    <p>「所有 A 都 B」就是 <code>A→B</code>，「所有 A 都不是 B」就是 <code>A→¬B</code>：逆否、递推照用不误。</p>
+    <p>例：「所有参加者都提交了材料」＋「小周没有提交材料」→ <span class="ok">小周没有参加</span>（否后必否前）。</p>
+    <p>例：「并非有的动物不会游泳」＝ <span class="ok">所有动物都会游泳</span>（特称否定的矛盾是全称肯定）。</p>
+  </div>
+</section></div>
+    <div class="foot">勤 能 补 拙 · 熟 能 生 巧</div>
+  </div>
+</section>
+
+<!-- ==================== 刷题：设置 ==================== -->
+<section id="scr-start" class="screen active">
+  <div class="cover">
+    <h1>翻译推理 · 学习台</h1>
+    <p class="sub">前推后 · 后推前 · 除非否则 · 否一推一 · 逆否与德摩根<br><span id="bank-count">202</span> 道题 · 16 个考点 · 限时判分 · 错题回顾 · 手机随时练</p>
+    <span class="stamp">推</span>
+  </div>
+
+  <div class="card hairline">
+    <div class="set-group">
+      <h2><span class="no">壹</span>选择题型</h2>
+      <div class="chips" id="type-chips"></div>
+    </div>
+
+    <div class="set-group">
+      <h2><span class="no">贰</span>选择考点 <span class="kv">（默认全选）</span></h2>
+      <div class="chips" id="cat-chips"></div>
+      <div class="btn-row" style="margin-top:9px">
+        <button class="btn ghost small" id="btn-cat-all" type="button">全选考点</button>
+        <button class="btn ghost small" id="btn-cat-none" type="button">清空考点</button>
+      </div>
+    </div>
+
+    <div class="set-group">
+      <h2><span class="no">叁</span>作答数量</h2>
+      <div class="chips" id="count-chips">
+        <button class="chip" data-v="10" type="button">10 题</button>
+        <button class="chip on" data-v="20" type="button">20 题</button>
+        <button class="chip" data-v="30" type="button">30 题</button>
+        <button class="chip" data-v="50" type="button">50 题</button>
+        <button class="chip" data-v="100" type="button">100 题</button>
+        <button class="chip" data-v="all" type="button">全部做完</button>
+      </div>
+    </div>
+
+    <div class="set-group">
+      <h2><span class="no">肆</span>每题限时</h2>
+      <div class="chips" id="limit-chips">
+        <button class="chip" data-v="60" type="button">60 秒</button>
+        <button class="chip on" data-v="90" type="button">90 秒</button>
+        <button class="chip" data-v="0" type="button">不限时</button>
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:22px">
+      <button class="btn block" id="btn-start" type="button">开始答题 →</button>
+    </div>
+    <p class="hint" id="pool-hint"></p>
+    <p class="hint kbd-only">键盘：<kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> 作答，<kbd>回车</kbd> 下一题。</p>
+    <p class="hint">答完一题立刻判分并展开解析；交卷后按考点统计正确率，点任意题目即可回到作答区逐题回顾。</p>
+  </div>
+  <div class="foot">勤 能 补 拙 · 熟 能 生 巧</div>
+</section>
+
+<!-- ==================== 刷题：作答 / 回顾 ==================== -->
+<section id="scr-run" class="screen">
+  <div class="hud">
+    <div class="hud-l">
+      <span id="hud-pos">第 <b id="q-now">1</b> / <span id="q-total">10</span> 题</span>
+      <span class="pill" id="q-tag">句子→翻译</span>
+      <span class="pill rev" id="hud-review" hidden>回顾模式</span>
+      <span class="pill range" id="hud-range" hidden></span>
+    </div>
+    <div class="hud-r" id="hud-run">
+      <span class="timer-all" id="timer-all">总用时 00:00</span>
+      <div class="ring" id="ring">
+        <svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true">
+          <circle class="bg" cx="21" cy="21" r="17.5"></circle>
+          <circle class="fg" id="ring-fg" cx="21" cy="21" r="17.5"></circle>
+        </svg>
+        <span class="num" id="ring-num">90</span>
+      </div>
+      <button class="btn ghost small" id="btn-submit" type="button">交卷</button>
+    </div>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+  <article class="card question">
+    <div class="stamp-mark hide" id="stamp"></div>
+    <div class="q-cat" id="q-cat">如果·就</div>
+    <div class="q-stem" id="q-stem"></div>
+    <div class="q-ask" id="q-ask"></div>
+    <ul class="opts" id="opts"></ul>
+    <div class="feedback" id="feedback" hidden>
+      <div class="fb-head" id="fb-head"></div>
+      <div class="fb-body" id="fb-body"></div>
+    </div>
+    <div class="qbar" id="qbar"></div>
+  </article>
+</section>
+
+<!-- ==================== 刷题：成绩 ==================== -->
+<section id="scr-result" class="screen">
+  <div class="card hairline">
+    <h2><span class="no">录</span>本轮成绩</h2>
+    <div class="stamp-mark" id="r-stamp"></div>
+    <div class="score-wrap">
+      <div class="score-big" id="r-rate">0<small>%</small></div>
+      <div class="score-meta">
+        <div class="line1" id="r-line1"></div>
+        <div class="line2" id="r-line2"></div>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat ok"><b id="r-ok">0</b><span>答对</span></div>
+      <div class="stat bad"><b id="r-bad">0</b><span>答错</span></div>
+      <div class="stat skip"><b id="r-skip">0</b><span>未答 · 超时</span></div>
+      <div class="stat"><b id="r-time">0:00</b><span>总用时</span></div>
+      <div class="stat"><b id="r-avg">0s</b><span>平均每题</span></div>
+    </div>
+
+    <div class="cat-title">按考点正确率（点题目可回作答区回顾）</div>
+    <div id="r-cats"></div>
+
+    <div class="btn-row" style="margin-top:20px">
+      <button class="btn" id="btn-again" type="button">再来一轮</button>
+      <button class="btn ghost" id="btn-rev-wrong" type="button">回顾错题 · 未答</button>
+      <button class="btn ghost" id="btn-rev-all" type="button">回顾全部</button>
+      <button class="btn ghost" id="btn-back" type="button">返回设置</button>
+    </div>
+  </div>
+
+  <div class="rev-tabs">
+    <button class="chip on" data-f="all" type="button">全部题目</button>
+    <button class="chip" data-f="wrong" type="button">错题与未答</button>
+  </div>
+  <div id="review-list"></div>
+  <div class="foot">温 故 而 知 新</div>
+</section>
+
+</main>
+
+<!-- ==================== 弹窗 ==================== -->
+<div class="modal-mask" id="modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <h3 id="modal-title">确认交卷</h3>
+    <p id="modal-text"></p>
+    <div class="modal-btns">
+      <button class="btn ghost" id="modal-cancel" type="button">继续作答</button>
+      <button class="btn" id="modal-ok" type="button">确认交卷</button>
+    </div>
+  </div>
+</div>
+
+<noscript><p style="padding:16px">本页面需要开启 JavaScript 才能答题。</p></noscript>
+
+<script>
+(function(){
+"use strict";
+
+/* =============== 题库与常量 =============== */
+var QUESTIONS = [{"id": "S01", "type": "s2t", "cat": "如果·就", "stem": "<em>如果</em>明天下雨，比赛<em>就</em>取消。", "options": [{"t": "下雨 → 比赛取消", "ok": true}, {"t": "比赛取消 → 下雨"}, {"t": "不下雨 → 比赛不取消"}, {"t": "比赛取消，一定是因为下雨"}], "explain": "「如果…就…」是充分条件，前推后，直接写成「下雨→比赛取消」。「比赛取消→下雨」是肯后推肯前，「不下雨→不取消」是否前，都无必然结论；把「比赛取消」说成一定由下雨导致的，也把条件关系当成了唯一原因。"}, {"id": "S02", "type": "s2t", "cat": "如果·就", "stem": "<em>倘若</em>敌机来犯，<em>就</em>坚决击落。", "options": [{"t": "敌机来犯 → 坚决击落", "ok": true}, {"t": "坚决击落 → 敌机来犯"}, {"t": "敌机不来犯 → 不击落"}, {"t": "敌机被击落过 → 说明它来犯过"}], "explain": "「倘若…就…」与「如果…就…」同类，前推后。「坚决击落→来犯」「被击落→来犯」都是肯后；「不来犯→不击落」是否前，均推不出。"}, {"id": "S03", "type": "s2t", "cat": "如果·就", "stem": "<em>一旦</em>发现火情，<em>必须</em>立即报警。", "options": [{"t": "发现火情 → 立即报警", "ok": true}, {"t": "立即报警 → 发现火情"}, {"t": "没发现火情 → 不必报警"}, {"t": "发现火情 → 不必报警"}], "explain": "「一旦…必须…」等价于「如果…就…」，前推后：发现火情→立即报警。「没发现火情→不必报警」是否前；把后件写成「不必报警」的选项，看漏了「必须」一词。"}, {"id": "S04", "type": "s2t", "cat": "如果·就", "stem": "<em>若</em>产品不合格，<em>则</em>不能出厂。", "options": [{"t": "不合格 → 不能出厂", "ok": true}, {"t": "不能出厂 → 不合格"}, {"t": "合格 → 能出厂"}, {"t": "不合格 → 能出厂"}], "explain": "前推后：不合格→不能出厂。「不能出厂→不合格」是肯后，「合格→能出厂」是否前；写「不合格→能出厂」的选项还看漏了「不能」中的否定，方向反了。"}, {"id": "S05", "type": "s2t", "cat": "只要·就", "stem": "<em>只要</em>坚持锻炼，身体<em>就</em>会健康。", "options": [{"t": "坚持锻炼 → 身体健康", "ok": true}, {"t": "身体健康 → 坚持锻炼"}, {"t": "不锻炼 → 身体不健康"}, {"t": "坚持锻炼是身体健康的必要条件"}], "explain": "「只要…就…」前推后：坚持锻炼→身体健康。「身体健康→坚持锻炼」把充分条件当成了必要条件；「不锻炼→不健康」是否前；把「坚持锻炼」说成必要条件的选项同样混淆了两种条件——记住「只要」很便宜，「只有」很金贵。"}, {"id": "S06", "type": "s2t", "cat": "只要·就", "stem": "<em>只要</em>报名成功，<em>就</em>能参加笔试。", "options": [{"t": "报名成功 → 参加笔试", "ok": true}, {"t": "参加笔试 → 报名成功"}, {"t": "报名失败 → 不能参加笔试"}, {"t": "报名成功是参加笔试的必要条件"}], "explain": "前推后：报名成功→参加笔试。「参加笔试→报名成功」是肯后；「报名失败→不能参加笔试」是否前；把「报名成功」说成必要条件的选项混淆了充分与必要。"}, {"id": "S07", "type": "s2t", "cat": "所有·都", "stem": "<em>所有</em>报考者<em>都</em>必须通过资格审查。", "options": [{"t": "报考者 → 通过资格审查", "ok": true}, {"t": "通过资格审查 → 报考者"}, {"t": "不是报考者 → 不需通过资格审查"}, {"t": "所有通过资格审查的都是报考者"}], "explain": "「所有…都…」前推后：报考者→通过资格审查。「通过资格审查→报考者」是肯后；「不是报考者→不需通过」是否前；把「所有A都B」倒成「所有B都A」的选项并不等价。"}, {"id": "S08", "type": "s2t", "cat": "所有·都", "stem": "<em>凡是</em>拿到入场券的人，<em>都</em>可以进场观看。", "options": [{"t": "拿到入场券 → 可以进场观看", "ok": true}, {"t": "可以进场观看的人，一定拿到了入场券"}, {"t": "没拿到入场券 → 不能进场观看"}, {"t": "有的人拿到入场券也没能进场"}], "explain": "前推后：拿到入场券→可以进场。「可以进场→拿到入场券」是肯后；「没拿到券→不能进场」是否前；说「有的人拿到券也没进场」的选项是原命题的矛盾命题（有的…不…），不是它的翻译。"}, {"id": "S09", "type": "s2t", "cat": "只有·才", "stem": "<em>只有</em>取得三分之二以上同意，<em>才</em>能通过该决议。", "options": [{"t": "通过该决议 → 取得三分之二以上同意", "ok": true}, {"t": "取得三分之二以上同意 → 通过该决议"}, {"t": "决议未通过 → 未取得同意"}, {"t": "取得同意是决议通过的充分条件"}], "explain": "「只有…才…」后推前：通过决议→取得三分之二以上同意。「取得同意→通过」是肯前（最常考的误用）；「决议未通过→未取得同意」是否后；把「取得同意」说成充分条件的选项混淆了两种条件。"}, {"id": "S10", "type": "s2t", "cat": "只有·才", "stem": "<em>只有</em>承认错误，<em>才</em>有改正错误的可能。", "options": [{"t": "能改正错误 → 承认错误", "ok": true}, {"t": "承认错误 → 一定能改正错误"}, {"t": "不能改正错误 → 没有承认错误"}, {"t": "承认错误是改正错误的充分条件"}], "explain": "后推前。「承认错误→能改正」是肯前，必要条件「有之不必不然」，推不出；「不能改正→没承认」是否后，同样无效。"}, {"id": "S11", "type": "s2t", "cat": "只有·才", "stem": "<em>只有</em>年满十八周岁，<em>才</em>有选举权。", "options": [{"t": "有选举权 → 年满十八周岁", "ok": true}, {"t": "年满十八周岁 → 有选举权"}, {"t": "没有选举权 → 没有年满十八周岁"}, {"t": "年满十八周岁是拥有选举权的充分条件"}], "explain": "后推前：有选举权→年满十八周岁。年满十八岁只是必要条件，不等于自动获得选举权，所以肯前、否后都推不出。"}, {"id": "S12", "type": "s2t", "cat": "只有·才", "stem": "<em>只有</em>笔试和面试<em>都</em>通过，<em>才</em>能进入体检环节。", "options": [{"t": "进入体检环节 → 笔试和面试都通过", "ok": true}, {"t": "笔试和面试都通过 → 进入体检环节"}, {"t": "面试没通过 → 笔试也没通过"}, {"t": "想进入体检，只要笔试通过就够了"}], "explain": "后推前，且「都」是联言命题（一假即假）：进入体检→笔试面试都通过。「都通过→进体检」是肯前；「面试没过→笔试没过」两件事互不推出；把「都通过」偷换成「笔试通过即可」的选项阉割了条件。"}, {"id": "S13", "type": "s2t", "cat": "不·不", "stem": "<em>不</em>吃饭，<em>就</em>没力气。", "options": [{"t": "不吃饭 → 没力气", "ok": true}, {"t": "吃饭 → 有力气"}, {"t": "没力气 → 没吃饭"}, {"t": "有力气 → 没吃饭"}], "explain": "「不…不…」是「只有…才…」的马甲：不吃饭就不能有力气，等价于「有力气→吃过饭」。「吃饭→有力气」是肯前，「没力气→没吃饭」是否后，都不成立。"}, {"id": "S14", "type": "s2t", "cat": "不·不", "stem": "没有规矩，<em>不成</em>方圆。", "options": [{"t": "没有规矩 → 不成方圆", "ok": true}, {"t": "不成方圆 → 没有规矩"}, {"t": "有规矩 → 成方圆"}, {"t": "成方圆 → 没有规矩"}], "explain": "「没有…不…」是后推前的必要条件句，等价于「只有有规矩，才能成方圆」。「不成方圆→没有规矩」是否后，「有规矩→成方圆」是肯前。"}, {"id": "S15", "type": "s2t", "cat": "不·不", "stem": "<em>不</em>入虎穴，<em>焉得</em>虎子（不进入虎穴，就得不到虎子）。", "options": [{"t": "不进入虎穴 → 得不到虎子", "ok": true}, {"t": "进入虎穴 → 一定得到虎子"}, {"t": "没有得到虎子 → 没有进入虎穴"}, {"t": "进入虎穴是得到虎子的充分条件"}], "explain": "句意为「不进入虎穴→得不到虎子」，即「得虎子→入虎穴」。「入虎穴→得虎子」是把必要条件当成充分条件；「不得虎子→不入虎穴」是否后，无效。"}, {"id": "S16", "type": "s2t", "cat": "不·不", "stem": "没有调查，<em>就没有</em>发言权。", "options": [{"t": "没有调查 → 没有发言权", "ok": true}, {"t": "有发言权 → 没有调查"}, {"t": "进行了调查 → 一定有发言权"}, {"t": "没有发言权 → 没有进行调查"}], "explain": "后推前（等价于「只有调查过，才有发言权」）。「进行了调查→有发言权」是肯前；「没有发言权→没有调查」是否后；「有发言权→没有调查」方向与措辞都错。"}, {"id": "S17", "type": "s2t", "cat": "除非·否则", "stem": "<em>除非</em>你给我一个合理的解释，<em>否则</em>我不原谅你。", "options": [{"t": "我原谅你 → 你给了我合理的解释", "ok": true}, {"t": "你给了我合理解释 → 我一定原谅你"}, {"t": "我不原谅你 → 你没有给我合理解释"}, {"t": "你没给我合理解释 → 我仍然原谅你"}], "explain": "「除非A否则不B」＝「只有A才B」，后推前：原谅→给解释。「给我解释→原谅」是肯前；「不原谅→没解释」是否后。"}, {"id": "S18", "type": "s2t", "cat": "除非·否则", "stem": "<em>除非</em>手术成功率百分之百，<em>否则</em>我选择保守治疗。", "options": [{"t": "手术成功率不到百分之百 → 我选择保守治疗", "ok": true}, {"t": "手术成功率百分之百 → 我选择保守治疗"}, {"t": "我选择保守治疗 → 手术成功率百分之百"}, {"t": "我不选择保守治疗 → 手术成功率不到百分之百"}], "explain": "「除非A否则B」否一推一：¬A→B（也等价于¬B→A），注意后件里没有「不」字。「成功率100%→选择保守治疗」违背原意；「选择保守治疗→成功率100%」是肯后；「不选择保守治疗→成功率不到100%」方向也错（正确应为「不保守→成功率100%」）。"}, {"id": "S19", "type": "s2t", "cat": "除非·否则", "stem": "航班延误4小时以上需赔偿旅客，<em>除非</em>出现不可抗力。", "options": [{"t": "没有出现不可抗力 → 需赔偿旅客", "ok": true}, {"t": "出现不可抗力 → 不需赔偿旅客"}, {"t": "需赔偿旅客 → 没有出现不可抗力"}, {"t": "不需赔偿旅客 → 没有出现不可抗力"}], "explain": "「…，除非A」与「除非A否则…」等价：¬A→需赔偿（也等于「不需赔偿→出现不可抗力」）。「出现不可抗力→不需赔偿」是肯前；「需赔偿→没有不可抗力」「不需赔偿→没有不可抗力」方向都错。"}, {"id": "S20", "type": "s2t", "cat": "前提·基础·必须", "stem": "诚信经营是企业长久发展的<em>基础</em>。", "options": [{"t": "企业长久发展 → 诚信经营", "ok": true}, {"t": "诚信经营 → 企业长久发展"}, {"t": "不长久发展 → 不诚信经营"}, {"t": "只要诚信经营，企业就一定能长久发展"}], "explain": "基础、前提、关键都是必要条件词——谁必不可少，谁在箭头后。翻译为：长久发展→诚信经营。「诚信经营→长久发展」是肯前；「不长久→不诚信」是否后。"}, {"id": "S21", "type": "s2t", "cat": "前提·基础·必须", "stem": "推进乡村振兴的<em>前提</em>是保护好耕地。", "options": [{"t": "推进乡村振兴 → 保护好耕地", "ok": true}, {"t": "保护好耕地 → 推进乡村振兴"}, {"t": "不推进乡村振兴 → 不保护耕地"}, {"t": "保护耕地的前提是推进乡村振兴"}], "explain": "「A的前提是B」＝B是A的前提＝A→B：乡村振兴→保护耕地。说「保护耕地的前提是乡村振兴」的选项把「是」字前后换位，方向正好相反——这是最高频的位置陷阱。"}, {"id": "S22", "type": "s2t", "cat": "前提·基础·必须", "stem": "想要提高成绩，<em>必须</em>重视错题复盘。", "options": [{"t": "提高成绩 → 重视错题复盘", "ok": true}, {"t": "重视错题复盘 → 提高成绩"}, {"t": "不提高成绩 → 不重视错题复盘"}, {"t": "提高成绩 → 不必重视错题复盘"}], "explain": "「必须」指向的项是被推出的必要条件：提高成绩→重视复盘。复盘只是必要、不保证结果，所以「复盘→提高」是肯前、「不提高→不复盘」是否后。"}, {"id": "S23", "type": "s2t", "cat": "前提·基础·必须", "stem": "高质量发展<em>离不开</em>人才支撑。", "options": [{"t": "高质量发展 → 人才支撑", "ok": true}, {"t": "人才支撑 → 高质量发展"}, {"t": "没有高质量发展 → 没有人才支撑"}, {"t": "只要有人才支撑，就能实现高质量发展"}], "explain": "「离不开」是必要条件提示词：高质量发展→人才支撑。人才支撑只是必要条件，满足它不等于必然发展。"}, {"id": "S24", "type": "s2t", "cat": "充分·必要", "stem": "有法可依是依法行政的<em>充分条件</em>。", "options": [{"t": "有法可依 → 依法行政", "ok": true}, {"t": "依法行政 → 有法可依"}, {"t": "没有法可依 → 不能依法行政"}, {"t": "有法可依是依法行政的必要条件"}], "explain": "充分条件放箭头前：有法可依→依法行政。「依法行政→有法可依」把它当成了必要条件；「没法可依→不能依法行政」是否前；说「有法可依是必要条件」的选项直接偷换了条件类型。"}, {"id": "S25", "type": "s2t", "cat": "充分·必要", "stem": "扎实的专业功底是胜任这项工作的<em>必要条件</em>。", "options": [{"t": "胜任工作 → 专业功底扎实", "ok": true}, {"t": "专业功底扎实 → 胜任工作"}, {"t": "不能胜任工作 → 专业功底不扎实"}, {"t": "专业功底扎实是胜任工作的充分条件"}], "explain": "必要条件放箭头后：胜任→功底扎实。肯前无必然、否后无必然。"}, {"id": "S26", "type": "s2t", "cat": "或·要么", "stem": "甲科室<em>或</em>乙科室被评为先进科室。", "options": [{"t": "甲科室未被评为先进 → 乙科室被评为先进", "ok": true}, {"t": "甲科室被评为先进 → 乙科室未被评为先进"}, {"t": "甲科室被评为先进 → 乙科室也被评为先进"}, {"t": "乙科室未被评为先进 → 甲科室也未被评为先进"}], "explain": "「或」＝至少一个成立，只能否一推一：甲未评上→乙评上。「甲评上→乙没评上」是把「或」当成了「要么」；「甲评上→乙评上」和「乙未评上→甲未评上」方向都错。"}, {"id": "S27", "type": "s2t", "cat": "或·要么", "stem": "本届冠军<em>要么</em>是甲队，<em>要么</em>是乙队（二者只能有一个）。", "options": [{"t": "甲队没有夺冠 → 乙队夺冠", "ok": true}, {"t": "甲队夺冠 → 乙队也夺冠"}, {"t": "甲队没有夺冠 → 乙队也没有夺冠"}, {"t": "甲队和乙队可以同时夺冠"}], "explain": "「要么…要么…」只能有一个成立：否一推一、肯一也推否一。「同时夺冠」与「都不夺冠」都违背原意。"}, {"id": "S28", "type": "s2t", "cat": "或·要么", "stem": "参会名单中必须有专家<em>或者</em>律师（至少有一类）。", "options": [{"t": "既没有专家，也没有律师 → 不符合要求", "ok": true}, {"t": "有专家 → 没有律师"}, {"t": "没有专家 → 也没有律师"}, {"t": "有专家 → 一定也有律师"}], "explain": "「或者」＝至少一个成立，两项都没有才不符合要求。「有专家→没有律师」把「或」当成「要么」；「没有专家→也没有律师」和「有专家→一定也有律师」方向都错。"}, {"id": "S29", "type": "s2t", "cat": "因果·共变", "ask": "该句应如何理解？选出正确的一项", "stem": "因为连续暴雨，所以河水上涨。", "options": [{"t": "这是因果陈述，不能直接翻译成推出关系", "ok": true}, {"t": "连续暴雨 → 河水上涨"}, {"t": "河水上涨 → 连续暴雨"}, {"t": "河水没有上涨 → 没有连续暴雨"}], "explain": "「因为…所以…」是因果陈述，公考中不作为假言命题翻译，也不能对它做逆否。判断能否翻译，可以先试着套「如果…那么…／只有…才…」，套不上就说明不是条件关系。"}, {"id": "S30", "type": "s2t", "cat": "因果·共变", "ask": "该句应如何理解？选出正确的一项", "stem": "随着收入水平提高，旅游需求不断增长。", "options": [{"t": "这是共变（相关）关系，不能当作推出关系", "ok": true}, {"t": "收入水平提高 → 旅游需求增长"}, {"t": "旅游需求增长 → 收入水平提高"}, {"t": "收入水平不提高 → 旅游需求不增长"}], "explain": "「随着…」「越…越…」描述的是共变关系，方向不确定，也不是条件命题，不能翻译成箭头，更不能逆否。"}, {"id": "S31", "type": "s2t", "cat": "递推串联", "stem": "①<em>如果</em>报了培训班，<em>就</em>会认真听课；②<em>如果</em>认真听课，<em>就</em>能掌握方法。", "options": [{"t": "报了培训班 → 掌握方法", "ok": true}, {"t": "掌握了方法 → 报了培训班"}, {"t": "没报培训班 → 不能掌握方法"}, {"t": "认真听课 → 报了培训班"}], "explain": "递推（串珠）：报班→听课→掌握方法；逆否可得「没掌握方法→没报班」。「掌握方法→报班」是肯后；「没报班→不能掌握」是否前。"}, {"id": "S32", "type": "s2t", "cat": "递推串联", "stem": "①<em>只有</em>通过资格审查，<em>才</em>能参加笔试；②<em>只有</em>通过笔试，<em>才</em>能进入面试。", "options": [{"t": "进入面试 → 通过资格审查", "ok": true}, {"t": "通过资格审查 → 进入面试"}, {"t": "没进入面试 → 没通过资格审查"}, {"t": "通过笔试 → 进入面试"}], "explain": "两句都后推前：参加笔试→通过审查、进入面试→通过笔试，串联为「进入面试→通过笔试→通过审查」。其余选项要么把链条推反（如「通过笔试→进入面试」），要么肯前、否后。"}, {"id": "S33", "type": "s2t", "cat": "逆否·德摩根", "stem": "并非「<em>如果</em>报了名，<em>就</em>一定能参加考试」。", "options": [{"t": "报了名，但没能参加考试", "ok": true}, {"t": "报名 → 不能参加考试"}, {"t": "没有报名 → 参加了考试"}, {"t": "没参加考试 → 一定报了名"}], "explain": "否定一个假言命题＝前件真且后件假：「报名了，但没参加考试」。它本身是一个「且」命题，其余选项都把它错当成了新的假言命题。"}, {"id": "S34", "type": "s2t", "cat": "逆否·德摩根", "stem": "并非「小王<em>既</em>懂技术<em>又</em>懂管理」。", "options": [{"t": "小王不懂技术，或者不懂管理", "ok": true}, {"t": "小王既不懂技术，也不懂管理"}, {"t": "小王懂技术，但不懂管理"}, {"t": "小王懂技术，或者懂管理"}], "explain": "德摩根定律：¬(A且B)＝¬A或¬B。「既不懂技术也不懂管理」是¬A且¬B，比原意更强；「懂技术但不懂管理」只是其中一种情形，不等价。"}, {"id": "S35", "type": "s2t", "cat": "逆否·德摩根", "ask": "选出与它的逆否命题等价的一项", "stem": "<em>如果</em>不出门，<em>就</em>不会淋雨。", "options": [{"t": "淋了雨 → 出了门", "ok": true}, {"t": "出了门 → 会淋雨"}, {"t": "没有淋雨 → 没有出门"}, {"t": "淋了雨 → 没有出门"}], "explain": "逆否等价：¬Q→¬P 与 P→Q 等价。原句为「不出门→不淋雨」，等价命题是「淋雨→出门」。「没有淋雨→没有出门」是它的逆命题，不等价。"}, {"id": "T01", "type": "t2s", "cat": "只要·就", "stem": "报名成功 → 参加笔试", "options": [{"t": "只要报名成功，就能参加笔试", "ok": true}, {"t": "只有报名成功，才能参加笔试"}, {"t": "参加了笔试的人，一定报名成功"}, {"t": "没有报名成功的人，也可能参加笔试"}], "explain": "箭头为前推后的充分条件，对应「只要…就…」。「只有…才…」会把方向写成「参加笔试→报名成功」；「参加笔试的人一定报名成功」是肯后；说「没报名成功也可能参加笔试」与原句冲突。"}, {"id": "T02", "type": "t2s", "cat": "只有·才", "stem": "被录取 → 通过政审", "options": [{"t": "只有通过政审，才能被录取", "ok": true}, {"t": "只有被录取，才能通过政审"}, {"t": "通过政审是被录取的充分条件"}, {"t": "如果通过政审，就一定能被录取"}], "explain": "箭头后方（政审）是被推出的必要条件，对应「只有…才…」；写成「通过政审→被录取」方向就调反了。说「通过政审是充分条件」「通过政审就一定能被录取」的选项都把必要条件说成了充分条件。"}, {"id": "T03", "type": "t2s", "cat": "不·不", "stem": "不坚持锻炼 → 身体不健康", "options": [{"t": "只有坚持锻炼，才能身体健康", "ok": true}, {"t": "只要坚持锻炼，身体就健康"}, {"t": "身体不健康，说明一定没坚持锻炼"}, {"t": "坚持锻炼是身体健康的充分条件"}], "explain": "「不A不B」是「只有A才B」的马甲，两者都与该箭头等价。「身体不健康→没锻炼」是否后推否前，无效。"}, {"id": "T04", "type": "t2s", "cat": "只要·就", "stem": "通过笔试 → 进入面试", "options": [{"t": "只要通过笔试，就能进入面试", "ok": true}, {"t": "只有通过笔试，才能进入面试"}, {"t": "进入面试的人都通过了笔试"}, {"t": "没通过笔试的人也能进入面试"}], "explain": "前推后的充分条件：只要通过笔试就能进入面试。把方向写反（进入面试→通过笔试）、把充分说成必要（只有通过笔试才能进入面试）、以及说「没通过笔试也能进入面试」的选项都不对。"}, {"id": "T05", "type": "t2s", "cat": "如果·就", "stem": "下雨 → 地面湿", "options": [{"t": "只要下雨，地面就会湿", "ok": true}, {"t": "只有下雨，地面才会湿"}, {"t": "地面湿了，说明下过雨"}, {"t": "没下雨，地面就不会湿"}], "explain": "前推后。「只有…才…」与「地湿→下雨」都是把充分当必要或肯后；「没下雨→不湿」是否前（洒水也会湿）。"}, {"id": "T06", "type": "t2s", "cat": "只有·才", "stem": "改正错误 → 承认错误", "options": [{"t": "只有承认错误，才能改正错误", "ok": true}, {"t": "只要承认错误，就能改正错误"}, {"t": "承认了错误，就等于改正了错误"}, {"t": "不能改正错误，说明没有承认错误"}], "explain": "后推前：承认错误是改正错误的必要条件。「不能改正→没承认」是否后推否前，无效。"}, {"id": "T07", "type": "t2s", "cat": "除非·否则", "stem": "上岸 → 努力", "options": [{"t": "除非努力，否则不能上岸", "ok": true}, {"t": "只要努力，就能上岸"}, {"t": "努力了就一定会上岸"}, {"t": "只有上岸的人，才努力过"}], "explain": "「除非A否则不B」＝「只有A才B」：努力是上岸的必要条件。说「只要努力就能上岸」「努力了就一定上岸」的选项把必要条件当成了充分条件；说「只有上岸的人，才努力过」方向也反了。"}, {"id": "T08", "type": "t2s", "cat": "除非·否则", "stem": "受理 → 提交申请", "options": [{"t": "除非提交申请，否则不予受理", "ok": true}, {"t": "只要提交了申请，就一定能受理"}, {"t": "不予受理，说明没有提交申请"}, {"t": "提交申请是受理的充分条件"}], "explain": "「除非A否则不B」后推前：受理→提交申请。「提交了就一定受理」是肯前；「不予受理→没提交」是否后。"}, {"id": "T09", "type": "t2s", "cat": "不·不", "stem": "取得好成绩 → 下过苦功夫", "options": [{"t": "不下苦功夫，就取得不了好成绩", "ok": true}, {"t": "只要下苦功夫，就能取得好成绩"}, {"t": "没取得好成绩，说明没下过苦功夫"}, {"t": "取得好成绩的人，未必下过苦功夫"}], "explain": "后推前的必要条件句，对应「不…不…」或「只有…才…」：取得好成绩→下过苦功夫。「没取得好成绩→没下苦功夫」是否后；「取得好成绩的人未必下过苦功夫」与题干矛盾。"}, {"id": "T10", "type": "t2s", "cat": "前提·基础·必须", "stem": "事业发展 → 人才支撑", "options": [{"t": "人才支撑是事业发展的前提", "ok": true}, {"t": "事业发展是人才支撑的前提"}, {"t": "只要有人才支撑，事业就一定能发展"}, {"t": "没有事业发展，就没有人才支撑"}], "explain": "箭头后方是必要条件，可以写成「人才支撑是事业发展的前提/基础」——谁必不可少，谁在箭头后。说「事业发展是人才支撑的前提」的选项把「是」字前后换了位，方向相反；「没有事业发展→没有人才支撑」是否后。"}, {"id": "T11", "type": "t2s", "cat": "前提·基础·必须", "stem": "提高粮食产量 → 保护耕地", "options": [{"t": "提高粮食产量的前提是保护好耕地", "ok": true}, {"t": "保护耕地的前提是提高粮食产量"}, {"t": "只要保护了耕地，粮食产量就能提高"}, {"t": "保护耕地离不开提高粮食产量"}], "explain": "「A的前提是B」＝B是A的前提＝A→B：提高产量→保护耕地，与箭头一致。说「保护耕地的前提是提高粮食产量」的选项换了位置；「保护耕地离不开提高粮食产量」方向恰好相反。"}, {"id": "T12", "type": "t2s", "cat": "或·要么", "stem": "没选甲 → 选乙", "options": [{"t": "甲、乙两位候选人至少选一位", "ok": true}, {"t": "甲、乙两位候选人只能选一位"}, {"t": "甲、乙两位候选人必须都选"}, {"t": "选了甲就不能选乙"}], "explain": "该箭头正是「或」的否一推一：「至少选一位」。「只能选一位」是「要么」的意思，比原意更强；「选了甲就不能选乙」也不是原意。"}, {"id": "T13", "type": "t2s", "cat": "或·要么", "stem": "派甲去 → 不派乙去", "options": [{"t": "要么派甲去，要么派乙去，两人不能同去", "ok": true}, {"t": "甲、乙两人至少要派一个去"}, {"t": "甲、乙两人都不派去"}, {"t": "甲、乙两人可以一起去"}], "explain": "该箭头是「要么…要么…」（不相容选言）的翻译之一：肯一推否一。它与「至少派一个」（或）的区别就在这里。"}, {"id": "T14", "type": "t2s", "cat": "所有·都", "stem": "医生 → 需要终身学习", "options": [{"t": "凡是医生，都需要终身学习", "ok": true}, {"t": "所有需要终身学习的人都是医生"}, {"t": "不是医生，就不需要终身学习"}, {"t": "有的医生不需要终身学习"}], "explain": "「所有A都B」对应前推后：医生→需要终身学习。说「所有需要终身学习的人都是医生」的选项把「所有A都B」倒成了「所有B都A」；「不是医生→不需要」是否前；「有的医生不需要」是原命题的矛盾命题。"}, {"id": "T15", "type": "t2s", "cat": "递推串联", "stem": "感冒 → 发烧 → 必须住院", "options": [{"t": "如果感冒了，就必须住院", "ok": true}, {"t": "住院的人一定感冒了"}, {"t": "发烧的人一定感冒了"}, {"t": "没感冒就不会住院"}], "explain": "链式递推：感冒→发烧→住院。「住院→感冒」「发烧→感冒」都是肯后；「没感冒→不住院」是否前，都推不出。"}, {"id": "T16", "type": "t2s", "cat": "只有·才", "stem": "入职 → 参加体检", "options": [{"t": "只有参加体检，才能入职", "ok": true}, {"t": "只要参加体检，就能入职"}, {"t": "没入职的人，就是没参加体检"}, {"t": "参加体检是入职的充分条件"}], "explain": "后推前：体检是入职的必要条件。（考试中常说：体检是入职的必要条件，入职以体检为前提。）"}, {"id": "T17", "type": "t2s", "cat": "或·要么", "stem": "项目成功 → 技术过硬 且 资金充足", "options": [{"t": "只有技术过硬并且资金充足，项目才能成功", "ok": true}, {"t": "只要技术过硬或者资金充足，项目就能成功"}, {"t": "技术过硬、资金不足，项目也能成功"}, {"t": "项目不成功，说明技术不过硬并且资金不充足"}], "explain": "箭头后是「且」（联言）命题，两个条件缺一不可：成功→技术过硬且资金充足。否后时要用德摩根：「项目不成功→技术不过硬或资金不充足」。说「只要技术过硬或者资金充足就能成功」降低了要求；说「技术过硬、资金不足也能成功」违背原意。"}, {"id": "T18", "type": "t2s", "cat": "不·不", "stem": "未满十二周岁 → 不能骑共享单车", "options": [{"t": "只有年满十二周岁，才能骑共享单车", "ok": true}, {"t": "只要年满十二周岁，就能骑共享单车"}, {"t": "未满十二周岁也可以骑共享单车"}, {"t": "年满十二周岁的人一定骑共享单车"}], "explain": "「未满12周岁→不能骑」等价于「能骑→年满12周岁」：年满12岁是必要条件，对应「只有…才…」。说「只要年满12岁就能骑」的选项把必要条件当成了充分条件（肯前）；「未满12岁也可以骑」与题干冲突。"}, {"id": "T19", "type": "t2s", "cat": "只要·就", "stem": "产品合格 → 可以出厂", "options": [{"t": "只要产品合格，就可以出厂", "ok": true}, {"t": "只有产品合格，才能出厂"}, {"t": "出厂的产品都合格"}, {"t": "不合格的产品也可能出厂"}], "explain": "前推后的充分条件。「只有合格才能出厂」和「出厂都合格」都把方向写成了「出厂→合格」。"}, {"id": "T20", "type": "t2s", "cat": "除非·否则", "stem": "入馆 → 提前预约", "options": [{"t": "只有提前预约，才能入馆参观", "ok": true}, {"t": "只要提前预约，就能入馆参观"}, {"t": "预约了，就一定能入馆"}, {"t": "没入馆的，都是没预约的"}], "explain": "后推前：预约是必要条件（也可写成「除非提前预约，否则不能入馆」）。「没入馆→没预约」是否后，推不出。"}, {"id": "T21", "type": "t2s", "cat": "如果·就", "stem": "考试作弊 → 取消成绩", "options": [{"t": "如果考试作弊，就会被取消成绩", "ok": true}, {"t": "只有考试作弊，才会被取消成绩"}, {"t": "被取消成绩的人一定作过弊"}, {"t": "不作弊就不会被取消成绩"}], "explain": "前推后。「只有作弊才取消」（取消→作弊）与「被取消→作弊」都是肯后或方向反了；「不作弊→不取消」是否前。"}, {"id": "T22", "type": "t2s", "cat": "只要·就", "stem": "电量低于20% → 触发省电模式", "options": [{"t": "只要电量低于20%，就会触发省电模式", "ok": true}, {"t": "只有电量低于20%，才会触发省电模式"}, {"t": "触发了省电模式，说明电量低于20%"}, {"t": "电量不低于20%，就不会触发省电模式"}], "explain": "前推后。省电模式也可能被其它原因触发，所以「触发→低于20%」是肯后；「不低于20%→不触发」是否前。"}, {"id": "T23", "type": "t2s", "cat": "只要·就", "stem": "连续工作满一年 → 享受年休假", "options": [{"t": "只要连续工作满一年，就能享受年休假", "ok": true}, {"t": "只有连续工作满一年，才能享受年休假"}, {"t": "享受了年休假，说明工作满了一年"}, {"t": "工作不满一年，就一定不能享受年休假"}], "explain": "前推后：连续工作满一年→享受年休假。把充分条件当成必要条件（「只有满一年才能享受」「享受了年休假说明工作满一年」是肯后）的选项，以及说「工作不满一年就一定不能享受」是否前的选项，都不对。"}, {"id": "T24", "type": "t2s", "cat": "递推串联", "stem": "技术过硬 且 资金充足 → 项目落地", "options": [{"t": "如果技术过硬并且资金充足，项目就能落地", "ok": true}, {"t": "只要技术过硬或者资金充足，项目就能落地"}, {"t": "技术过硬、资金不足，项目也能落地"}, {"t": "项目落地了，说明技术过硬，但资金不一定充足"}], "explain": "前件是「且」命题，两个条件必须同时满足：技术过硬且资金充足→项目落地。「或者」要求更低，不对应；说「技术过硬、资金不足也能落地」漏掉了资金条件；说「项目落地说明技术过硬，但资金不一定充足」同样漏掉了必要条件。"}, {"id": "T25", "type": "t2s", "cat": "只有·才", "stem": "借阅 → 办理借阅卡", "options": [{"t": "只有办理借阅卡，才能借阅", "ok": true}, {"t": "只要办理借阅卡，就能借阅"}, {"t": "没办理借阅卡，也可能借阅"}, {"t": "借阅了的人，不一定办过借阅卡"}], "explain": "后推前：借阅卡是借阅的必要条件，写成「办理借阅卡→借阅」就成了肯前方向。说「只要办理就能借阅」「没办理也可能借阅」「借阅了不一定办过卡」的选项，都把必要条件当成了充分条件，或与题干矛盾。"}, {"id": "L01", "type": "logic", "cat": "逆否·德摩根", "stem": "条件：<em>如果</em>下雨，比赛<em>就</em>取消。<br>已知：比赛没有取消。", "options": [{"t": "没有下雨", "ok": true}, {"t": "下雨了"}, {"t": "下雨与比赛取消无关"}, {"t": "无法判断是否下雨"}], "explain": "否后必否前：比赛没取消 → 没有下雨。这是逆否等价在解题中的标准用法。"}, {"id": "L02", "type": "logic", "cat": "只有·才", "stem": "条件：<em>只有</em>年满十八周岁，<em>才</em>有选举权。<br>已知：小李年满十八周岁。", "options": [{"t": "无法确定小李有没有选举权", "ok": true}, {"t": "小李有选举权"}, {"t": "小李没有选举权"}, {"t": "题干条件自相矛盾"}], "explain": "必要条件「有之不必不然」：满足年满18岁只是必要条件，可能还需要其它条件，所以肯前无必然结论。"}, {"id": "L03", "type": "logic", "cat": "或·要么", "stem": "条件：甲、乙两人中至少有一人发言（甲或乙）。<br>已知：甲没有发言。", "options": [{"t": "乙发言了", "ok": true}, {"t": "乙也没有发言"}, {"t": "无法确定乙是否发言"}, {"t": "甲其实发言了"}], "explain": "「或」关系否一推一：否定其中一项，另一项必然成立。"}, {"id": "L04", "type": "logic", "cat": "或·要么", "stem": "条件：<em>要么</em>甲获得冠军，<em>要么</em>乙获得冠军（只能有一个）。<br>已知：甲获得冠军。", "options": [{"t": "乙没有获得冠军", "ok": true}, {"t": "乙也获得了冠军"}, {"t": "无法确定乙是否夺冠"}, {"t": "甲、乙可以同时是冠军"}], "explain": "「要么…要么…」只能有一个成立：肯一即可推否一（这一点与「或」完全不同）。"}, {"id": "L05", "type": "logic", "cat": "逆否·德摩根", "stem": "条件：「<em>如果</em>努力，<em>就</em>一定能成功」这句话为假。", "options": [{"t": "努力了，但没有成功", "ok": true}, {"t": "努力了，也成功了"}, {"t": "没努力，却成功了"}, {"t": "没努力，也没成功"}], "explain": "否定假言命题＝前件真且后件假。其余三种情况都会使原命题为真。"}, {"id": "L06", "type": "logic", "cat": "所有·都", "stem": "条件：<em>所有</em>参加夏令营的同学<em>都</em>通过了面试。<br>已知：小明没有通过面试。", "options": [{"t": "小明没有参加夏令营", "ok": true}, {"t": "小明参加了夏令营"}, {"t": "小明参加了夏令营但没通过面试"}, {"t": "无法确定小明是否参加"}], "explain": "「所有A都B」＝A→B，否后必否前：没通过面试→没有参加夏令营。"}, {"id": "L07", "type": "logic", "cat": "递推串联", "stem": "条件：感冒 → 发烧；发烧 → 需要住院治疗。<br>已知：小张不需要住院治疗。", "options": [{"t": "小张没有感冒", "ok": true}, {"t": "小张感冒了"}, {"t": "小张感冒了但没有发烧"}, {"t": "小张可能发烧了"}], "explain": "逆否链：¬住院→¬发烧→¬感冒。注意是「连否到底」，不能只否一步。"}, {"id": "L08", "type": "logic", "cat": "除非·否则", "stem": "条件：<em>除非</em>提前预约，<em>否则</em>不能进馆。<br>已知：小王没能进馆。", "options": [{"t": "无法确定小王是否提前预约", "ok": true}, {"t": "小王没有预约"}, {"t": "小王预约了"}, {"t": "小王一定既没预约也没进馆"}], "explain": "翻译为「进馆→提前预约」。已知「没进馆」是否前方向，推不出预约情况——想要有结论，必须已知「进馆」或「没预约」。"}, {"id": "L09", "type": "logic", "cat": "只有·才", "stem": "条件：<em>只有</em>诚信经营，企业<em>才</em>能长久立足。<br>已知：某企业长久立足了。", "options": [{"t": "该企业诚信经营", "ok": true}, {"t": "该企业可能不诚信"}, {"t": "无法确定该企业是否诚信"}, {"t": "该企业没有诚信经营"}], "explain": "「只有A才B」＝B→A，肯后必肯前：立足→诚信经营。"}, {"id": "L10", "type": "logic", "cat": "递推串联", "stem": "条件：①<em>如果</em>开空调，<em>就</em>关窗；②<em>如果</em>关窗，<em>就</em>打开新风系统。<br>已知：新风系统没有打开。", "options": [{"t": "没有开空调", "ok": true}, {"t": "开了空调"}, {"t": "开了空调但没有关窗"}, {"t": "关窗了，但没开空调"}], "explain": "链条：开空调→关窗→开新风；逆否：¬新风→¬关窗→¬空调。"}, {"id": "L11", "type": "logic", "cat": "只要·就", "stem": "条件：<em>只要</em>交了报名费，<em>就</em>能参加活动。<br>已知：小王没有交报名费。", "options": [{"t": "无法确定小王能否参加活动", "ok": true}, {"t": "小王不能参加活动"}, {"t": "小王能参加活动"}, {"t": "报名费与参加活动无关"}], "explain": "「只要…就…」是充分条件，翻译为「交费→参加」。已知没交费是「否前」，否前无必然结论。"}, {"id": "S36", "type": "s2t", "cat": "如果·就", "stem": "<em>一</em>到秋天，梧桐叶<em>便</em>纷纷落下。", "options": [{"t": "秋天到了 → 梧桐叶落", "ok": true}, {"t": "梧桐叶落 → 秋天到了"}, {"t": "秋天没到 → 梧桐叶不落"}, {"t": "秋天到了，梧桐叶也不会落"}], "explain": "「一…便…」＝「如果…就…」，前推后：秋天到→落叶。「落叶→秋天到」是肯后，「不到秋天→不落叶」是否前，都推不出；「秋天到了，梧桐叶也不会落」与题干直接冲突。"}, {"id": "S37", "type": "s2t", "cat": "如果·就", "stem": "<em>假如</em>明天不下雨，运动会<em>就</em>照常举行。", "options": [{"t": "不下雨 → 照常举行", "ok": true}, {"t": "照常举行 → 不下雨"}, {"t": "下雨 → 不照常举行"}, {"t": "没照常举行，说明没下雨"}], "explain": "前推后：不下雨→照常举行。「照常举行→不下雨」是肯后；「下雨→不举行」是否前；它的逆否只能是「没照常举行→<b>下雨</b>」，写成「没照常举行→没下雨」是把后件只否了一半。"}, {"id": "S38", "type": "s2t", "cat": "如果·就", "stem": "<em>假设</em>这项技术足够成熟，成本<em>就</em>会大幅下降。", "options": [{"t": "技术成熟 → 成本下降", "ok": true}, {"t": "成本下降 → 技术成熟"}, {"t": "技术不成熟 → 成本不下降"}, {"t": "技术成熟会导致成本上升"}], "explain": "「假设…就…」＝「如果…就…」，前推后。「成本下降→技术成熟」是肯后；「技术不成熟→不下降」是否前；「技术成熟会导致成本上升」与题干相反。它的逆否是「成本没下降→技术不成熟」。"}, {"id": "S39", "type": "s2t", "cat": "如果·就", "stem": "天气好的<em>话</em>，咱们<em>就</em>去爬山。", "options": [{"t": "天气好 → 去爬山", "ok": true}, {"t": "去爬山 → 天气好"}, {"t": "天气不好 → 不去爬山"}, {"t": "天气再好也不去爬山"}], "explain": "「…的话，就…」是充分条件句，前推后。「去爬山→天气好」是肯后，「天气不好→不去爬山」是否前，都有例外；「天气再好也不去爬山」与题干冲突。顺带记住其逆否：「没去爬山→天气不好」。"}, {"id": "S40", "type": "s2t", "cat": "只要·就", "stem": "<em>只要</em>功夫深，铁杵磨成针。", "options": [{"t": "功夫深 → 铁杵磨成针", "ok": true}, {"t": "铁杵磨成针 → 功夫深"}, {"t": "功夫不深 → 铁杵磨不成针"}, {"t": "功夫深是铁杵磨成针的必要条件"}], "explain": "「只要…就…」前推后：功夫深→磨成针。「磨成针→功夫深」是肯后；「功夫不深→磨不成」是否前；「功夫深是铁杵磨成针的必要条件」把充分条件说成必要条件，方向感错位。"}, {"id": "S41", "type": "s2t", "cat": "只要·就", "stem": "<em>只要</em>检票开始，乘客<em>便</em>可以进站上车。", "options": [{"t": "检票开始 → 乘客可以进站上车", "ok": true}, {"t": "乘客可以进站上车 → 检票开始"}, {"t": "还没开始检票 → 乘客不能进站上车"}, {"t": "检票开始是乘客进站上车的前提条件"}], "explain": "前推后：检票开始→可以进站上车。「可以进站→检票开始」是肯后；「没检票→不能进站」是否前；「检票开始是乘客进站上车的前提条件」把充分条件改称「前提」（必要条件），是最高频的偷换。"}, {"id": "S42", "type": "s2t", "cat": "只要·就", "stem": "<em>只要</em>通过初赛，<em>就</em>能进入复赛。", "options": [{"t": "通过初赛 → 进入复赛", "ok": true}, {"t": "进入复赛 → 通过初赛"}, {"t": "没通过初赛 → 不能进入复赛"}, {"t": "通过初赛是进入复赛的必要条件"}], "explain": "前推后：通过初赛→进入复赛。「进入复赛→通过初赛」是肯后；「没通过初赛→不能进入」是否前；「通过初赛是必要条件」把充分条件说成了必要条件——只要很便宜，只有才金贵。"}, {"id": "S43", "type": "s2t", "cat": "所有·都", "stem": "现场<em>所有</em>乘客<em>都</em>系了安全带。", "options": [{"t": "乘客 → 系了安全带", "ok": true}, {"t": "系了安全带的都是乘客"}, {"t": "不是乘客 → 没系安全带"}, {"t": "有的乘客没系安全带"}], "explain": "「所有…都…」前推后：乘客→系安全带。「系了安全带的都是乘客」把全称肯定倒成了「所有B都A」；「不是乘客→没系」是否前；「有的乘客没系」是原命题的矛盾命题。"}, {"id": "S44", "type": "s2t", "cat": "所有·都", "stem": "<em>任何</em>公民<em>都</em>不得有超越法律的特权。", "options": [{"t": "公民 → 不得有超越法律的特权", "ok": true}, {"t": "不得有超越法律特权的一定是公民"}, {"t": "不是公民 → 可以有超越法律的特权"}, {"t": "有的公民可以有超越法律的特权"}], "explain": "全称肯定前推后。「不得有特权的一定是公民」是肯后；「不是公民→可以有特权」是否前；「有的公民可以有超越法律的特权」与题干矛盾。它的逆否是「有超越法律特权的→不是公民」。"}, {"id": "S45", "type": "s2t", "cat": "所有·都", "stem": "<em>凡是</em>享受耕地补贴的农户<em>都</em>签订了承诺书。", "options": [{"t": "享受耕地补贴 → 签订承诺书", "ok": true}, {"t": "签订了承诺书的农户都享受了耕地补贴"}, {"t": "没享受耕地补贴 → 没签承诺书"}, {"t": "没签承诺书的农户也可能享受了耕地补贴"}], "explain": "前推后：享受补贴→签承诺书。「签了承诺书的都享受了补贴」把「所有A都B」倒成了「所有B都A」；「没享受→没签」是否前；「没签承诺书的农户也可能享受了耕地补贴」与题干矛盾（它的逆否是「没签承诺书→没享受补贴」）。"}, {"id": "S46", "type": "s2t", "cat": "所有·有的", "ask": "该句应如何理解？选出正确的一项", "stem": "<em>并非</em>所有参加体检的人员都合格。", "options": [{"t": "有的参加体检的人员不合格", "ok": true}, {"t": "参加体检的人员全部不合格"}, {"t": "参加体检的人员全部合格"}, {"t": "不合格的人都没有参加体检"}], "explain": "「并非所有A都B」＝「有的A不B」：只否定了一部分，不能过头说成「全部不合格」（那样反而更强）。"}, {"id": "S47", "type": "s2t", "cat": "所有·有的", "ask": "由此可以推出", "stem": "<em>所有</em>志愿者<em>都</em>是在校大学生。", "options": [{"t": "有的大学生是志愿者", "ok": true}, {"t": "所有大学生都是志愿者"}, {"t": "有的志愿者不是在校大学生"}, {"t": "不是志愿者的大学生并不存在"}], "explain": "「所有A是B」可以换位成「有的B是A」（行测通用）：所有志愿者都是大学生 ⟹ 有的大学生是志愿者。「所有大学生是志愿者」放大了范围；「有的志愿者不是大学生」与原句矛盾；「不是志愿者的大学生不存在」＝所有大学生都是志愿者，同样推不出。"}, {"id": "S48", "type": "s2t", "cat": "所有·有的", "ask": "该句应如何理解？选出正确的一项", "stem": "<em>有的</em>违纪行为是违法行为。", "options": [{"t": "有的违法行为是违纪行为", "ok": true}, {"t": "所有违法行为都是违纪行为"}, {"t": "有的违纪行为不是违法行为"}, {"t": "所有违纪行为都不是违法行为"}], "explain": "「有的A是B」与「有的B是A」互相等价（都是说“存在至少一个A且B”）。它推不出全称，也推不出「有的A不是B」——这三点是集合题的全部家底。"}, {"id": "S49", "type": "s2t", "cat": "所有·有的", "ask": "由此可以推出", "stem": "<em>所有</em>假冒伪劣商品<em>都</em>不是合格产品。", "options": [{"t": "合格产品都不是假冒伪劣商品", "ok": true}, {"t": "合格产品都是假冒伪劣商品"}, {"t": "有的合格产品是假冒伪劣商品"}, {"t": "有的假冒伪劣商品是合格产品"}], "explain": "全称否定句可以换位（E↔E）：所有A都不是B ⟹ 所有B都不是A，即「合格产品都不是假冒伪劣商品」。其余三项都与原句矛盾。"}, {"id": "S50", "type": "s2t", "cat": "所有·有的", "ask": "该句应如何理解？选出正确的一项", "stem": "<em>有的</em>干部不熟悉业务。", "options": [{"t": "至少有一名干部不熟悉业务", "ok": true}, {"t": "所有干部都不熟悉业务"}, {"t": "所有干部都熟悉业务"}, {"t": "熟悉业务的人都不是干部"}], "explain": "「有的」＝存在、至少一个（不排除全部）。不能拔高成「所有都不熟悉」，也不能反过来说「所有都熟悉」；「熟悉业务的人都不是干部」与本句毫无关系。"}, {"id": "S51", "type": "s2t", "cat": "所有·有的", "ask": "该句应如何理解？选出正确的一项", "stem": "<em>并非</em>有的动物不会游泳。", "options": [{"t": "所有动物都会游泳", "ok": true}, {"t": "有的动物会游泳"}, {"t": "所有动物都不会游泳"}, {"t": "有的动物不会游泳"}], "explain": "否定句一层层剥：并非「有的A不B」＝「所有A都B」——特称否定命题的矛盾是全称肯定命题。注意别只翻掉一半变成「有的动物会游泳」。"}, {"id": "S52", "type": "s2t", "cat": "所有·有的", "ask": "该句能确定的只有一项，选出它", "stem": "<em>有的</em>进口水果是冷冻的。", "options": [{"t": "至少存在一种进口水果是冷冻的，其余进口水果是否冷冻无法确定", "ok": true}, {"t": "有的进口水果不是冷冻的"}, {"t": "所有进口水果都是冷冻的"}, {"t": "所有进口水果都不是冷冻的"}], "explain": "「有的A是B」只保证“至少有一个”，剩下的A是什么情况一无所知。选项中凡是写「有的A不是B」「所有A是B」「所有A不是B」的，都是自行加戏。"}, {"id": "S53", "type": "s2t", "cat": "只有·才", "stem": "<em>唯有</em>脚踏实地，<em>才</em>能行稳致远。", "options": [{"t": "行稳致远 → 脚踏实地", "ok": true}, {"t": "脚踏实地 → 行稳致远"}, {"t": "不能行稳致远 → 没有脚踏实地"}, {"t": "脚踏实地是行稳致远的充分条件"}], "explain": "「唯有…才…」＝「只有…才…」，后推前。「脚踏实地→行稳致远」是肯前（必要条件有之不必不然）；「不能行稳致远→没脚踏实地」是否后；「脚踏实地是行稳致远的充分条件」混淆了条件类型。"}, {"id": "S54", "type": "s2t", "cat": "只有·才", "stem": "<em>非得</em>经过专业训练，<em>才</em>能胜任这项工作。", "options": [{"t": "胜任这项工作 → 经过专业训练", "ok": true}, {"t": "经过专业训练 → 胜任这项工作"}, {"t": "不能胜任这项工作 → 没经过专业训练"}, {"t": "经过专业训练是胜任这项工作的充分条件"}], "explain": "「非得…才…」仍是必要条件句，后推前：胜任→专业训练。「训练过→胜任」是肯前；「不能胜任→没训练」是否后；「经过专业训练是胜任这项工作的充分条件」把必要条件说成充分条件。"}, {"id": "S55", "type": "s2t", "cat": "只有·才", "stem": "肯下笨功夫，<em>才</em>能练出真本事。", "options": [{"t": "练出真本事 → 肯下笨功夫", "ok": true}, {"t": "肯下笨功夫 → 练出真本事"}, {"t": "没练出真本事 → 没下笨功夫"}, {"t": "肯下笨功夫就一定能练出真本事"}], "explain": "省略「只有」的「…才…」还是后推前：真本事→笨功夫。「笨功夫→真本事」是肯前（必要条件满足不等于必然成功）；「没练出→没下苦功」是否后；「肯下笨功夫就一定能练出真本事」同样错在肯前。"}, {"id": "S56", "type": "s2t", "cat": "只有·才", "stem": "<em>只有</em>严格执法，<em>方能</em>树立司法权威。", "options": [{"t": "树立司法权威 → 严格执法", "ok": true}, {"t": "严格执法 → 树立司法权威"}, {"t": "没有树立司法权威 → 没有严格执法"}, {"t": "严格执法是树立司法权威的充分条件"}], "explain": "「只有…方能…」＝「只有…才…」，后推前。「严格执法→树立权威」是肯前；「没树立权威→没严格执法」是否后；「严格执法是树立司法权威的充分条件」偷换条件类型。它的逆否是「没有严格执法→不能树立权威」。"}, {"id": "S57", "type": "s2t", "cat": "不·不", "stem": "<em>无</em>风<em>不</em>起浪。", "options": [{"t": "起浪 → 有风", "ok": true}, {"t": "有风 → 起浪"}, {"t": "没风也会起浪"}, {"t": "起浪与有没有风无关"}], "explain": "「无A不B」＝「只有A才B」：有风是起浪的必要条件，写成箭头是「起浪→有风」。「有风→起浪」是肯前；「没风也会起浪」和「起浪与有没有风无关」与题干冲突。它的逆否形式是「没风→不起浪」。"}, {"id": "S58", "type": "s2t", "cat": "不·不", "stem": "<em>没有</em>充足的光照，植物<em>就</em>无法进行光合作用。", "options": [{"t": "植物能进行光合作用 → 有充足光照", "ok": true}, {"t": "光照充足 → 一定能进行光合作用"}, {"t": "不能进行光合作用 → 没有充足光照"}, {"t": "光照不足也能正常进行光合作用"}], "explain": "「没有A就无法B」是后推前的必要条件句：光合作用→充足光照。「光照充足→就能光合」是肯前；「不能光合→没光照」是否后；「光照不足也能正常进行光合作用」与题干冲突。"}, {"id": "S59", "type": "s2t", "cat": "不·不", "ask": "该句应如何理解？选出正确的一项", "stem": "这件事，<em>非</em>你出面<em>不可</em>。", "options": [{"t": "要把这件事办成 → 你出面", "ok": true}, {"t": "你出面 → 一定能办成这件事"}, {"t": "这件事没办成 → 你没有出面"}, {"t": "你出不出面，与能否办成无关"}], "explain": "「非A不可」＝「必须A」，即必要条件：办成→你出面。「你出面→办成」是肯前；「没办成→没出面」是否后；「你出不出面，与能否办成无关」抹掉了条件关系。"}, {"id": "S60", "type": "s2t", "cat": "不·不", "stem": "<em>没有</em>过硬的作风，<em>就谈不上</em>打胜仗。", "options": [{"t": "打胜仗 → 有过硬作风", "ok": true}, {"t": "有过硬作风 → 一定能打胜仗"}, {"t": "没打胜仗 → 没有过硬作风"}, {"t": "作风不过硬也能打胜仗"}], "explain": "「没有A就谈不上B」＝「只有A才能B」，后推前。「有过硬作风→能打胜仗」是肯前；「没打胜仗→没过硬作风」是否后；「作风不过硬也能打胜仗」与题干冲突。"}, {"id": "S61", "type": "s2t", "cat": "除非·否则", "stem": "<em>除非</em>有确凿证据，<em>否则</em>不予立案。", "options": [{"t": "立案侦查 → 有确凿证据", "ok": true}, {"t": "有确凿证据 → 一定立案侦查"}, {"t": "没有立案侦查 → 没有确凿证据"}, {"t": "立案侦查了也可能没有确凿证据"}], "explain": "「除非A否则不B」＝「只有A才B」：立案→有确凿证据。「有证据→一定立案」是肯前；「没立案→没证据」是否后；「立案侦查了也可能没有确凿证据」与题干冲突。"}, {"id": "S62", "type": "s2t", "cat": "除非·否则", "stem": "<em>除非</em>涨价，<em>否则</em>我们就按原价卖。", "options": [{"t": "不涨价 → 按原价卖", "ok": true}, {"t": "按原价卖 → 不涨价"}, {"t": "涨价 → 按原价卖"}, {"t": "不按原价卖 → 不涨价"}], "explain": "「除非A否则B」否一推一：¬A→B（也等价于 ¬B→A）。「按原价卖→不涨价」是肯后；「涨价→按原价卖」反了；「不按原价卖→不涨价」方向也错（正确应为「不按原价卖→涨价」）。"}, {"id": "S63", "type": "s2t", "cat": "除非·否则", "stem": "<em>必须</em>在三日内提交材料，<em>否则</em>视为放弃。", "options": [{"t": "未在三日内提交材料 → 视为放弃", "ok": true}, {"t": "三日内提交了材料 → 一定不会被视为放弃"}, {"t": "三日内提交了材料 → 也可能被视为放弃"}, {"t": "被视为放弃 → 三日内提交了材料"}], "explain": "「必须A否则B」中的「必须A」＝「除非A」，翻译为 ¬A→B（等价 ¬B→A）：未按时提交→视为放弃。「提交了就一定没事」是肯前（否前推否后）；「被视为放弃 → 三日内提交了材料」方向相反（正确应为「被视为放弃→没按时提交」）。"}, {"id": "S64", "type": "s2t", "cat": "除非·否则", "stem": "<em>除非</em>你亲自来，<em>否则</em>不可能谈成。", "options": [{"t": "谈成 → 亲自来", "ok": true}, {"t": "亲自来 → 一定谈成"}, {"t": "没谈成 → 没亲自来"}, {"t": "没谈成，说明他一定来过"}], "explain": "先消掉一层否定：「否则不可能谈成」＝「否则谈不成」，即「除非A否则不B」→ 谈成→亲自来。「亲自来→谈成」是肯前；「没谈成→没来」是否后；「没谈成，说明他一定来过」凭空编造结论。"}, {"id": "S65", "type": "s2t", "cat": "前提·基础·必须", "stem": "推动高质量发展的<em>关键</em>是科技创新。", "options": [{"t": "推动高质量发展 → 科技创新", "ok": true}, {"t": "科技创新 → 推动高质量发展"}, {"t": "没有推动高质量发展 → 不抓科技创新"}, {"t": "只要科技创新，就能推动高质量发展"}], "explain": "「关键」与「前提、基础」同类，指向被推出的必要条件：高质量发展→科技创新。「科技创新→高质量发展」是肯前；「没有发展→不抓创新」是否后；「只要科技创新，就能推动高质量发展」把必要条件当成充分条件。"}, {"id": "S66", "type": "s2t", "cat": "前提·基础·必须", "stem": "项目能否落地，<em>取决于</em>资金是否到位。", "options": [{"t": "项目落地 → 资金到位", "ok": true}, {"t": "资金到位 → 项目落地"}, {"t": "项目没落地 → 资金没到位"}, {"t": "资金到位与否与项目落地无关"}], "explain": "「B取决于A」＝A是B的必要条件：落地→资金到位。「资金到位→落地」是肯前；「没落地→资金没到位」是否后；「资金到位与否与项目落地无关」否认了条件关系。"}, {"id": "S67", "type": "s2t", "cat": "前提·基础·必须", "stem": "现代农业发展<em>以</em>科技进步<em>为</em>支撑。", "options": [{"t": "现代农业发展 → 科技进步", "ok": true}, {"t": "科技进步 → 现代农业发展"}, {"t": "现代农业没有发展 → 科技进步停滞"}, {"t": "只要科技进步，农业就能发展"}], "explain": "「A以B为支撑」＝B是A的必要条件：农业发展→科技进步。「科技进步→农业发展」是肯前；「农业没发展→科技停滞」是否后；「只要科技进步，农业就能发展」混淆充分与必要。"}, {"id": "S68", "type": "s2t", "cat": "前提·基础·必须", "stem": "粮食安全是国家安全的<em>重要保障</em>。", "options": [{"t": "国家安全 → 粮食安全", "ok": true}, {"t": "粮食安全 → 国家安全"}, {"t": "国家安全没实现 → 粮食不安全"}, {"t": "只要粮食安全，国家安全就有保障"}], "explain": "「保障」＝必要条件词：有保障才能成事，所以箭头从结果指向它——国家安全→粮食安全。「粮食安全→国家安全」是肯前；「只要粮食安全，国家安全就有保障」把必要条件说成充分条件。"}, {"id": "S69", "type": "s2t", "cat": "前提·基础·必须", "stem": "实践是检验真理的<em>唯一标准</em>。", "options": [{"t": "要检验真理 → 靠实践", "ok": true}, {"t": "实践了 → 一定能检验真理"}, {"t": "没检验真理 → 没有实践"}, {"t": "只要实践就能检验真理"}], "explain": "「唯一标准」是必要条件的最强表述：检验真理→靠实践。「实践→一定能检验真理」是肯前；「没检验→没实践」是否后；「只要实践就能检验真理」同样把必要条件当成充分条件。"}, {"id": "S70", "type": "s2t", "cat": "充分·必要", "stem": "充足的水源是水稻高产的<em>必备条件</em>。", "options": [{"t": "水稻高产 → 水源充足", "ok": true}, {"t": "水源充足 → 水稻高产"}, {"t": "水稻没有高产 → 水源不充足"}, {"t": "只要水源充足，水稻就一定高产"}], "explain": "「必备条件」＝必要条件，放箭头后：高产→水源充足。肯前（水源充足→高产）、否后（没高产→水源不充足）都没有必然结论。"}, {"id": "S71", "type": "s2t", "cat": "充分·必要", "ask": "该句应如何翻译？选出正确的一项", "stem": "合同<em>当且仅当</em>双方都签字，才生效。", "options": [{"t": "双方签字 → 合同生效，且合同生效 → 双方签字", "ok": true}, {"t": "合同生效 → 双方签字，但签字不一定生效"}, {"t": "双方签字 → 合同生效，但生效不一定签字"}, {"t": "签字与生效之间没有推导关系"}], "explain": "「当且仅当」是充要条件，两个方向都成立：签字⇄生效。只写单向的两个选项都漏了一半，「签字与生效之间没有推导关系」直接否认关系。"}, {"id": "S72", "type": "s2t", "cat": "充分·必要", "ask": "该句中的条件关系，应翻译为", "stem": "<em>只有</em>全员参保，<em>才</em>能享受集体医保。可见，全员参保是享受集体医保的（　　）。", "options": [{"t": "必要条件", "ok": true}, {"t": "充分条件"}, {"t": "充分必要条件"}, {"t": "既不充分也不必要条件"}], "explain": "「只有A才B」中 A 是 B 的必要条件：缺了 A 不行（¬参保→¬享受），有了 A 不必然（参保≠一定享受）。判断口诀：箭头指向谁，谁就是必要条件——箭头题面里由「享受」指向「参保」。"}, {"id": "S73", "type": "s2t", "cat": "或·要么", "stem": "本次出行<em>或者</em>坐高铁，<em>或者</em>坐飞机。", "options": [{"t": "如果没坐高铁，就坐了飞机", "ok": true}, {"t": "如果坐了高铁，就一定没坐飞机"}, {"t": "如果坐了高铁，就也坐了飞机"}, {"t": "既没坐高铁，也没坐飞机"}], "explain": "「或者…或者…」＝至少一个成立，只能否一推一：没坐高铁→坐飞机。「坐了高铁→没坐飞机」是把「或」当成「要么」；「既没坐高铁，也没坐飞机」与题干冲突。"}, {"id": "S74", "type": "s2t", "cat": "或·要么", "stem": "甲、乙两个方案<em>至少要</em>实施一个。", "options": [{"t": "若甲方案没有实施 → 乙方案实施了", "ok": true}, {"t": "若甲方案实施了 → 乙方案也实施了"}, {"t": "甲、乙两个方案只能实施一个"}, {"t": "两个方案都不实施也符合要求"}], "explain": "「至少一个」＝相容选言，否一推一。「甲实施→乙也实施」是肯一（或关系不能肯一推一）；「只能实施一个」是「要么」的意思，比原意更强；「两个方案都不实施也符合要求」与题干冲突。"}, {"id": "S75", "type": "s2t", "cat": "或·要么", "ask": "该句应如何理解？选出正确的一项", "stem": "这两个名额，甲、乙<em>至多</em>有一个人能拿到。", "options": [{"t": "甲、乙至少有一人拿不到", "ok": true}, {"t": "甲、乙至少有一人能拿到"}, {"t": "甲、乙恰好有一人能拿到"}, {"t": "甲、乙两人都能拿到"}], "explain": "「至多有一个」＝「至少有一个不」＝¬甲或¬乙，允许两人都拿不到。「恰好有一个」和「至少有一个」都比原意多说了“有人能拿到”，是命题方向被调包；这一组与「至少有一个」互为易混，务必对照记。"}, {"id": "S76", "type": "s2t", "cat": "或·要么", "stem": "小王<em>不是</em>去北京，<em>就是</em>去上海。", "options": [{"t": "小王去的地方，只能是北京、上海中的一座", "ok": true}, {"t": "小王两座城市都去了"}, {"t": "小王可能两座城市都没去"}, {"t": "小王至少去了北京、上海中的一座，也可能两座都去"}], "explain": "「不是A就是B」＝「要么A要么B」（不相容）：恰好一个成立，肯一推否一、否一推肯一。「两座都去」「两座都没去」都违背原意，「小王至少去了北京、上海中的一座，也可能两座都去」把它当成了相容选言。"}, {"id": "S77", "type": "s2t", "cat": "或·要么", "ask": "该句应如何理解？选出正确的一项", "stem": "甲、乙两人中<em>至少</em>有一人加班，且两人<em>不可能同时</em>加班。", "options": [{"t": "甲、乙恰好有一人加班", "ok": true}, {"t": "甲、乙两人都加班"}, {"t": "甲、乙两人都不加班"}, {"t": "至少有一人加班，但也可以两人都不加班"}], "explain": "「至少一个」＋「不能同时」＝「要么…要么…」，即恰好一个成立。这是考试中把「或」升级成「要么」的常见写法，读懂它就不会被“至少”二字骗到。"}, {"id": "S78", "type": "s2t", "cat": "或·要么", "ask": "该句应如何理解？选出正确的一项", "stem": "公司可以从北京<em>或</em>上海两地中择一设立总部，也允许两地<em>同时</em>设立。", "options": [{"t": "北京、上海两地至少选一个，允许都选", "ok": true}, {"t": "北京、上海只能选中一个"}, {"t": "北京、上海两地都不必选"}, {"t": "北京、上海两地必须都选"}], "explain": "题干明确说了「允许同时」，所以是相容选言：至少一个，可以全选。「只能选一个」是「要么」；「都不必选」与「择一」矛盾；「必须都选」也是加戏。"}, {"id": "S79", "type": "s2t", "cat": "且·联言", "stem": "<em>只有</em>具备施工资质<em>并且</em>有同类业绩，<em>才</em>能参加投标。", "options": [{"t": "参加投标 → 具备施工资质并且有同类业绩", "ok": true}, {"t": "具备施工资质并且有同类业绩 → 可以参加投标"}, {"t": "业绩不达标但资质齐全，也可以参加投标"}, {"t": "未能参加投标 → 资质和业绩都不达标"}], "explain": "后件的「并且」是联言命题：两个条件缺一不可，投标→资质且业绩。「都满足→能投标」是肯前；「业绩不达标也能投标」阉割了条件；「未能参加投标 → 资质和业绩都不达标」错在「都」——否后时应按德摩根说成「资质不达标<b>或</b>业绩不达标」。"}, {"id": "S80", "type": "s2t", "cat": "且·联言", "ask": "该句应如何理解？选出正确的一项", "stem": "他<em>不仅</em>通过了笔试，<em>而且</em>面试成绩第一。", "options": [{"t": "他通过笔试、面试成绩第一，两件事都成立", "ok": true}, {"t": "他通过了笔试，但面试成绩不是第一"}, {"t": "两件事只要有一件成立，该句就成立"}, {"t": "无法确定他是否通过了笔试"}], "explain": "「不仅…而且…」是递进关系的联言命题：两部分都成立（全真才真）。所以可以单独推出「他通过了笔试」，也可以推出「他面试成绩第一」，但不能说成“只要一个成立就行”。"}, {"id": "S81", "type": "s2t", "cat": "且·联言", "ask": "该句应如何理解？选出正确的一项", "stem": "老张<em>虽然</em>年纪不大，<em>但是</em>经验丰富。", "options": [{"t": "老张年纪不大，并且经验丰富，两句话都成立", "ok": true}, {"t": "老张年纪不大，所以经验不丰富"}, {"t": "因为经验丰富，所以年纪不小"}, {"t": "老张经验丰富，说明他一定不年轻"}], "explain": "「虽然…但是…」是转折词，但逻辑上是联言命题：前后两个判断同时为真，转折只表示语气反差，不否定后件。其余三项都把转折当成了否定或因果。"}, {"id": "S82", "type": "s2t", "cat": "且·联言", "stem": "入选团队<em>必须</em>外语流利<em>并且</em>熟悉当地风俗。", "options": [{"t": "入选团队 → 外语流利并且熟悉当地风俗", "ok": true}, {"t": "外语流利并且熟悉当地风俗 → 一定入选"}, {"t": "没有入选 → 外语既不流利也不熟悉当地风俗"}, {"t": "外语不流利但熟悉当地风俗，也能入选"}], "explain": "「必须A并且B」：入选→外语流利且熟悉风俗。「都做到→一定入选」是肯前；「没入选→两样都不行」错在把「或」写成了「且」（正确为：没入选→至少一项不满足）；「外语不流利但熟悉当地风俗，也能入选」与题干冲突。"}, {"id": "S83", "type": "s2t", "cat": "且·联言", "ask": "该句应如何理解？选出正确的一项", "stem": "<em>并非</em>他既是党员又是干部。", "options": [{"t": "他不是党员，或者不是干部（至少有一项不成立）", "ok": true}, {"t": "他既不是党员也不是干部"}, {"t": "他既是党员又是干部"}, {"t": "他是党员，但不是干部"}], "explain": "德摩根：「并非（A且B）」＝「¬A或¬B」——只要有一项不成立即可，不能扩大到“两项都不成立”。「他是党员，但不是干部」只是众多可能中的一种，推不出来。"}, {"id": "S84", "type": "s2t", "cat": "因果·共变", "ask": "该句应如何理解？选出正确的一项", "stem": "<em>越</em>努力，<em>越</em>幸运。", "options": [{"t": "这是共变（相关）表述，不能翻译成推出关系", "ok": true}, {"t": "努力 → 幸运"}, {"t": "幸运 → 努力"}, {"t": "不努力 → 不幸运（对它做逆否）"}], "explain": "「越…越…」只描述共变趋势，不是条件命题，不能翻译成箭头，更不能逆否。“努力了却暂时不幸运”“没努力却中了大奖”都与它不冲突。"}, {"id": "S85", "type": "s2t", "cat": "因果·共变", "ask": "该句应如何理解？选出正确的一项", "stem": "<em>即使</em>明天下雨，比赛<em>也</em>照常进行。", "options": [{"t": "这是让步句，表示无论下不下雨比赛都照常进行，不能翻译成「下雨→照常」", "ok": true}, {"t": "下雨 → 比赛照常进行"}, {"t": "比赛取消 → 下雨"}, {"t": "只有不下雨，比赛才照常进行"}], "explain": "「即使…也…」是让步句：后件不受前件影响，唯一稳妥的结论是「比赛照常进行」。「下雨→照常」把让步当成条件；「比赛取消 → 下雨」和「只有不下雨，比赛才照常进行」把题干说成了条件关系，方向还相反；「只有不下雨，比赛才照常进行」限定了不可能的条件。"}, {"id": "S86", "type": "s2t", "cat": "递推串联", "stem": "①受潮<em>就</em>会生锈；②生锈<em>就</em>会影响使用；③影响使用<em>就得</em>更换。", "options": [{"t": "受潮 → 需要更换", "ok": true}, {"t": "需要更换 → 受潮"}, {"t": "没受潮 → 不用更换"}, {"t": "影响使用 → 受潮"}], "explain": "串珠：受潮→生锈→影响使用→更换；逆否链：不需更换→没影响使用→没生锈→没受潮。「需要更换→受潮」「影响使用→受潮」都是肯后，「没受潮→不用更换」是否前。"}, {"id": "S87", "type": "s2t", "cat": "递推串联", "stem": "①<em>只有</em>签订承诺书，<em>才</em>能获得补贴；②获得补贴的农户<em>都要</em>参加培训。", "options": [{"t": "获得补贴 → 签订承诺书，并且参加培训", "ok": true}, {"t": "签订承诺书并参加培训 → 获得补贴"}, {"t": "未获得补贴 → 未签承诺书"}, {"t": "参加培训 → 签订承诺书"}], "explain": "①后推前：补贴→承诺书；②前推后：补贴→培训。两句都以「补贴」为起点，故补贴→承诺书且培训。「都做到→有补贴」是肯前；「没补贴→没签」是否前；「培训→签承诺书」两句之间毫无关联。"}, {"id": "S88", "type": "s2t", "cat": "递推串联", "stem": "①<em>如果</em>检测不合格，产品<em>就</em>不能出厂；②<em>只有</em>产品出厂，<em>才</em>能进入门店销售。", "options": [{"t": "进入门店销售 → 检测合格", "ok": true}, {"t": "检测合格 → 进入门店销售"}, {"t": "不能出厂 → 没进入门店"}, {"t": "检测不合格也可能进入门店"}], "explain": "先把①逆否翻面：出厂→检测合格；②后推前：进店→出厂。串联为进店→出厂→合格。「检测合格→进店」是肯前；「不能出厂→没进店」是否前；「检测不合格也可能进入门店」与链条冲突。"}, {"id": "S89", "type": "s2t", "cat": "递推串联", "stem": "①小赵不去，小钱<em>就</em>不去；②小钱去；③小钱去，小孙<em>就</em>去。", "options": [{"t": "小赵和小孙都去", "ok": true}, {"t": "小赵不去，但小孙去"}, {"t": "小孙去，但小钱不去"}, {"t": "只能确定小钱去"}], "explain": "①逆否：小钱去→小赵去；已知②小钱去，所以小赵去；再由③得小孙去。「小赵不去」与推出结果冲突；「小钱不去」与已知冲突；「只能确定小钱去」漏掉了可以推出的两条结论。"}, {"id": "S90", "type": "s2t", "cat": "逆否·德摩根", "ask": "该句应如何理解？选出正确的一项", "stem": "<em>并非</em>既要懂技术，<em>又要</em>懂管理。", "options": [{"t": "不懂技术，或者不懂管理（至少一项不成立）", "ok": true}, {"t": "技术、管理都不懂"}, {"t": "技术和管理都懂"}, {"t": "懂技术，但不懂管理"}], "explain": "德摩根：「并非（A且B）」＝「¬A或¬B」。「两样都不懂」是把「或」当成了「且」，说过头了；「懂技术，但不懂管理」只是可能情况之一，不能推出。"}, {"id": "S91", "type": "s2t", "cat": "逆否·德摩根", "ask": "由此可以推出", "stem": "已知「甲<em>或者</em>乙能参加这次会议」这句话是假的。", "options": [{"t": "甲、乙都不能参加", "ok": true}, {"t": "甲、乙至少有一人能参加"}, {"t": "甲、乙中恰有一人能参加"}, {"t": "只能是甲不能参加，乙可以参加"}], "explain": "「A或B」为假＝¬A且¬B：两个都不成立。「至少一人能参加」正是原命题；「恰有一人」「只有甲不能」都只是部分否定。"}, {"id": "S92", "type": "s2t", "cat": "逆否·德摩根", "ask": "该句应如何理解？选出正确的一项", "stem": "<em>并非</em>「只要是会员，<em>就</em>能享受折扣」。", "options": [{"t": "是会员，却没享受到折扣", "ok": true}, {"t": "会员 → 不能享受折扣"}, {"t": "不是会员 → 能享受折扣"}, {"t": "没享受折扣的都不是会员"}], "explain": "否定假言命题＝前件真且后件假：「是会员」且「没享受折扣」。「会员→不能享受折扣」是改写命题，不是否定；「没享受折扣的都不是会员」是另一个方向的推理，毫无依据。"}, {"id": "S93", "type": "s2t", "cat": "等价变形", "ask": "下列哪项与该命题等价？", "stem": "<em>如果</em>下雨，比赛<em>就</em>取消。", "options": [{"t": "或者不下雨，或者比赛取消", "ok": true}, {"t": "或者下雨，或者比赛取消"}, {"t": "下雨并且比赛取消"}, {"t": "不下雨并且比赛不取消"}], "explain": "「箭头变或者，前加非」：A→B ≡ ¬A或B。「或」的两项写错一个就全错；「下雨且取消」只是其中一种情形；「不下雨且不取消」也与原命题不冲突，不是等价。"}, {"id": "S94", "type": "s2t", "cat": "等价变形", "ask": "下列哪项与该命题等价？", "stem": "<em>要么</em>甲去，<em>要么</em>乙去。", "options": [{"t": "（甲去且乙不去）或者（甲不去且乙去）", "ok": true}, {"t": "甲去或者乙去"}, {"t": "甲去并且乙去"}, {"t": "甲不去或者乙不去"}], "explain": "「要么A要么B」＝恰好一个成立，把它写细就是「(A且¬B)或(¬A且B)」。「甲去或乙去」允许两人同去，把它写松了；「甲不去或乙不去」允许两人都不去，也太宽。"}, {"id": "S95", "type": "s2t", "cat": "等价变形", "ask": "下列哪项与该命题等价？", "stem": "<em>只有</em>通过体检，<em>才</em>能入职。", "options": [{"t": "没有通过体检，就不能入职", "ok": true}, {"t": "只要通过体检，就能入职"}, {"t": "入职之后就不用体检了"}, {"t": "体检和入职之间没有关系"}], "explain": "「只有A才B」＝B→A，其逆否是 ¬A→¬B：没过体检→不能入职。「只要通过体检就能入职」是肯前；「入职之后就不用体检了」和「体检和入职之间没有关系」与题干矛盾或无关。"}, {"id": "S96", "type": "s2t", "cat": "二难·归谬", "ask": "由此可以推出", "stem": "①<em>如果</em>小张去，小李<em>就</em>去；②<em>如果</em>小张不去，小李<em>也</em>去。", "options": [{"t": "小李一定去", "ok": true}, {"t": "小张一定去"}, {"t": "小李一定不去"}, {"t": "无法确定小李是否去"}], "explain": "两条路都通向同一结论（二难推理）：去→李去；不去→李也去，所以不论小张去不去，小李都去。小张的去留反而无法确定。"}, {"id": "S97", "type": "s2t", "cat": "二难·归谬", "ask": "由此可以推出", "stem": "①<em>如果</em>方案能通过评审，就能带来巨大收益；②<em>如果</em>方案能通过评审，就会造成严重污染。已知收益与污染<em>不可能并存</em>。", "options": [{"t": "该方案不能通过评审", "ok": true}, {"t": "该方案能通过评审"}, {"t": "该方案一定能带来收益"}, {"t": "无法判断该方案能否通过评审"}], "explain": "假设“能通过评审”会同时推出相互矛盾的两件事（归谬）：由①得收益，由②得污染，而二者不能并存，所以假设不成立，方案不能通过评审。"}, {"id": "T26", "type": "t2s", "cat": "如果·就", "stem": "通过面试 → 收到录用通知", "options": [{"t": "如果通过面试，就会收到录用通知", "ok": true}, {"t": "只有通过面试，才会收到录用通知"}, {"t": "收到录用通知的人一定通过了面试"}, {"t": "没通过面试的人也能收到录用通知"}], "explain": "前推后＝充分条件，对应「如果…就…」。「只有…才…」把它写成了「录用→面试」；「收到录用通知的人一定通过了面试」是肯后；「没通过面试的人也能收到录用通知」与题干冲突。"}, {"id": "T27", "type": "t2s", "cat": "如果·就", "stem": "气温降至零下 → 路面结冰", "options": [{"t": "只要气温降至零下，路面就会结冰", "ok": true}, {"t": "只有气温降至零下，路面才会结冰"}, {"t": "路面结冰了，说明气温一定降到了零下"}, {"t": "气温没有降到零下，路面就不会结冰"}], "explain": "箭头前为充分条件，对应「只要…就…」。写成「只有…才…」或「结冰→零下」都是肯后/方向错位；「气温没降到零下→不结冰」是否前，洒水也会结冰。"}, {"id": "T28", "type": "t2s", "cat": "如果·就", "stem": "车辆超载 → 禁止上高速", "options": [{"t": "如果车辆超载，就禁止其上高速", "ok": true}, {"t": "只有超载的车辆才禁止上高速"}, {"t": "被禁止上高速的车辆一定都超载"}, {"t": "不超载的车辆也可能被禁止上高速"}], "explain": "前推后。「只有超载才禁止」把方向写反；「被禁止的车辆一定超载」是肯后；「不超载的车辆也可能被禁止上高速」不是该箭头的等价表述——箭头只说“超载就不让上”，没说“不超载就一定让上”。"}, {"id": "T29", "type": "t2s", "cat": "只要·就", "stem": "提交申请 → 进入审核流程", "options": [{"t": "只要提交申请，就进入审核流程", "ok": true}, {"t": "只有提交申请，才能进入审核流程"}, {"t": "进入审核流程的人都提交了申请"}, {"t": "没提交申请也会进入审核流程"}], "explain": "充分条件对应「只要…就…」。「只有提交申请才进入」写成「进入→提交」，方向颠倒；「进入审核的人都提交了申请」是肯后；「没提交申请也会进入审核流程」与题干冲突。"}, {"id": "T30", "type": "t2s", "cat": "只要·就", "stem": "扫码登记 → 免费领取礼品", "options": [{"t": "只要扫码登记，就能免费领取礼品", "ok": true}, {"t": "扫码登记是免费领取礼品的必要条件"}, {"t": "免费领取礼品的人一定扫码登记了"}, {"t": "没扫码登记也能免费领取礼品"}], "explain": "前推后：扫码登记是充分条件。「必要条件」把它说反；「领取礼品的人一定扫码登记」是肯后；「没扫码登记也能免费领取礼品」与题干冲突。"}, {"id": "T31", "type": "t2s", "cat": "所有·都", "stem": "师范生 → 必须通过普通话等级考试", "options": [{"t": "凡是师范生，都要通过普通话等级考试", "ok": true}, {"t": "所有通过普通话等级考试的人都是师范生"}, {"t": "不是师范生，就不必参加普通话等级考试"}, {"t": "有的师范生没有参加普通话等级考试"}], "explain": "「所有A都B」前推后。「所有B都A」把主客体倒置；「不是师范生→不必考」是否前；「有的师范生没参加」与原命题矛盾。"}, {"id": "T32", "type": "t2s", "cat": "所有·都", "stem": "消防通道 → 严禁堆放杂物", "options": [{"t": "凡是消防通道，都严禁堆放杂物", "ok": true}, {"t": "严禁堆放杂物的地方都是消防通道"}, {"t": "不是消防通道就可以堆放杂物"}, {"t": "有的消防通道可以堆放杂物"}], "explain": "前推后。「严禁堆放的地方都是消防通道」是肯后；「不是消防通道→可以堆放」是否前；「有的消防通道可以堆放杂物」与原命题矛盾。"}, {"id": "T33", "type": "t2s", "cat": "所有·有的", "stem": "有的会员是律师", "options": [{"t": "至少有一名会员是律师", "ok": true}, {"t": "所有会员都是律师"}, {"t": "所有会员都不是律师"}, {"t": "有的会员不是律师"}], "explain": "「有的A是B」＝存在至少一个，只保证“有”，不保证“多少”。其余三项分别把特称拉成全称或反向的特称，都推不出。"}, {"id": "T34", "type": "t2s", "cat": "所有·有的", "stem": "所有无证摊点都不是合法经营主体", "options": [{"t": "凡是合法经营主体，都不是无证摊点", "ok": true}, {"t": "有的合法经营主体是无证摊点"}, {"t": "所有合法经营主体都是无证摊点"}, {"t": "有的无证摊点是合法经营主体"}], "explain": "全称否定句可换位：所有A都不是B ⟹ 所有B都不是A。其余三项都与该句矛盾——注意「有的A不是B」也不能反过来当它的同义句。"}, {"id": "T35", "type": "t2s", "cat": "所有·有的", "stem": "所有参会人员都提交了健康承诺书", "options": [{"t": "有的提交了健康承诺书的人是参会人员", "ok": true}, {"t": "所有提交健康承诺书的人都是参会人员"}, {"t": "有的参会人员没有提交健康承诺书"}, {"t": "提交了健康承诺书的人都不是参会人员"}], "explain": "「所有A是B」可推出「有的B是A」：参会者都在提交者之中。「所有B都是A」放大范围；「有的参会人员没有提交健康承诺书」和「提交了健康承诺书的人都不是参会人员」与原句矛盾。"}, {"id": "T36", "type": "t2s", "cat": "所有·有的", "stem": "并非所有问题都能在会上解决", "options": [{"t": "有的问题在会上解决不了", "ok": true}, {"t": "所有问题都解决不了"}, {"t": "所有问题都能解决"}, {"t": "有的问题能在会上解决"}], "explain": "「并非所有A都B」＝「有的A不B」：只否定一部分。「全部解决不了」否定过头；「全部能解决」正是被否定的话；「有的能解决」不受约束、推不出。"}, {"id": "T37", "type": "t2s", "cat": "只有·才", "stem": "领取奖学金 → 成绩排名前10%", "options": [{"t": "只有成绩排名前10%，才能领取奖学金", "ok": true}, {"t": "只要成绩排名前10%，就能领取奖学金"}, {"t": "领取奖学金的人不一定排名前10%"}, {"t": "成绩排名前10%是领取奖学金的充分条件"}], "explain": "后推前：排名是必要条件，对应「只有…才…」。其余三项都把必要条件说成了充分条件，或直接推翻题干。"}, {"id": "T38", "type": "t2s", "cat": "只有·才", "stem": "上岗作业 → 持证", "options": [{"t": "只有持证，才能上岗作业", "ok": true}, {"t": "只要持证，就能上岗作业"}, {"t": "持证的人一定在上岗作业"}, {"t": "没持证也可能上岗作业"}], "explain": "后推前。「只要持证就能上岗」是肯前；「持证的人一定在上岗」方向错；「没持证也可能上岗作业」与题干冲突。"}, {"id": "T39", "type": "t2s", "cat": "只有·才", "stem": "进入决赛 → 通过初赛", "options": [{"t": "只有通过初赛，才能进入决赛", "ok": true}, {"t": "通过初赛之后一定能进入决赛"}, {"t": "进入决赛的人不一定通过初赛"}, {"t": "通过初赛是进入决赛的充分条件"}], "explain": "后推前：初赛是决赛的必要条件。肯前无必然、「通过初赛是进入决赛的充分条件」偷换条件类型、「进入决赛的人不一定通过初赛」与题干冲突，三者都错。"}, {"id": "T40", "type": "t2s", "cat": "只有·才", "stem": "获得补贴 → 通过验收", "options": [{"t": "只有通过验收，才能获得补贴", "ok": true}, {"t": "通过验收就一定获得补贴"}, {"t": "没获得补贴就是没通过验收"}, {"t": "通过验收是获得补贴的充分条件"}], "explain": "后推前。「验收了就一定拿补贴」是肯前；「没拿补贴→没过验收」是否后；「通过验收是获得补贴的充分条件」混淆条件类型。"}, {"id": "T41", "type": "t2s", "cat": "除非·否则", "stem": "受理 → 材料齐全", "options": [{"t": "除非材料齐全，否则不予受理", "ok": true}, {"t": "只要材料齐全，就一定受理"}, {"t": "材料不齐全也可能被受理"}, {"t": "不予受理说明材料不齐全"}], "explain": "「除非A否则不B」＝「只有A才B」，与「受理→材料齐全」完全一致。「只要材料齐全就一定受理」是肯前；「不予受理说明材料不齐全」是肯后方向；「材料不齐全也可能被受理」与题干冲突。"}, {"id": "T42", "type": "t2s", "cat": "除非·否则", "stem": "进入景区 → 购买门票", "options": [{"t": "除非购买门票，否则不能进入景区", "ok": true}, {"t": "买了门票就能进入景区"}, {"t": "没进入景区就是没买门票"}, {"t": "购买门票是进入景区的充分条件"}], "explain": "「除非A否则不B」后推前。「买了票就能进」是肯前；「没进→没买票」是否后；「购买门票是进入景区的充分条件」把必要条件说成充分条件。"}, {"id": "T43", "type": "t2s", "cat": "除非·否则", "stem": "使用公司车辆 → 提前报备", "options": [{"t": "除非提前报备，否则不得使用公司车辆", "ok": true}, {"t": "提前报备之后就一定能使用公司车辆"}, {"t": "没报备也可能使用公司车辆"}, {"t": "报备是使用公司车辆的充分条件"}], "explain": "「除非A否则不B」＝「只有A才B」。「报备了就能用」是肯前；「没报备也可能使用公司车辆」与题干冲突；「报备是使用公司车辆的充分条件」偷换条件类型。"}, {"id": "T44", "type": "t2s", "cat": "不·不", "stem": "成功 → 经历过失败", "options": [{"t": "没有经历过失败，就不可能成功", "ok": true}, {"t": "只要经历过失败，就一定能成功"}, {"t": "没有成功，说明没有经历过失败"}, {"t": "成功的人从未经历过失败"}], "explain": "后推前的必要条件句，对应「不…不…」：不经历失败→不能成功。「经历失败→一定能成功」是肯前；「没成功→没经历失败」是否后；「成功的人从未经历过失败」与题干直接冲突。"}, {"id": "T45", "type": "t2s", "cat": "不·不", "stem": "能上台领奖 → 进入前三名", "options": [{"t": "没有进入前三名，就不可能上台领奖", "ok": true}, {"t": "只要进入前三名，就能上台领奖"}, {"t": "没上台领奖，说明没进前三名"}, {"t": "上台领奖的人不一定进过前三名"}], "explain": "「不…不…」＝「只有…才…」：不进前三→不能领奖。「进前三→就能领奖」是肯前；「没领奖→没进前三」是否后；「上台领奖的人不一定进过前三名」与题干冲突。"}, {"id": "T46", "type": "t2s", "cat": "不·不", "stem": "通过审核 → 材料真实", "options": [{"t": "材料不实，就通不过审核", "ok": true}, {"t": "材料真实就一定能通过审核"}, {"t": "材料真实与否与审核无关"}, {"t": "通过审核的人材料可能不实"}], "explain": "后推前的必要条件句（逆否为「材料不实→通不过」）。「材料真实→一定通过」是肯前；「材料真实与否与审核无关」和「通过审核的人材料可能不实」与题干冲突。"}, {"id": "T47", "type": "t2s", "cat": "前提·基础·必须", "stem": "取得执业资格 → 通过统一考试", "options": [{"t": "通过统一考试是取得执业资格的前提", "ok": true}, {"t": "取得执业资格是通过统一考试的前提"}, {"t": "只要通过统一考试，就能取得执业资格"}, {"t": "没通过统一考试的人也可以取得执业资格"}], "explain": "箭头后方是被推出的必要条件，可写成「…是…的前提」——谁必不可少，谁在箭头后。「取得资格是通过考试的前提」把「是」字前后换了位；「只要通过统一考试，就能取得执业资格」是肯前；「没通过统一考试的人也可以取得执业资格」与题干冲突。"}, {"id": "T48", "type": "t2s", "cat": "前提·基础·必须", "stem": "实现碳中和 → 发展清洁能源", "options": [{"t": "发展清洁能源是实现碳中和的基础", "ok": true}, {"t": "实现碳中和是发展清洁能源的基础"}, {"t": "只要发展清洁能源就能实现碳中和"}, {"t": "没有实现碳中和，就没有发展清洁能源"}], "explain": "箭头后是必要条件：清洁能源是碳中和的基础。「实现碳中和是发展清洁能源的基础」把位置调反；「发展清洁能源→碳中和」是肯前；「没有实现碳中和，就没有发展清洁能源」是否后。"}, {"id": "T49", "type": "t2s", "cat": "前提·基础·必须", "stem": "保障食品安全 → 严格监管", "options": [{"t": "严格监管是保障食品安全的必要条件", "ok": true}, {"t": "保障食品安全是严格监管的必要条件"}, {"t": "严格监管就一定能保障食品安全"}, {"t": "只要食品安全有保障，就一定会严格监管"}], "explain": "必要条件是箭头后那一项。「保障食品安全是严格监管的必要条件」等于说「严格监管→保障安全」，方向错；「严格监管就一定能保障」是肯前；「只要食品安全有保障，就一定会严格监管」同样把方向说反。"}, {"id": "T50", "type": "t2s", "cat": "前提·基础·必须", "stem": "提高产能 → 更新设备", "options": [{"t": "更新设备是提高产能的前提", "ok": true}, {"t": "提高产能是更新设备的前提"}, {"t": "更新了设备，产能必然提高"}, {"t": "不更新设备，产能也一定能提高"}], "explain": "「A的前提是B」＝A→B，而箭头后的 B 也可以表述为「B是A的前提」。「提高产能是更新设备的前提」换了位置；「更新了设备，产能必然提高」和「不更新设备，产能也一定能提高」分别是否前、肯前。"}, {"id": "T51", "type": "t2s", "cat": "充分·必要", "stem": "有营业执照 → 合法经营", "options": [{"t": "有营业执照是合法经营的充分条件", "ok": true}, {"t": "有营业执照是合法经营的必要条件"}, {"t": "合法经营的企业一定都有营业执照"}, {"t": "没有营业执照也可能合法经营"}], "explain": "箭头前是充分条件。「必要条件」把它说反；「合法经营的企业一定都有营业执照」是肯后（推不出）；「没有营业执照也可能合法经营」与题干冲突。"}, {"id": "T52", "type": "t2s", "cat": "充分·必要", "stem": "签订劳动合同 → 受劳动法保护", "options": [{"t": "签订劳动合同是受劳动法保护的充分条件", "ok": true}, {"t": "受劳动法保护的人都签订了劳动合同"}, {"t": "签订劳动合同是受劳动法保护的必要条件"}, {"t": "没签订劳动合同也可能受劳动法保护"}], "explain": "「A→B」＝A是B的充分条件、B是A的必要条件。「受保护的人都有合同」是肯后；「必要条件」和「没签订劳动合同也可能受劳动法保护」都颠倒了条件类型。"}, {"id": "T53", "type": "t2s", "cat": "充分·必要", "stem": "经双方签字 → 协议生效", "options": [{"t": "经双方签字是协议生效的充分条件", "ok": true}, {"t": "协议生效是经双方签字的充分条件"}, {"t": "经双方签字是协议生效的必要条件"}, {"t": "签了字，协议也可能不生效"}], "explain": "箭头前为充分条件。「协议生效是经双方签字的充分条件」把主客颠倒；「经双方签字是协议生效的必要条件」说反；「签了字，协议也可能不生效」直接与本箭头冲突——签了字，协议就应当生效。"}, {"id": "T54", "type": "t2s", "cat": "或·要么", "stem": "未按时签到 → 计入缺勤", "options": [{"t": "按时签到与计入缺勤，至少有一个成立", "ok": true}, {"t": "按时签到与计入缺勤，两个都成立"}, {"t": "没有按时签到，就不会计入缺勤"}, {"t": "按时签到之后也可能计入缺勤"}], "explain": "¬A→B 等价于「A或B」：按时签到或计入缺勤，至少一个成立。「两个都成立」是「且」；「没签到也不会记缺勤」与原句冲突；「按时签到之后也可能计入缺勤」把或的两项关系再颠倒。"}, {"id": "T55", "type": "t2s", "cat": "或·要么", "stem": "去甲地 → 不去乙地", "options": [{"t": "甲、乙两地只能去一个，二者必居其一", "ok": true}, {"t": "甲、乙两地至少要去一个"}, {"t": "甲、乙两地都要去"}, {"t": "甲、乙两地都不去也无所谓"}], "explain": "该箭头配合其逆否（去乙地→不去甲地），构成不相容选言「要么甲要么乙」：只能去一个。「至少去一个」是「或」，比原意弱；「甲、乙两地都要去」和「甲、乙两地都不去也无所谓」与原意冲突。"}, {"id": "T56", "type": "t2s", "cat": "或·要么", "stem": "不去体育馆 → 去图书馆", "options": [{"t": "体育馆和图书馆，至少去一个", "ok": true}, {"t": "体育馆和图书馆只能去一个"}, {"t": "体育馆和图书馆都要去"}, {"t": "体育馆和图书馆可以都不去"}], "explain": "¬A→B 就是相容选言「A或B」：至少去一个（可以两个都去）。「只能去一个」把它升级成了「要么」；「体育馆和图书馆可以都不去」与原句冲突。"}, {"id": "T57", "type": "t2s", "cat": "或·要么", "stem": "甲落选 → 乙入选", "options": [{"t": "甲、乙两人至少有一人入选", "ok": true}, {"t": "甲、乙两人只能有一人入选"}, {"t": "甲、乙两人都能入选"}, {"t": "甲、乙两人都落选"}], "explain": "否一推一的形式，等价于「甲或乙入选」，即至少一人。「只能有一人入选」是「要么」；「甲、乙两人都落选」与原句冲突。"}, {"id": "T58", "type": "t2s", "cat": "或·要么", "stem": "没有带伞 → 被淋湿", "options": [{"t": "带伞与被淋湿，至少发生一件", "ok": true}, {"t": "带伞就不会被淋湿"}, {"t": "被淋湿了，说明没带伞"}, {"t": "既没带伞，也没被淋湿"}], "explain": "¬A→B 等价于「A或B」。「带伞就不会淋湿」是肯前推否后；「淋湿→没带伞」是肯后；「既没带伞，也没被淋湿」与原句冲突。"}, {"id": "T59", "type": "t2s", "cat": "且·联言", "stem": "中标 → 资质合格 且 报价合理", "options": [{"t": "只有资质合格并且报价合理，才能中标", "ok": true}, {"t": "只要资质合格或者报价合理，就能中标"}, {"t": "资质合格但报价偏高，也可以中标"}, {"t": "没有中标，说明资质和报价都不合格"}], "explain": "箭头后是联言命题，两个条件缺一不可。「或者」把要求降低；「报价偏高也能中标」漏掉条件；「没有中标，说明资质和报价都不合格」错在「都」——否后要按德摩根说成「资质不合格<b>或</b>报价不合理」。"}, {"id": "T60", "type": "t2s", "cat": "且·联言", "stem": "入职 → 通过笔试 且 通过面试", "options": [{"t": "如果入职了，说明笔试和面试都通过了", "ok": true}, {"t": "通过笔试或者面试就能入职"}, {"t": "笔试过了但面试没过，也可能入职"}, {"t": "入职的人可能面试没过"}], "explain": "联言后件：入职必须两项全过。「或者」降低了门槛；「笔试过了但面试没过，也可能入职」和「入职的人可能面试没过」与题干冲突。"}, {"id": "T61", "type": "t2s", "cat": "且·联言", "stem": "按期交付 → 质量达标 且 通过验收", "options": [{"t": "按期交付的项目，质量达标且通过验收", "ok": true}, {"t": "质量达标或者通过验收，就视为按期交付"}, {"t": "质量不达标、验收没通过，也可以算按期交付"}, {"t": "没有按期交付，说明质量不达标且没通过验收"}], "explain": "箭头后是「且」，两项同时成立。「或者」与「也算按期交付」都削弱了要求；「没有按期交付，说明质量不达标且没通过验收」把否后的德摩根形式（质量不达标<b>或</b>没通过验收）误写成「且」。"}, {"id": "T62", "type": "t2s", "cat": "逆否·德摩根", "stem": "未通过审核 → 材料不齐 或 资质不符", "options": [{"t": "只要材料不齐或者资质不符，就通不过审核", "ok": true}, {"t": "只有材料不齐并且资质不符，才会通不过审核"}, {"t": "材料齐全、资质相符，也一定通不过审核"}, {"t": "材料不齐但资质相符，仍然可以通过审核"}], "explain": "前件是「或」，任一项成立即可推出后件。「只有…并且…」把要求抬高成两项都要；「材料齐全、资质相符，也一定通不过审核」和「材料不齐但资质相符，仍然可以通过审核」与原句冲突。"}, {"id": "T63", "type": "t2s", "cat": "逆否·德摩根", "stem": "没预约 且 没排队 → 不能入场", "options": [{"t": "既没预约也没排队，就不能入场", "ok": true}, {"t": "只要预约了或者排了队，就一定能入场"}, {"t": "不能入场，说明一定既没预约又没排队"}, {"t": "入场了，说明预约和排队两样都做过"}], "explain": "前件是「且」，两项都不成立才触发后件。「预约了或排了队就一定能入场」是肯前；「不能入场→既没预约又没排队」是肯后（且否定后件时要注意方向）；「入场了，说明预约和排队两样都做过」过头了——进场只要求二者至少有一个，不是都做过。"}, {"id": "T64", "type": "t2s", "cat": "递推串联", "stem": "报名 → 参加培训 → 领取资料", "options": [{"t": "报名之后，就要参加培训并领取资料", "ok": true}, {"t": "参加培训的人一定报了名"}, {"t": "没报名也可能领到资料"}, {"t": "报名的人不一定参加培训"}], "explain": "链式递推：报名→培训→领资料。「培训→报名」是肯后；「没报名也可能领到资料」和「报名的人不一定参加培训」与链条冲突。"}, {"id": "T65", "type": "t2s", "cat": "递推串联", "stem": "违纪 → 通报 → 取消评优资格", "options": [{"t": "只要违纪，就会被通报并取消评优资格", "ok": true}, {"t": "被通报的人一定违纪"}, {"t": "取消评优资格的人不一定被通报"}, {"t": "违纪的人不一定被通报"}], "explain": "串珠：违纪→通报→取消评优，「违纪就一路推到底」。「被通报→违纪」是肯后；「取消评优资格的人不一定被通报」和「违纪的人不一定被通报」与链条冲突。"}, {"id": "L12", "type": "logic", "cat": "如果·就", "stem": "条件：<em>如果</em>原料不合格，<em>就</em>不能投产。<br>已知：这批原料已经投产。", "options": [{"t": "这批原料合格", "ok": true}, {"t": "这批原料不合格"}, {"t": "无法确定这批原料是否合格"}, {"t": "题干条件自相矛盾"}], "explain": "「不合格→不能投产」的逆否是「投产→合格」，已知投产，故否后必否前。"}, {"id": "L13", "type": "logic", "cat": "如果·就", "stem": "条件：<em>如果</em>航班取消，旅客<em>就</em>可以获得全额退款。<br>已知：小周没能获得全额退款。", "options": [{"t": "该航班没有取消", "ok": true}, {"t": "该航班取消了"}, {"t": "无法确定航班是否取消"}, {"t": "小周没有购买机票"}], "explain": "翻译：取消→可退款。已知「没能全额退款」即否定了后件，否后必否前：航班没有取消。（注意别把它当成否前：否前是没有结论的。）"}, {"id": "L14", "type": "logic", "cat": "只要·就", "stem": "条件：<em>只要</em>提交了异议，<em>就</em>会启动复核。<br>已知：没有启动复核。", "options": [{"t": "没有提交异议", "ok": true}, {"t": "提交了异议"}, {"t": "无法确定是否提交异议"}, {"t": "异议已被驳回"}], "explain": "「只要…就…」是充分条件，翻译为「提交异议→启动复核」。已知没启动复核，是否后，必能否前：没有提交异议。"}, {"id": "L15", "type": "logic", "cat": "所有·都", "stem": "条件：<em>所有</em>参赛作品<em>都</em>经过原创性检测。<br>已知：某作品没有经过原创性检测。", "options": [{"t": "该作品没有参赛", "ok": true}, {"t": "该作品参赛了"}, {"t": "无法确定该作品是否参赛"}, {"t": "该作品是检测后才参赛的"}], "explain": "「所有A都B」＝A→B，否后必否前：没经过检测→没有参赛。"}, {"id": "L16", "type": "logic", "cat": "所有·都", "stem": "条件：<em>凡</em>在店内消费满200元的顾客，<em>都可以</em>参与抽奖。<br>已知：小李参与了抽奖。", "options": [{"t": "无法确定小李是否消费满200元", "ok": true}, {"t": "小李消费满200元"}, {"t": "小李没有消费满200元"}, {"t": "小李一定没在店内消费"}], "explain": "翻译：消费满200→可以抽奖。已知「参与了抽奖」是肯后，肯后无必然结论——抽奖名额可能另有途径发放。"}, {"id": "L17", "type": "logic", "cat": "所有·有的", "stem": "条件：<em>所有</em>实习生<em>都</em>不是正式员工。<br>已知：小赵是正式员工。", "options": [{"t": "小赵不是实习生", "ok": true}, {"t": "小赵是实习生"}, {"t": "无法确定小赵是不是实习生"}, {"t": "小赵既不是实习生也不是正式员工"}], "explain": "「所有A都不是B」换位后仍成立：所有正式员工都不是实习生。小赵是正式员工，因此不是实习生。"}, {"id": "L18", "type": "logic", "cat": "所有·有的", "stem": "条件：<em>有的</em>老员工掌握了双语。<br>已知：小李是老员工。", "options": [{"t": "无法确定小李是否掌握双语", "ok": true}, {"t": "小李掌握双语"}, {"t": "小李不掌握双语"}, {"t": "至少有一名老员工不掌握双语"}], "explain": "「有的A是B」只说了“至少有一个”，小李很可能不在其中。全称命题才能对每个个体下结论，特称不能。"}, {"id": "L19", "type": "logic", "cat": "所有·有的", "stem": "条件：「<em>所有</em>方案<em>都</em>可行」这句话为假。", "options": [{"t": "有的方案不可行", "ok": true}, {"t": "所有方案都不可行"}, {"t": "有的方案可行"}, {"t": "所有方案都可行"}], "explain": "「所有A都B」的矛盾是「有的A不B」，不是「所有A都不B」——否定要“点到为止”，不能否定过头。"}, {"id": "L20", "type": "logic", "cat": "只有·才", "stem": "条件：<em>只有</em>提交了申请，<em>才</em>能获得名额。<br>已知：小陈获得了名额。", "options": [{"t": "小陈提交了申请", "ok": true}, {"t": "小陈没有提交申请"}, {"t": "无法确定小陈是否提交申请"}, {"t": "小陈的名额是别人转让的"}], "explain": "「只有A才B」＝B→A：获得名额→提交申请。肯后必肯前。"}, {"id": "L21", "type": "logic", "cat": "只有·才", "stem": "条件：<em>只有</em>完成全部课程，<em>才</em>能领取结业证书。<br>已知：小吴完成了全部课程。", "options": [{"t": "无法确定小吴能否领取结业证书", "ok": true}, {"t": "小吴能领取结业证书"}, {"t": "小吴不能领取结业证书"}, {"t": "小吴一定没有参加考试"}], "explain": "翻译：领证书→完成课程。已知「完成了课程」是肯前，必要条件满足不等于结果必然出现（可能还要通过结业考核），故无结论。"}, {"id": "L22", "type": "logic", "cat": "只有·才", "stem": "条件：<em>只有</em>接到通知，<em>才</em>可以入场。<br>已知：小郑没有接到通知。", "options": [{"t": "小郑不能入场", "ok": true}, {"t": "小郑可以入场"}, {"t": "无法确定小郑是否可以入场"}, {"t": "小郑已在场外等候"}], "explain": "「只有A才B」＝B→A，其逆否为「¬A→¬B」：没有通知→不能入场。这就是必要条件“无之必不然”的用法。"}, {"id": "L23", "type": "logic", "cat": "不·不", "stem": "条件：<em>不</em>进行系统复习，<em>就</em>考不出好成绩。<br>已知：小冯考出了好成绩。", "options": [{"t": "小冯进行了系统复习", "ok": true}, {"t": "小冯没有进行系统复习"}, {"t": "无法确定小冯是否复习过"}, {"t": "小冯只复习了一部分"}], "explain": "「不A不B」＝「只有A才B」：好成绩→系统复习。已知好成绩，肯后必肯前。"}, {"id": "L24", "type": "logic", "cat": "除非·否则", "stem": "条件：<em>除非</em>下雨，<em>否则</em>运动会照常举行。<br>已知：运动会没有照常举行。", "options": [{"t": "下雨了", "ok": true}, {"t": "没有下雨"}, {"t": "无法确定是否下雨"}, {"t": "运动会取消了"}], "explain": "「除非A否则B」＝¬A→B，等价于¬B→A。已知「没有照常举行」＝¬B，故 A 成立：下雨了。"}, {"id": "L25", "type": "logic", "cat": "除非·否则", "stem": "条件：<em>除非</em>办理通行证，<em>否则</em>不能进入园区。<br>已知：小夏进入了园区。", "options": [{"t": "小夏办理了通行证", "ok": true}, {"t": "小夏没有办理通行证"}, {"t": "无法确定小夏是否办理了通行证"}, {"t": "小夏是工作人员"}], "explain": "「除非A否则不B」＝「只有A才B」：进入园区→办理通行证。肯后必肯前。"}, {"id": "L26", "type": "logic", "cat": "前提·基础·必须", "stem": "条件：高质量的服务是企业长期经营的<em>前提</em>。<br>已知：某企业没能长期经营。", "options": [{"t": "无法确定该企业的服务质量", "ok": true}, {"t": "该企业服务质量高"}, {"t": "该企业服务质量不高"}, {"t": "该企业服务质量与经营期限无关"}], "explain": "翻译：长期经营→高质量服务。已知「没能长期经营」是否前，否前无必然结论——经营不下去还可能是因为资金、市场等原因。"}, {"id": "L27", "type": "logic", "cat": "前提·基础·必须", "stem": "条件：<em>任何</em>创新成果<em>都</em>以长期积累为支撑。<br>已知：某项成果有长期积累作支撑。", "options": [{"t": "无法确定该项成果是不是创新成果", "ok": true}, {"t": "该项成果是创新成果"}, {"t": "该项成果不是创新成果"}, {"t": "该项成果一定是原创性成果"}], "explain": "翻译：创新成果→有长期积累。已知「有积累」是肯后，无必然结论：很多非创新成果同样建立在长期积累之上。"}, {"id": "L28", "type": "logic", "cat": "充分·必要", "stem": "条件：取得专利授权是产品上市的<em>充分条件</em>。<br>已知：某产品没有取得专利授权。", "options": [{"t": "无法确定该产品能否上市", "ok": true}, {"t": "该产品不能上市"}, {"t": "该产品可以上市"}, {"t": "该产品上市后会被下架"}], "explain": "充分条件：授权→可上市。已知「没有授权」是否前，否前无必然结论——可能有其他上市路径。"}, {"id": "L29", "type": "logic", "cat": "或·要么", "stem": "条件：甲、乙两人中<em>至少</em>有一人参加。<br>已知：乙没有参加。", "options": [{"t": "甲参加了", "ok": true}, {"t": "甲也没有参加"}, {"t": "无法确定甲是否参加"}, {"t": "甲参加了，但只是列席"}], "explain": "「或」关系否一推一：至少一个成立、其中一个被否定，另一个必然成立。"}, {"id": "L30", "type": "logic", "cat": "或·要么", "stem": "条件：甲、乙<em>只能</em>有一人入选。<br>已知：乙入选了。", "options": [{"t": "甲没有入选", "ok": true}, {"t": "甲也入选了"}, {"t": "无法确定甲是否入选"}, {"t": "甲主动放弃了资格"}], "explain": "「只能有一人」＝不相容选言（要么…要么…），肯一即可推否一，这一点与「或」不同。"}, {"id": "L31", "type": "logic", "cat": "或·要么", "stem": "条件：甲<em>或者</em>乙获得推荐名额。<br>已知：甲获得了推荐。", "options": [{"t": "无法确定乙是否获得推荐", "ok": true}, {"t": "乙没有获得推荐"}, {"t": "乙也获得了推荐"}, {"t": "只有甲获得推荐"}], "explain": "「或」是相容选言：已知一项为真，另一项真假不定（两人都获得推荐也满足题干）。这是它和「要么」最关键的区别。"}, {"id": "L32", "type": "logic", "cat": "或·要么", "stem": "条件：小王和小李<em>至多</em>有一人到场。<br>已知：小王到场了。", "options": [{"t": "小李没有到场", "ok": true}, {"t": "小李也到场了"}, {"t": "无法确定小李是否到场"}, {"t": "两人都到场了"}], "explain": "「至多有一人」＝「至少有一人不到」＝¬王或¬李。已知小王到了，否一推一：小李没有到场。"}, {"id": "L33", "type": "logic", "cat": "且·联言", "stem": "条件：入选必须<em>同时</em>满足「从业满五年」和「无不良记录」。<br>已知：某人从业满五年。", "options": [{"t": "无法确定该人是否入选", "ok": true}, {"t": "该人入选了"}, {"t": "该人没有入选"}, {"t": "该人一定没有不良记录"}], "explain": "翻译：入选→满五年且无不良记录。已知「满五年」只是满足了其中一个联言支，肯前不成立（另一个条件未知），故无结论。"}, {"id": "L34", "type": "logic", "cat": "且·联言", "stem": "条件：该方案<em>要同时</em>满足「技术可行」和「成本可控」<em>才能</em>实施。<br>已知：该方案已经实施。", "options": [{"t": "技术可行，并且成本可控", "ok": true}, {"t": "技术可行，但成本不一定可控"}, {"t": "成本可控，但技术不一定可行"}, {"t": "技术与成本情况都无法确定"}], "explain": "后推前＋联言：实施→技术可行且成本可控。已知实施，肯后必肯前，且两个必要条件同时成立（缺一不可）。"}, {"id": "L35", "type": "logic", "cat": "逆否·德摩根", "stem": "条件：「<em>如果</em>报名参赛，<em>就</em>能获奖」这句话为假。", "options": [{"t": "报名参赛了，但没有获奖", "ok": true}, {"t": "报名参赛了，并且获奖了"}, {"t": "没有报名参赛，却获奖了"}, {"t": "没有报名参赛，也没获奖"}], "explain": "否定假言命题＝前件真且后件假。「报名但没有获奖」是唯一能让原命题为假的情形，其余三种都会使原命题为真。"}, {"id": "L36", "type": "logic", "cat": "逆否·德摩根", "stem": "条件：「他<em>既</em>通过了笔试，<em>又</em>通过了面试」为假，且已知他通过了笔试。", "options": [{"t": "他没有通过面试", "ok": true}, {"t": "他通过面试的可能性极小"}, {"t": "他没有通过笔试"}, {"t": "笔试与面试结果无关"}], "explain": "德摩根：「并非（A且B）」＝「¬A或¬B」。现在 A（通过笔试）为真，否一推一，只能推出 ¬B：没有通过面试。"}, {"id": "L37", "type": "logic", "cat": "递推串联", "stem": "条件：①甲去 → 乙去；②乙去 → 丙去。<br>已知：丙没有去。", "options": [{"t": "甲、乙都没有去", "ok": true}, {"t": "甲、乙都去了"}, {"t": "甲去了，乙没有去"}, {"t": "只能确定乙没有去"}], "explain": "逆否链要“连否到底”：¬丙→¬乙→¬甲。只推一步就停（选“只能确定乙没有去”）是常见的失分点。"}, {"id": "L38", "type": "logic", "cat": "递推串联", "stem": "条件：①<em>只有</em>入库，<em>才</em>能出库；②出库 → 登记。<br>已知：没有登记。", "options": [{"t": "没有出库", "ok": true}, {"t": "没有入库"}, {"t": "入库了，但没有出库"}, {"t": "无法确定是否出库"}], "explain": "①后推前：出库→入库；②出库→登记。由¬登记否后得¬出库。注意：不能由「没有出库」再反推「没有入库」——入库只是出库的必要条件。"}, {"id": "L39", "type": "logic", "cat": "二难·归谬", "stem": "条件：<em>如果</em>引进设备，成本会上升；<em>如果</em>不引进设备，成本<em>也</em>会上升。", "options": [{"t": "成本一定上升", "ok": true}, {"t": "成本一定不上升"}, {"t": "引进设备，成本才会上升"}, {"t": "无法确定成本升降"}], "explain": "二难推理：A→C 且 ¬A→C，两条路通向同一结论，所以 C 必然成立——不论是否引进设备，成本都会上升。"}, {"id": "L40", "type": "logic", "cat": "二难·归谬", "stem": "条件：<em>如果</em>他是凶手，案发时他应在现场；<em>如果</em>他是凶手，案发时他又不可能在现场（两种情况不能同时成立）。", "options": [{"t": "他不是凶手", "ok": true}, {"t": "他是凶手"}, {"t": "他在案发现场"}, {"t": "无法确定他是不是凶手"}], "explain": "归谬推理：A→B 且 A→¬B，假设 A 成立会推出自相矛盾，故 ¬A——他不是凶手。"}];
+var TYPE_NAME = { s2t:"句子→翻译", t2s:"翻译→句子", logic:"条件小推理" };
+var TYPE_ASK = {
+  s2t:  "请选出该句的正确翻译（推出关系）",
+  t2s:  "请选出与该推出关系对应的句子",
+  logic:"请根据条件判断，选出可以推出的一项"
+};
+var LABELS = ["A","B","C","D","E","F"];
+
+/* =============== 小工具 =============== */
+function $(s){ return document.querySelector(s); }
+function $$(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
+function pad2(n){ n = Math.floor(n); return (n < 10 ? "0" : "") + n; }
+function mmss(sec){ return Math.floor(sec/60) + ":" + pad2(sec % 60); }
+function secs(sec){ return sec < 10 ? (Math.round(sec*10)/10) + "s" : Math.round(sec) + "s"; }
+function shuffle(arr){
+  var a = arr.slice(), i, j, t;
+  for(i = a.length - 1; i > 0; i--){ j = Math.floor(Math.random()*(i+1)); t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function escHTML(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function stripTags(s){ return String(s).replace(/<[^>]+>/g, ""); }
+
+/* =============== 状态 =============== */
+var CAT_ORDER = ["如果·就","只要·就","所有·都","所有·有的","只有·才","不·不","除非·否则",
+  "前提·基础·必须","充分·必要","或·要么","且·联言","逆否·德摩根",
+  "递推串联","等价变形","二难·归谬","因果·共变"];
+var cfg = { types:["s2t","t2s","logic"], cats:CAT_ORDER.slice(), count:20, limit:90 };
+var queue = [];            // 本轮题目（选项已乱序）
+var answers = [];          // 作答记录
+var idx = 0;               // 当前题号（作答模式下）
+var locked = false;
+var finished = false;
+var mode = "none";         // none | run | review
+var tStart = 0, qStart = 0, tick = null;
+var revList = [], revPos = 0, revFilter = "all";
+var lastQuizScreen = "scr-start";
+var RING_LEN = 2 * Math.PI * 17.5;
+
+/* =============== 视图切换 =============== */
+function show(id){
+  var els = $$(".screen");
+  for(var i = 0; i < els.length; i++){ els[i].classList.toggle("active", els[i].id === id); }
+  if(id !== "scr-sheet"){ lastQuizScreen = id; }
+  setTab(id === "scr-sheet" ? "sheet" : "quiz");
+  window.scrollTo(0, 0);
+}
+function setTab(v){
+  var tabs = $$("#tabs .tab");
+  for(var i = 0; i < tabs.length; i++){ tabs[i].classList.toggle("on", tabs[i].getAttribute("data-view") === v); }
+}
+$$("#tabs .tab").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    if(btn.getAttribute("data-view") === "sheet"){ show("scr-sheet"); }
+    else { show(lastQuizScreen); }
+  });
+});
+
+/* =============== 设置页 =============== */
+(function initSettings(){
+  var box = $("#type-chips");
+  ["s2t","t2s","logic"].forEach(function(t){
+    var n = 0;
+    for(var i = 0; i < QUESTIONS.length; i++){ if(QUESTIONS[i].type === t) n++; }
+    var el = document.createElement("button");
+    el.type = "button";
+    el.className = "chip on";
+    el.setAttribute("data-v", t);
+    el.innerHTML = TYPE_NAME[t] + ' <small>' + n + '题</small>';
+    el.addEventListener("click", function(){
+      el.classList.toggle("on");
+      cfg.types = $$("#type-chips .chip.on").map(function(x){ return x.getAttribute("data-v"); });
+      updateStartBtn();
+    });
+    box.appendChild(el);
+  });
+  var cbox = $("#cat-chips");
+  var catCount = {};
+  for(var ci = 0; ci < QUESTIONS.length; ci++){
+    var cc = QUESTIONS[ci].cat;
+    catCount[cc] = (catCount[cc] || 0) + 1;
+  }
+  CAT_ORDER.forEach(function(c){
+    if(!catCount[c]){ return; }
+    var ce = document.createElement("button");
+    ce.type = "button";
+    ce.className = "chip on";
+    ce.setAttribute("data-v", c);
+    ce.innerHTML = c + ' <small>' + catCount[c] + '题</small>';
+    ce.addEventListener("click", function(){ ce.classList.toggle("on"); syncCats(); });
+    cbox.appendChild(ce);
+  });
+  cbox.addEventListener("dblclick", function(){
+    $$("#cat-chips .chip").forEach(function(x){ x.classList.add("on"); });
+    syncCats();
+  });
+  $("#btn-cat-all").addEventListener("click", function(){
+    $$("#cat-chips .chip").forEach(function(x){ x.classList.add("on"); });
+    syncCats();
+  });
+  $("#btn-cat-none").addEventListener("click", function(){
+    $$("#cat-chips .chip").forEach(function(x){ x.classList.remove("on"); });
+    syncCats();
+  });
+  var bc = $("#bank-count");
+  if(bc){ bc.textContent = QUESTIONS.length; }
+  $$("#count-chips .chip").forEach(function(x){
+    if(x.getAttribute("data-v") === "all"){ x.innerHTML = '全部做完 <small>' + QUESTIONS.length + '题</small>'; }
+  });
+  $$("#count-chips .chip").forEach(function(el){
+    el.addEventListener("click", function(){
+      $$("#count-chips .chip").forEach(function(x){ x.classList.remove("on"); });
+      el.classList.add("on");
+      var v = el.getAttribute("data-v");
+      cfg.count = (v === "all") ? "all" : parseInt(v, 10);
+      updateStartBtn();
+    });
+  });
+  $$("#limit-chips .chip").forEach(function(el){
+    el.addEventListener("click", function(){
+      $$("#limit-chips .chip").forEach(function(x){ x.classList.remove("on"); });
+      el.classList.add("on");
+      cfg.limit = parseInt(el.getAttribute("data-v"), 10);
+    });
+  });
+  updateStartBtn();
+})();
+function syncCats(){
+  cfg.cats = $$("#cat-chips .chip.on").map(function(x){ return x.getAttribute("data-v"); });
+  updateStartBtn();
+}
+function filterPool(){
+  return QUESTIONS.filter(function(q){
+    return cfg.types.indexOf(q.type) >= 0 && cfg.cats.indexOf(q.cat) >= 0;
+  });
+}
+function updateStartBtn(){
+  var pool = filterPool();
+  var btn = $("#btn-start");
+  var want = (cfg.count === "all") ? pool.length : Math.min(cfg.count, pool.length);
+  btn.disabled = pool.length === 0;
+  btn.textContent = pool.length === 0 ? "请至少选择一种题型和一个考点" : "开始答题 →";
+  var tip = $("#pool-hint");
+  if(tip){
+    tip.textContent = pool.length
+      ? "当前筛选可抽 " + pool.length + " 题，本轮将作答 " + want + " 题。"
+      : "当前筛选下没有题目，请放宽题型或考点。";
+  }
+}
+
+/* =============== 组卷 / 开始 =============== */
+function pickPool(){
+  var pool = filterPool();
+  var want = (cfg.count === "all") ? pool.length : Math.min(cfg.count, pool.length);
+  return shuffle(pool).slice(0, want);
+}
+function startQuiz(list){
+  queue = list.map(function(q){
+    return { id:q.id, type:q.type, cat:q.cat, stem:q.stem, ask:q.ask, explain:q.explain, options: shuffle(q.options) };
+  });
+  if(!queue.length) return;
+  answers = []; idx = 0; locked = false; finished = false; mode = "run";
+  tStart = Date.now();
+  revList = []; revPos = 0;
+  buildDots();
+  show("scr-run");
+  renderQ();
+  if(tick){ clearInterval(tick); }
+  tick = setInterval(onTick, 250);
+  onTick();
+}
+$("#btn-start").addEventListener("click", function(){ startQuiz(pickPool()); });
+$("#btn-again").addEventListener("click", function(){ startQuiz(pickPool()); });
+$("#btn-back").addEventListener("click", function(){ show("scr-start"); });
+
+/* =============== 计时 =============== */
+function onTick(){
+  if(finished || mode !== "run") return;
+  var now = Date.now();
+  $("#timer-all").textContent = "总用时 " + mmss((now - tStart)/1000);
+  if(cfg.limit > 0 && !locked){
+    var left = Math.max(0, cfg.limit - (now - qStart)/1000);
+    updateRing(left);
+    if(left <= 0){ judge(-1); }
+  }
+}
+function updateRing(left){
+  var frac = Math.max(0, Math.min(1, left / cfg.limit));
+  var fg = $("#ring-fg");
+  fg.setAttribute("stroke-dasharray", RING_LEN.toFixed(2));
+  fg.setAttribute("stroke-dashoffset", (RING_LEN * (1 - frac)).toFixed(2));
+  $("#ring-num").textContent = Math.ceil(left);
+  $("#ring").classList.toggle("warn", left <= 10);
+}
+function ringReset(){
+  var ring = $("#ring");
+  ring.classList.toggle("hide", cfg.limit <= 0);
+  if(cfg.limit > 0){
+    ring.classList.remove("warn");
+    updateRing(cfg.limit);
+  }
+}
+
+/* =============== 进度格 =============== */
+function buildDots(){
+  var box = $("#dots");
+  box.innerHTML = "";
+  queue.forEach(function(_, i){
+    var d = document.createElement("button");
+    d.type = "button";
+    d.className = "dot";
+    d.setAttribute("data-i", i);
+    d.addEventListener("click", onDotClick);
+    box.appendChild(d);
+  });
+  paintDots();
+}
+function paintDots(){
+  $$("#dots .dot").forEach(function(d, i){
+    var a = answers[i];
+    d.classList.remove("ok","bad","skip","cur","can");
+    if(a){ d.classList.add(a.correct ? "ok" : (a.chosen == null ? "skip" : "bad")); }
+    if(mode === "run" && i === idx && !finished){ d.classList.add("cur"); }
+    if(mode === "review"){
+      d.classList.add("can");
+      if(revList[revPos] === i) d.classList.add("cur");
+    }
+  });
+}
+function onDotClick(){
+  if(mode !== "review") return;
+  var i = parseInt(this.getAttribute("data-i"), 10);
+  var pos = revList.indexOf(i);
+  if(pos < 0){ revList = allIndexes(); pos = i; }
+  revPos = pos;
+  renderReviewQ();
+}
+
+/* =============== 作答模式：渲染 =============== */
+function renderQ(){
+  var q = queue[idx];
+  mode = "run"; locked = false;
+  var last = (idx === queue.length - 1);
+
+  $("#hud-pos").innerHTML = '第 <b id="q-now">' + (idx+1) + '</b> / <span id="q-total">' + queue.length + "</span> 题";
+  $("#q-tag").textContent = TYPE_NAME[q.type] || "";
+  $("#hud-review").hidden = true;
+  $("#hud-range").hidden = true;
+  $("#hud-run").hidden = false;
+
+  $("#q-cat").textContent = q.cat;
+  $("#q-stem").innerHTML = q.stem;
+  $("#q-ask").textContent = q.ask || TYPE_ASK[q.type] || "";
+  $("#feedback").hidden = true;
+  $("#stamp").className = "stamp-mark hide";
+
+  var ul = $("#opts");
+  ul.innerHTML = "";
+  q.options.forEach(function(o, i){
+    var li = document.createElement("li");
+    li.className = "opt";
+    li.innerHTML = '<span class="mark">' + LABELS[i] + '</span><span class="txt">' + o.t + "</span>";
+    li.addEventListener("click", function(){ judge(i); });
+    ul.appendChild(li);
+  });
+
+  qStart = Date.now();
+  ringReset();
+  paintDots();
+  renderQBar();
+}
+
+function renderQBar(){
+  var bar = $("#qbar");
+  bar.innerHTML = "";
+  var last = (idx === queue.length - 1);
+
+  if(mode === "run"){
+    if(!locked){
+      var hint = document.createElement("span");
+      hint.className = "qbar-hint";
+      hint.innerHTML = '选中一个选项作答<span class="kbd-only">（也可按 <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd>）</span>';
+      bar.appendChild(hint);
+    } else {
+      var next = document.createElement("button");
+      next.type = "button";
+      next.className = "btn" + (last ? "" : " small");
+      next.textContent = last ? "查看成绩 →" : "下一题 →";
+      next.addEventListener("click", function(){
+        if(idx === queue.length - 1){ askSubmit(); }
+        else { idx++; renderQ(); window.scrollTo(0,0); }
+      });
+      bar.appendChild(next);
+      var sub = document.createElement("button");
+      sub.type = "button";
+      sub.className = "btn ghost small";
+      sub.textContent = "交卷";
+      sub.addEventListener("click", askSubmit);
+      bar.appendChild(sub);
+    }
+    return;
+  }
+
+  /* 回顾模式 */
+  var prev = document.createElement("button");
+  prev.type = "button";
+  prev.className = "btn ghost small";
+  prev.textContent = "← 上一题";
+  if(revPos === 0){ prev.disabled = true; }
+  prev.addEventListener("click", function(){ if(revPos > 0){ revPos--; renderReviewQ(); window.scrollTo(0,0); } });
+  bar.appendChild(prev);
+
+  var nextB = document.createElement("button");
+  nextB.type = "button";
+  nextB.className = "btn small";
+  nextB.textContent = (revPos === revList.length - 1) ? "回顾完毕 · 返回成绩" : "下一题 →";
+  nextB.addEventListener("click", function(){
+    if(revPos === revList.length - 1){ show("scr-result"); }
+    else { revPos++; renderReviewQ(); window.scrollTo(0,0); }
+  });
+  bar.appendChild(nextB);
+
+  var back = document.createElement("button");
+  back.type = "button";
+  back.className = "btn ghost small wide";
+  back.textContent = "返回成绩";
+  back.addEventListener("click", function(){ show("scr-result"); });
+  bar.appendChild(back);
+}
+
+/* =============== 判分 =============== */
+function judge(pick){
+  if(mode !== "run" || locked || finished) return;
+  locked = true;
+  var q = queue[idx];
+  var used = (Date.now() - qStart)/1000;
+  var timeout = (pick === -1);
+  var correctIdx = findCorrect(q);
+  var correct = !timeout && q.options[pick].ok === true;
+
+  answers[idx] = { q:q, chosen:(timeout ? null : pick), correctIdx:correctIdx, correct:correct, used:used, timeout:timeout };
+
+  var optEls = $$("#opts .opt");
+  markOptions(optEls, q, timeout ? null : pick, correctIdx);
+
+  var stamp = $("#stamp");
+  stamp.className = "stamp-mark " + (timeout ? "skip" : (correct ? "ok" : "bad"));
+  stamp.innerHTML = timeout ? "超时<small>未作答</small>" : (correct ? "正确" : "错误<small>再想想</small>");
+
+  showFeedback(q, timeout ? null : pick, correctIdx, timeout, correct);
+  if(cfg.limit > 0){ $("#ring").classList.add("hide"); }
+  paintDots();
+  renderQBar();
+}
+
+function findCorrect(q){
+  for(var i = 0; i < q.options.length; i++){ if(q.options[i].ok === true) return i; }
+  return 0;
+}
+function markOptions(optEls, q, chosen, correctIdx){
+  optEls.forEach(function(el, i){
+    el.classList.add("locked");
+    el.onclick = null;
+    if(i === correctIdx){ el.classList.add(chosen === i ? "pick-right" : "answer"); }
+    else if(i === chosen){ el.classList.add("pick-wrong"); }
+    else { el.classList.add("dim"); }
+  });
+  if(chosen != null && optEls[chosen]){
+    optEls[chosen].querySelector(".txt").insertAdjacentHTML("beforeend", '<span class="your">你的选择</span>');
+  }
+  if(optEls[correctIdx]){
+    optEls[correctIdx].querySelector(".txt").insertAdjacentHTML("beforeend", '<span class="right-mark">正确答案</span>');
+  }
+}
+function showFeedback(q, chosen, correctIdx, timeout, correct){
+  var fb = $("#feedback");
+  fb.hidden = false;
+  var head = $("#fb-head");
+  head.className = "fb-head " + (timeout ? "skip" : (correct ? "ok" : "bad"));
+  head.textContent = correct ? "○ 答对了" : (timeout ? "△ 超时未作答" : "× 答错了");
+  $("#fb-body").innerHTML =
+    '<span class="ans"><b>正确答案：</b>' + LABELS[correctIdx] + "．" + q.options[correctIdx].t + "</span>" +
+    (chosen != null && !correct ? '<span class="ans" style="color:var(--ink2)"><b>你的答案：</b>' + LABELS[chosen] + "．" + q.options[chosen].t + "</span>" : "") +
+    '<span class="ans" style="color:var(--ink2)"><b>解析：</b>' + q.explain + "</span>";
+}
+
+/* =============== 交卷（页面内弹窗，iframe / 手机可用） =============== */
+var modalOk = null, modalCancel = null;
+function openModal(title, text, okText, cancelText, onOk, onCancel){
+  $("#modal-title").textContent = title;
+  $("#modal-text").innerHTML = text;
+  $("#modal-ok").textContent = okText || "确认";
+  $("#modal-cancel").textContent = cancelText || "取消";
+  $("#modal").hidden = false;
+  modalOk = onOk || null; modalCancel = onCancel || null;
+  var focusEl = $("#modal-ok");
+  if(focusEl.focus){ focusEl.focus(); }
+}
+function closeModal(){
+  $("#modal").hidden = true;
+  modalOk = null; modalCancel = null;
+}
+$("#modal-ok").addEventListener("click", function(){ var f = modalOk; closeModal(); if(f){ f(); } });
+$("#modal-cancel").addEventListener("click", function(){ var f = modalCancel; closeModal(); if(f){ f(); } });
+$("#modal").addEventListener("click", function(e){ if(e.target === this){ closeModal(); } });
+
+function askSubmit(){
+  if(finished) return;
+  var done = 0;
+  for(var i = 0; i < queue.length; i++){ if(answers[i]) done++; }
+  var left = queue.length - done;
+  var txt;
+  if(done === 0){ txt = "本轮一题都还没作答。确定现在交卷吗？"; }
+  else if(left > 0){ txt = "已作答 <b>" + done + "</b> / " + queue.length + " 题，还有 <b>" + left + "</b> 题未作答。<br>未作答的题目将记为「超时未答」。"; }
+  else { txt = "全部 " + queue.length + " 题已作答完毕。<br>确认交卷并查看成绩？"; }
+  openModal("确认交卷", txt, "确认交卷", "继续作答", finishQuiz, null);
+}
+$("#btn-submit").addEventListener("click", askSubmit);
+
+/* =============== 交卷结算 =============== */
+function finishQuiz(){
+  if(finished) return;
+  finished = true; mode = "none";
+  if(tick){ clearInterval(tick); tick = null; }
+
+  for(var i = 0; i < queue.length; i++){
+    if(!answers[i]){
+      var q = queue[i];
+      answers[i] = { q:q, chosen:null, correctIdx:findCorrect(q), correct:false, used:0, timeout:true };
+    }
+  }
+  var total = queue.length, ok = 0, bad = 0, skip = 0, answeredTime = 0, wrongIdx = [];
+  answers.forEach(function(a, i){
+    if(a.correct){ ok++; } else if(a.chosen == null){ skip++; } else { bad++; }
+    if(!a.correct) wrongIdx.push(i);
+    answeredTime += a.used || 0;
+  });
+  var totalTime = Math.round((Date.now() - tStart)/1000);
+  var rate = ok / total;
+
+  $("#r-rate").innerHTML = Math.round(rate*100) + "<small>%</small>";
+  $("#r-line1").innerHTML = "共作答 <b>" + total + "</b> 题，答对 <b>" + ok + "</b> 题　" + verdict(rate);
+  $("#r-line2").textContent = "本轮限时：" + (cfg.limit > 0 ? cfg.limit + " 秒/题" : "不限时") +
+    "　·　交卷时间 " + new Date().toLocaleTimeString("zh-CN", { hour12:false });
+  $("#r-ok").textContent = ok;
+  $("#r-bad").textContent = bad;
+  $("#r-skip").textContent = skip;
+  $("#r-time").textContent = mmss(totalTime);
+  $("#r-avg").textContent = secs(answeredTime / Math.max(1, total));
+
+  var st = $("#r-stamp");
+  st.className = "stamp-mark " + (rate >= 0.8 ? "ok" : (rate >= 0.6 ? "mid" : "bad"));
+  st.innerHTML = (rate >= 0.95 ? "优秀" : rate >= 0.8 ? "良好" : rate >= 0.6 ? "及格" : "加油") +
+                 "<small>" + ok + "/" + total + "</small>";
+
+  renderCatBars();
+  $("#btn-rev-wrong").disabled = (wrongIdx.length === 0);
+  renderReviewList(revFilter);
+  show("scr-result");
+}
+function verdict(r){
+  if(r >= 0.9) return "——稳了，考点已经吃透。";
+  if(r >= 0.75) return "——不错，错题再看两遍。";
+  if(r >= 0.5) return "——基础有了，回速查表把方向背牢。";
+  return "——先读一遍速查表，再来一轮。";
+}
+function renderCatBars(){
+  var byCat = {}, order = [];
+  answers.forEach(function(a){
+    var c = a.q.cat;
+    if(!byCat[c]){ byCat[c] = { n:0, ok:0 }; order.push(c); }
+    byCat[c].n++;
+    if(a.correct) byCat[c].ok++;
+  });
+  order.sort(function(x, y){ return (byCat[x].ok/byCat[x].n) - (byCat[y].ok/byCat[y].n); });
+  $("#r-cats").innerHTML = order.map(function(c){
+    var v = byCat[c], r = Math.round(v.ok / v.n * 100);
+    var cls = r >= 80 ? "" : (r >= 50 ? "mid" : "low");
+    return '<div class="bar-row"><span class="name">' + escHTML(c) + '</span>' +
+           '<span class="bar"><i class="' + cls + '" style="width:' + r + '%"></i></span>' +
+           '<span class="val">' + v.ok + "/" + v.n + "　" + r + "%</span></div>";
+  }).join("");
+}
+
+/* =============== 成绩页题目列表 =============== */
+function allIndexes(){ var a = []; for(var i = 0; i < queue.length; i++){ a.push(i); } return a; }
+function wrongIndexes(){
+  var a = [];
+  answers.forEach(function(x, i){ if(!x.correct) a.push(i); });
+  return a;
+}
+$$(".rev-tabs .chip").forEach(function(el){
+  el.addEventListener("click", function(){
+    $$(".rev-tabs .chip").forEach(function(x){ x.classList.remove("on"); });
+    el.classList.add("on");
+    revFilter = el.getAttribute("data-f");
+    renderReviewList(revFilter);
+  });
+});
+$("#btn-rev-all").addEventListener("click", function(){ enterReview(allIndexes(), 0, "all"); });
+$("#btn-rev-wrong").addEventListener("click", function(){
+  var w = wrongIndexes();
+  if(w.length){ enterReview(w, 0, "wrong"); }
+});
+function renderReviewList(filter){
+  var list = (filter === "wrong") ? wrongIndexes() : allIndexes();
+  var box = $("#review-list");
+  if(!list.length){
+    box.innerHTML = '<div class="card"><p style="margin:0">本轮没有错题，漂亮。</p></div>';
+    return;
+  }
+  box.innerHTML = list.map(function(qi){
+    var a = answers[qi], q = a.q;
+    var tag = a.correct
+      ? '<span class="res ok">答对</span>'
+      : (a.chosen == null ? '<span class="res skip">超时</span>' : '<span class="res bad">答错</span>');
+    return '<button class="qrow" type="button" data-i="' + qi + '">' +
+             '<span class="qno">第 ' + (qi+1) + ' 题</span>' +
+             '<span class="ttype">' + (TYPE_NAME[q.type] || "") + '</span>' +
+             tag +
+             '<span class="qs">' + escHTML(stripTags(q.stem)) + '</span>' +
+             '<span class="qgo">回顾 ›</span>' +
+           "</button>";
+  }).join("");
+  $$("#review-list .qrow").forEach(function(row){
+    row.addEventListener("click", function(){
+      var qi = parseInt(row.getAttribute("data-i"), 10);
+      var pos = revList.indexOf(qi);
+      if(pos < 0){ pos = 0; }
+      enterReview(list, list.indexOf(qi), filter);
+    });
+  });
+}
+
+/* =============== 回顾模式（回到作答区看题与解析） =============== */
+function enterReview(list, pos, filter){
+  revList = list.slice();
+  revPos = Math.max(0, Math.min(pos, revList.length - 1));
+  revFilter = filter || "all";
+  mode = "review"; locked = true;
+  show("scr-run");
+  renderReviewQ();
+}
+function renderReviewQ(){
+  mode = "review";
+  var qi = revList[revPos];
+  var a = answers[qi];
+  var q = a.q;
+
+  $("#hud-pos").innerHTML = '回顾 <b>' + (revPos+1) + "</b> / " + revList.length + " 题";
+  $("#q-tag").textContent = TYPE_NAME[q.type] || "";
+  $("#hud-review").hidden = false;
+  var range = $("#hud-range");
+  range.hidden = false;
+  range.textContent = "范围：" + (revFilter === "wrong" ? "错题与未答" : "全部题目");
+  $("#hud-run").hidden = true;
+
+  $("#q-cat").textContent = q.cat;
+  $("#q-stem").innerHTML = q.stem;
+  $("#q-ask").textContent = "回顾 · " + (q.ask || TYPE_ASK[q.type] || "");
+  $("#stamp").className = "stamp-mark " + (a.correct ? "ok" : (a.timeout ? "skip" : "bad"));
+  $("#stamp").innerHTML = a.correct ? "答对" : (a.timeout ? "未答<small>超时</small>" : "答错<small>再想想</small>");
+
+  var ul = $("#opts");
+  ul.innerHTML = "";
+  q.options.forEach(function(o, i){
+    var li = document.createElement("li");
+    li.className = "opt";
+    li.innerHTML = '<span class="mark">' + LABELS[i] + '</span><span class="txt">' + o.t + "</span>";
+    ul.appendChild(li);
+  });
+  markOptions($$("#opts .opt"), q, a.chosen, a.correctIdx);
+  showFeedback(q, a.chosen, a.correctIdx, a.timeout, a.correct);
+  paintDots();
+  renderQBar();
+}
+
+/* =============== 键盘 =============== */
+document.addEventListener("keydown", function(e){
+  /* 弹窗优先 */
+  if(!$("#modal").hidden){
+    if(e.key === "Enter"){ e.preventDefault(); $("#modal-ok").click(); }
+    else if(e.key === "Escape"){ e.preventDefault(); $("#modal-cancel").click(); }
+    return;
+  }
+  if(!$("#scr-run").classList.contains("active")){ return; }
+  var key = String(e.key || "").toUpperCase();
+
+  if(mode === "run"){
+    var map = { A:0, B:1, C:2, D:3, "1":0, "2":1, "3":2, "4":3 };
+    if(map[key] !== undefined && !locked){ e.preventDefault(); judge(map[key]); return; }
+    if(e.key === "Enter" || e.key === " "){
+      e.preventDefault();
+      if(locked){
+        if(idx === queue.length - 1){ askSubmit(); }
+        else { idx++; renderQ(); window.scrollTo(0,0); }
+      }
+    }
+  } else if(mode === "review"){
+    if(e.key === "ArrowLeft"){ e.preventDefault(); if(revPos > 0){ revPos--; renderReviewQ(); window.scrollTo(0,0); } }
+    else if(e.key === "ArrowRight"){ e.preventDefault();
+      if(revPos === revList.length - 1){ show("scr-result"); } else { revPos++; renderReviewQ(); window.scrollTo(0,0); } }
+    else if(e.key === "Escape"){ e.preventDefault(); show("scr-result"); }
+  }
+});
+
+/* =============== 速查表：宽表格横向滚动 =============== */
+(function wrapTables(){
+  $$(".sheet table").forEach(function(t){
+    if(t.parentNode && t.parentNode.className === "tscroll"){ return; }
+    var w = document.createElement("div");
+    w.className = "tscroll";
+    t.parentNode.insertBefore(w, t);
+    w.appendChild(t);
+  });
+})();
+
+})();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a49b4955ec8e0ef0',t:'MTc5MTg2MjQ0NA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
